@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gift Studio</title>
+  <!-- 3D mockups of the Tết 2027 goat gift box, inner boxes and the pull-out firework card,
+       built from the Canva dielines in assets/source/canva-tet-2027/. Open via serve.ps1
+       (http://localhost:8080/gift-studio.html), wait for "Saved", then run make-mockups.ps1. -->
+  <style>
+    body { margin: 0; background: #1b1b1b; color: #eee; font: 14px/1.5 system-ui, sans-serif; }
+    #log { position: fixed; left: 12px; top: 10px; z-index: 2; background: rgba(0,0,0,.6); padding: 8px 12px; border-radius: 8px; }
+    canvas { display: block; width: 100%; height: auto; max-width: 1600px; margin: 0 auto; }
+  </style>
+  <script type="importmap">
+    { "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    } }
+  </script>
+</head>
+<body>
+  <div id="log">Loading…</div>
+  <script type="module">
+    import * as THREE from 'three';
+    import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+    const log = (t) => { document.getElementById('log').textContent = t; };
+    const SRC = 'assets/source/canva-tet-2027/';
+    const W = 1600, H = 1200;
+
+    const loadImg = (src) => new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; });
+    const canvasOf = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
+    const crop = (img, x, y, w, h) => { const c = canvasOf(w, h); c.getContext('2d').drawImage(img, x, y, w, h, 0, 0, w, h); return c; };
+    const tex = (canvas) => { const t = new THREE.CanvasTexture(canvas); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t; };
+    const colorAt = (img, x, y) => { const d = crop(img, x, y, 1, 1).getContext('2d').getImageData(0, 0, 1, 1).data; return new THREE.Color().setRGB(d[0] / 255, d[1] / 255, d[2] / 255, THREE.SRGBColorSpace); };
+    // near-white pixels → transparent (die-cut slits and the thumb notch)
+    // win: [x0, y0, x1, y1] fractions where cut lines are widened to `grow` px each side (thin slits vanish when mip-mapped)
+    function punchWhite(c, thr = 215, win = null, grow = 0) {
+      const g = c.getContext('2d'), id = g.getImageData(0, 0, c.width, c.height), d = id.data, w = c.width, h = c.height;
+      const hit = new Uint8Array(w * h);
+      for (let p = 0; p < w * h; p++) { const i = p * 4; if (Math.min(d[i], d[i + 1], d[i + 2]) > thr) hit[p] = 1; }
+      for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+        const p = y * w + x;
+        let cut = hit[p];
+        if (!cut && win && grow && x > win[0] * w && x < win[2] * w && y > win[1] * h && y < win[3] * h) {
+          for (let k = -grow; k <= grow && !cut; k++) if (hit[p + k]) cut = 1;
+        }
+        if (cut) d[p * 4 + 3] = 0;
+      }
+      g.putImageData(id, 0, 0);
+      return c;
+    }
+    // remove dark annotation strokes (e.g. Canva pointer lines) by repainting them with the panel colour
+    function paintOutDark(c, color, thr = 125) {
+      const g = c.getContext('2d'), id = g.getImageData(0, 0, c.width, c.height), d = id.data;
+      const [r, gg, b] = [Math.round(color.r * 255), Math.round(color.g * 255), Math.round(color.b * 255)];
+      for (let i = 0; i < d.length; i += 4) if (d[i + 3] > 0 && Math.max(d[i], d[i + 1], d[i + 2]) < thr) { d[i] = r; d[i + 1] = gg; d[i + 2] = b; }
+      g.putImageData(id, 0, 0);
+      return c;
+    }
+    function rrect(w, h, r) {
+      const s = new THREE.Shape(), x = -w / 2, y = -h / 2;
+      s.moveTo(x + r, y); s.lineTo(x + w - r, y); s.quadraticCurveTo(x + w, y, x + w, y + r);
+      s.lineTo(x + w, y + h - r); s.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      s.lineTo(x + r, y + h); s.quadraticCurveTo(x, y + h, x, y + h - r);
+      s.lineTo(x, y + r); s.quadraticCurveTo(x, y, x + r, y);
+      return s;
+    }
+    function fitUV(geo, w, h) {
+      const p = geo.attributes.position, uv = geo.attributes.uv;
+      for (let i = 0; i < p.count; i++) uv.setXY(i, (p.getX(i) + w / 2) / w, (p.getY(i) + h / 2) / h);
+      uv.needsUpdate = true;
+      return geo;
+    }
+    const shadowy = (m) => { m.castShadow = true; m.receiveShadow = true; return m; };
+
+    async function main() {
+      const [p4, p5, p6, die] = await Promise.all([
+        ...['p4-box-dieline.png', 'p5-inner-boxes.png', 'p6-card-envelope.png'].map((f) => loadImg(SRC + f)),
+        loadImg(encodeURI('Packaging & Event Assets/quà tết-02.png')), // high-res outer box dieline (3897 × 1902)
+      ]);
+
+      // Artwork crops (pixel coordinates on the source files)
+      const boxFront = crop(die, 461, 634, 866, 742);         // 420 × 360 mm front with the goat medallion
+      const RED = colorAt(die, 900, 450);
+      const lidA = crop(p5, 866, 649, 606, 608);             // Hộp A lid (red)
+      const lidB = crop(p5, 2370, 646, 608, 607);            // Hộp B lid (cream)
+      const RED_A = colorAt(p5, 640, 1000), CREAM_B = colorAt(p5, 2150, 1000);
+      const SLEEVE_RED = colorAt(p6, 1300, 600);
+      const sleeveSrgb = new THREE.Color().copy(SLEEVE_RED).convertLinearToSRGB();
+      const sleeveFront = punchWhite(paintOutDark(crop(p6, 1849, 305, 1056, 678), sleeveSrgb), 200, [0.2, 0.12, 0.8, 0.88], 2); // 206 × 131.5 mm, slits + notch cut out
+      const cardA = crop(p6, 795, 1143, 1017, 658);          // 200 × 130 mm, red slit pattern side
+      const cardB = crop(p6, 1847, 1143, 1017, 658);         // letter side
+
+      /* ---------- Renderer / scene ---------- */
+      const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+      renderer.setPixelRatio(1);
+      renderer.setSize(W, H, false);
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.0;
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      document.body.appendChild(renderer.domElement);
+
+      const scene = new THREE.Scene();
+      const BG = new THREE.Color('#E8DFD3');
+      scene.background = BG;
+      scene.fog = new THREE.Fog(BG, 2.5, 6);
+      const pmrem = new THREE.PMREMGenerator(renderer);
+      scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+
+      scene.add(new THREE.HemisphereLight(0xffffff, 0xd7cdbf, 0.45));
+      const key = new THREE.DirectionalLight(0xfff6ec, 2.4);
+      key.position.set(0.9, 1.8, 1.2);
+      key.castShadow = true;
+      key.shadow.mapSize.set(4096, 4096);
+      Object.assign(key.shadow.camera, { left: -1, right: 1, top: 1, bottom: -1, near: 0.1, far: 5 });
+      key.shadow.camera.updateProjectionMatrix();
+      key.shadow.bias = -0.0002; key.shadow.normalBias = 0.004;
+      scene.add(key);
+      const fill = new THREE.DirectionalLight(0xffeedd, 0.5); fill.position.set(-1.5, 0.8, 0.6); scene.add(fill);
+
+      const mat = (o) => new THREE.MeshStandardMaterial({ roughness: 0.62, envMapIntensity: 0.55, ...o });
+
+      const ground = new THREE.Mesh(new THREE.PlaneGeometry(20, 20), mat({ color: BG, roughness: 0.95 }));
+      ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+
+      /* ---------- Goat gift box (420 × 360 × 120 mm, upright, leather handle) ---------- */
+      const BW = 0.42, BH = 0.36, BD = 0.12;
+      const boxGeo = fitUV(new THREE.ExtrudeGeometry(rrect(BW, BH, 0.01), { depth: BD, bevelEnabled: true, bevelThickness: 0.002, bevelSize: 0.002, bevelSegments: 2, curveSegments: 12 }), BW, BH);
+      boxGeo.translate(0, 0, -BD / 2);
+      const boxRed = mat({ color: RED, roughness: 0.55 });
+      const box = shadowy(new THREE.Mesh(boxGeo, [mat({ map: tex(boxFront), roughness: 0.5 }), boxRed]));
+      const gift = new THREE.Group();
+      box.position.y = BH / 2 + 0.002;
+      gift.add(box);
+      // leather handle + gold brackets
+      const curve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(-0.075, BH, 0), new THREE.Vector3(-0.07, BH + 0.035, 0), new THREE.Vector3(0, BH + 0.05, 0),
+        new THREE.Vector3(0.07, BH + 0.035, 0), new THREE.Vector3(0.075, BH, 0)]);
+      const strap = shadowy(new THREE.Mesh(new THREE.TubeGeometry(curve, 48, 0.0065, 12, false), mat({ color: '#5E1216', roughness: 0.4 })));
+      strap.scale.z = 1.6; gift.add(strap);
+      const gold = mat({ color: '#C9A15A', metalness: 0.9, roughness: 0.3 });
+      [-0.075, 0.075].forEach((x) => { const b = shadowy(new THREE.Mesh(new THREE.BoxGeometry(0.022, 0.008, 0.026), gold)); b.position.set(x, BH + 0.004, 0); gift.add(b); });
+      gift.position.set(-0.13, 0, -0.02);
+      gift.rotation.y = 0.32;
+      scene.add(gift);
+
+      /* ---------- Inner boxes A & B (170 × 170 × 80 mm) ---------- */
+      const small = (lid, side) => shadowy(new THREE.Mesh(new THREE.BoxGeometry(0.17, 0.08, 0.17),
+        [mat({ color: side }), mat({ color: side }), mat({ map: tex(lid), roughness: 0.5 }), mat({ color: side }), mat({ color: side }), mat({ color: side })]));
+      const boxA = small(lidA, RED_A); boxA.position.set(0.27, 0.041, 0.1); boxA.rotation.y = -0.28; scene.add(boxA);
+      const boxB = small(lidB, CREAM_B); boxB.position.set(0.272, 0.122, 0.098); boxB.rotation.y = -0.16; scene.add(boxB);
+
+      /* ---------- Pull-out sleeve with the card half out (206 × 131.5 mm) ---------- */
+      const SW = 0.206, SH = 0.1315, CW = 0.2, CH = 0.13;
+      const sleeve = new THREE.Group();
+      const back = shadowy(new THREE.Mesh(new THREE.PlaneGeometry(SW, SH), mat({ color: SLEEVE_RED, side: THREE.DoubleSide })));
+      sleeve.add(back);
+      const card = shadowy(new THREE.Mesh(new THREE.PlaneGeometry(CW, CH), mat({ map: tex(cardA), roughness: 0.7, side: THREE.DoubleSide })));
+      card.position.set(0.06, 0, 0.0012); sleeve.add(card);
+      const front = shadowy(new THREE.Mesh(new THREE.PlaneGeometry(SW, SH), mat({ map: tex(sleeveFront), transparent: true, alphaTest: 0.5, roughness: 0.55, side: THREE.DoubleSide })));
+      front.position.z = 0.0025; sleeve.add(front);
+      // folded spine on the closed side
+      const spine = shadowy(new THREE.Mesh(new THREE.BoxGeometry(0.0025, SH, 0.0025), mat({ color: SLEEVE_RED })));
+      spine.position.set(-SW / 2, 0, 0.00125); sleeve.add(spine);
+      sleeve.rotation.x = -Math.PI / 2;
+      sleeve.rotation.z = 0.12;
+      sleeve.position.set(-0.2, 0.004, 0.27);
+      scene.add(sleeve);
+
+      // A second card, fully out, showing the letter
+      const letter = shadowy(new THREE.Mesh(new THREE.PlaneGeometry(CW, CH), mat({ map: tex(cardB), roughness: 0.7, side: THREE.DoubleSide })));
+      letter.rotation.x = -Math.PI / 2; letter.rotation.z = -0.22;
+      letter.position.set(0.14, 0.0015, 0.33);
+      scene.add(letter);
+
+      /* ---------- Shots ---------- */
+      const cam = new THREE.PerspectiveCamera(30, W / H, 0.01, 20);
+      const shots = [
+        { pos: [0.5, 0.48, 1.12], at: [0.0, 0.13, 0.08], fov: 30 },   // full set
+        { pos: [-0.17, 0.36, 0.56], at: [-0.17, 0.0, 0.28], fov: 30 }, // sleeve + card close-up
+        { pos: [-0.02, 0.26, 0.92], at: [-0.11, 0.19, -0.02], fov: 28 }, // box front
+      ];
+      const saved = [];
+      for (let i = 0; i < shots.length; i++) {
+        const s = shots[i];
+        cam.fov = s.fov; cam.position.set(...s.pos); cam.lookAt(...s.at); cam.updateProjectionMatrix();
+        renderer.render(scene, cam);
+        log(`Rendering ${i + 1}/${shots.length}…`);
+        const blob = await new Promise((r) => renderer.domElement.toBlob(r, 'image/jpeg', 0.9));
+        const name = `goat-3d-${i + 1}.jpg`;
+        const res = await fetch(`assets/mockups/${name}`, { method: 'PUT', body: blob });
+        saved.push(`${name}: ${res.status}`);
+      }
+      log('Saved — ' + saved.join(', '));
+      window.__gift = saved;
+    }
+    main().catch((e) => { log('Error: ' + e.message); window.__gift = ['error: ' + e.message]; console.error(e); });
+  </script>
+</body>
+</html>

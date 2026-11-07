@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Booth Studio</title>
+  <!-- Renders 3D mockups of the MMA booth from "Packaging & Event Assets/MMA booth.png" and saves them to
+       assets/mockups/booth-3d-*.jpg. Open via serve.ps1 (http://localhost:8080/booth-studio.html), wait for
+       "Saved", then run make-mockups.ps1 so the site picks the renders up. -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; background: #1b1b1b; color: #eee; font: 14px/1.5 system-ui, sans-serif; }
+    #log { position: fixed; left: 12px; top: 10px; z-index: 2; background: rgba(0,0,0,.6); padding: 8px 12px; border-radius: 8px; }
+    canvas { display: block; width: 100%; height: auto; max-width: 1600px; margin: 0 auto; }
+  </style>
+  <script type="importmap">
+    { "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    } }
+  </script>
+</head>
+<body>
+  <div id="log">Loading…</div>
+  <script type="module">
+    import * as THREE from 'three';
+    import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+    import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+    import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+
+    const log = (t) => { document.getElementById('log').textContent = t; };
+    const SRC = encodeURI('Packaging & Event Assets/MMA booth.png');
+    // What plays on the booth TV: a frame from one of the motion pieces (or set `image` to a still instead)
+    const SCREEN = { video: encodeURI('Motion/Samsung_Galaxy Fold 5.mp4'), time: 5.5 };
+    const W = 1600, H = 1200;
+
+    const loadImg = (src) => new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; });
+    const loadFrame = (src, t) => new Promise((res, rej) => {
+      const v = document.createElement('video');
+      v.muted = true; v.preload = 'auto'; v.onerror = rej;
+      v.onloadedmetadata = () => { v.currentTime = Math.min(t, v.duration - 0.05); };
+      v.onseeked = () => { const c = canvasOf(v.videoWidth, v.videoHeight); c.getContext('2d').drawImage(v, 0, 0); res(c); };
+      v.src = src;
+    });
+    const canvasOf = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
+    const tex = (canvas) => { const t = new THREE.CanvasTexture(canvas); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t; };
+
+    function rrect(w, h, r) {
+      const s = new THREE.Shape(), x = -w / 2, y = -h / 2;
+      s.moveTo(x + r, y); s.lineTo(x + w - r, y); s.quadraticCurveTo(x + w, y, x + w, y + r);
+      s.lineTo(x + w, y + h - r); s.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      s.lineTo(x + r, y + h); s.quadraticCurveTo(x, y + h, x, y + h - r);
+      s.lineTo(x, y + r); s.quadraticCurveTo(x, y, x + r, y);
+      return s;
+    }
+    function fitUV(geo, w, h) {
+      const p = geo.attributes.position, uv = geo.attributes.uv;
+      for (let i = 0; i < p.count; i++) uv.setXY(i, (p.getX(i) + w / 2) / w, (p.getY(i) + h / 2) / h);
+      uv.needsUpdate = true;
+      return geo;
+    }
+    const shadowy = (m) => { m.castShadow = true; m.receiveShadow = true; return m; };
+
+    async function main() {
+      await document.fonts.load('600 46px "Inter Tight"');
+      const [art, screenImg] = await Promise.all([loadImg(SRC), SCREEN.video ? loadFrame(SCREEN.video, SCREEN.time) : loadImg(SCREEN.image)]);
+      const font = await new FontLoader().loadAsync('https://cdn.jsdelivr.net/npm/three@0.160.0/examples/fonts/helvetiker_bold.typeface.json');
+
+      // Sample brand colours and crop artwork from the booth design
+      const artC = canvasOf(art.width, art.height); const ac = artC.getContext('2d', { willReadFrequently: true });
+      ac.drawImage(art, 0, 0);
+      const px = (x, y) => ac.getImageData(Math.round(x * art.width), Math.round(y * art.height), 1, 1).data;
+      const redPx = px(556 / 1954, 1030 / 2019);
+      const tablePx = px(1362 / 1954, 1204 / 2019); // background of the logo crop, so the panel blends in
+      const RED = new THREE.Color().setRGB(redPx[0] / 255, redPx[1] / 255, redPx[2] / 255, THREE.SRGBColorSpace);
+      const TABLE = `rgb(${tablePx[0]},${tablePx[1]},${tablePx[2]})`;
+
+      // "Powered by AWING" → white on transparent
+      const pw = canvasOf(380, 64), pc = pw.getContext('2d');
+      pc.drawImage(art, 603, 448, 380, 64, 0, 0, 380, 64);
+      const id = pc.getImageData(0, 0, 380, 64);
+      for (let i = 0; i < id.data.length; i += 4) {
+        const a = Math.max(0, Math.min(1, (id.data[i + 1] - 60) / 150));
+        id.data[i] = id.data[i + 1] = id.data[i + 2] = 255; id.data[i + 3] = a * 255;
+      }
+      pc.putImageData(id, 0, 0);
+
+      // Table front with the AWING logo
+      const tf = canvasOf(1100, 980), tc = tf.getContext('2d');
+      tc.fillStyle = TABLE; tc.fillRect(0, 0, 1100, 980);
+      const lw = 395, lh = 295, lscale = 640 / lw;
+      tc.drawImage(art, 1350, 1192, lw, lh, (1100 - lw * lscale) / 2, (980 - lh * lscale) / 2 - 10, lw * lscale, lh * lscale);
+
+      /* ---------- Renderer / scene ---------- */
+      const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+      renderer.setPixelRatio(1);
+      renderer.setSize(W, H, false);
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.0;
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      document.body.appendChild(renderer.domElement);
+
+      const scene = new THREE.Scene();
+      const BG = new THREE.Color('#D8D3CB');
+      scene.background = BG;
+      scene.fog = new THREE.Fog(BG, 11, 26);
+      const pmrem = new THREE.PMREMGenerator(renderer);
+      scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+
+      scene.add(new THREE.HemisphereLight(0xffffff, 0xcfc8bd, 0.5));
+      const key = new THREE.DirectionalLight(0xffffff, 2.3);
+      key.position.set(3.2, 6.5, 5.2);
+      key.castShadow = true;
+      key.shadow.mapSize.set(4096, 4096);
+      Object.assign(key.shadow.camera, { left: -5, right: 5, top: 5, bottom: -5, near: 1, far: 20 });
+      key.shadow.camera.updateProjectionMatrix();
+      key.shadow.bias = -0.0003; key.shadow.normalBias = 0.02; key.shadow.radius = 4;
+      scene.add(key);
+      const fill = new THREE.DirectionalLight(0xfff1e2, 0.55); fill.position.set(-5, 3, 2); scene.add(fill);
+
+      const mat = (color, rough = 0.6, metal = 0) => new THREE.MeshStandardMaterial({ color, roughness: rough, metalness: metal, envMapIntensity: 0.6 });
+      const redMat = mat(RED, 0.5);
+      const greyFloor = mat('#CDCED2', 0.55);
+      const wallMat = mat('#E3E4E7', 0.75);
+      const tableMat = mat(TABLE, 0.55);
+
+      // Studio floor
+      const ground = new THREE.Mesh(new THREE.PlaneGeometry(80, 80), mat(BG, 0.95));
+      ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+
+      // Booth platform: red under the tower, grey for the rest (same height)
+      const RW = 1.6;
+      const redFloor = shadowy(new THREE.Mesh(new THREE.BoxGeometry(RW, 0.06, 3), redMat));
+      redFloor.position.set(-1.5 + RW / 2, 0.03, 0); scene.add(redFloor);
+      const grey = shadowy(new THREE.Mesh(new THREE.BoxGeometry(3 - RW, 0.06, 3), greyFloor));
+      grey.position.set(-1.5 + RW + (3 - RW) / 2, 0.03, 0); scene.add(grey);
+
+      // Grey back wall
+      const wall = shadowy(new THREE.Mesh(new THREE.BoxGeometry(3, 2.4, 0.12), wallMat));
+      wall.position.set(0, 0.06 + 1.2, -1.44); scene.add(wall);
+      const WALL_Z = -1.38;
+
+      // Red tower (taller than the wall, rounded slanted top)
+      const TH = 2.75, TH2 = 2.2, r1 = 0.5;
+      const prof = new THREE.Shape();
+      prof.moveTo(0, 0); prof.lineTo(0, TH - r1); prof.quadraticCurveTo(0, TH, r1, TH);
+      const slope = (TH2 - TH) / (RW - r1), pxx = RW - 0.45, pyy = TH + slope * (pxx - r1);
+      prof.lineTo(pxx, pyy); prof.quadraticCurveTo(RW, TH2, RW, TH2 - 0.45); prof.lineTo(RW, 0); prof.lineTo(0, 0);
+      const tower = shadowy(new THREE.Mesh(new THREE.ExtrudeGeometry(prof, { depth: 0.36, bevelEnabled: true, bevelThickness: 0.012, bevelSize: 0.012, bevelSegments: 3, curveSegments: 40 }), redMat));
+      tower.position.set(-1.5, 0.06, WALL_Z + 0.005); scene.add(tower);
+      const TOWER_FRONT = WALL_Z + 0.005 + 0.36 + 0.012;
+
+      // White LED glow behind the tower
+      const gm = 0.45, gc = canvasOf(1024, 1024), g2 = gc.getContext('2d');
+      const toC = (x, y) => [(x + gm) / (RW + 2 * gm) * 1024, 1024 - (y + gm) / (TH + 2 * gm) * 1024];
+      g2.filter = 'blur(26px)'; g2.fillStyle = '#fff'; g2.beginPath();
+      prof.getPoints(60).forEach((p, i) => { const [cx, cy] = toC(p.x, p.y); i ? g2.lineTo(cx, cy) : g2.moveTo(cx, cy); });
+      g2.closePath(); g2.fill();
+      const glow = new THREE.Mesh(new THREE.PlaneGeometry(RW + 2 * gm, TH + 2 * gm),
+        new THREE.MeshBasicMaterial({ map: tex(gc), transparent: true, opacity: 0.95, depthWrite: false, toneMapped: false }));
+      glow.position.set(-1.5 + RW / 2, 0.06 + TH / 2, WALL_Z + 0.002); scene.add(glow);
+
+      // Phone-shaped frame with the vertical 86" TV
+      const FW = 1.17, FH = 1.95, SW = 1.07, SH = 1.85, cx = -1.5 + RW / 2, cy = 0.06 + 0.3 + FH / 2;
+      const frameShape = rrect(FW, FH, 0.16); frameShape.holes.push(rrect(SW, SH, 0.1));
+      const frame = shadowy(new THREE.Mesh(new THREE.ExtrudeGeometry(frameShape, { depth: 0.05, bevelEnabled: true, bevelThickness: 0.008, bevelSize: 0.008, bevelSegments: 2, curveSegments: 24 }), mat('#0b0b0c', 0.35, 0.2)));
+      frame.position.set(cx, cy, TOWER_FRONT); scene.add(frame);
+      const sTex = new THREE.Texture(screenImg); sTex.colorSpace = THREE.SRGBColorSpace; sTex.needsUpdate = true;
+      const ia = screenImg.width / screenImg.height, ta = SW / SH;
+      if (SCREEN.video) {
+        // contain: show the whole ad; edge pixels (black background) extend into the spare space
+        if (ia > ta) { sTex.repeat.set(1, ia / ta); sTex.offset.set(0, (1 - ia / ta) / 2); } else { sTex.repeat.set(ta / ia, 1); sTex.offset.set((1 - ta / ia) / 2, 0); }
+      } else if (ia > ta) { sTex.repeat.set(ta / ia, 1); sTex.offset.set((1 - ta / ia) / 2, 0); } else { sTex.repeat.set(1, ia / ta); sTex.offset.set(0, (1 - ia / ta) / 2); }
+      const screen = new THREE.Mesh(fitUV(new THREE.ShapeGeometry(rrect(SW, SH, 0.1), 24), SW, SH),
+        new THREE.MeshStandardMaterial({ map: sTex, emissive: 0xffffff, emissiveMap: sTex, emissiveIntensity: 0.75, roughness: 0.2, metalness: 0 }));
+      screen.position.set(cx, cy, TOWER_FRONT + 0.03); screen.receiveShadow = true; scene.add(screen);
+      const island = new THREE.Mesh(new THREE.ShapeGeometry(rrect(0.32, 0.075, 0.0375), 16), mat('#050505', 0.3));
+      island.position.set(cx, cy + SH / 2 - 0.09, TOWER_FRONT + 0.035); scene.add(island);
+
+      // "Powered by AWING"
+      const pwTex = tex(pw);
+      const powered = new THREE.Mesh(new THREE.PlaneGeometry(0.78, 0.78 * 64 / 380), new THREE.MeshStandardMaterial({ map: pwTex, transparent: true, roughness: 0.5 }));
+      powered.position.set(cx, cy + FH / 2 + 0.1, TOWER_FRONT + 0.002); scene.add(powered);
+
+      // Raised acrylic "AWING Channel" letters on the grey wall
+      const tg = new TextGeometry('AWING Channel', { font, size: 0.13, height: 0.03, curveSegments: 8, bevelEnabled: true, bevelThickness: 0.004, bevelSize: 0.003, bevelSegments: 2 });
+      tg.computeBoundingBox();
+      const avail = 3 - RW - 0.36, tw = tg.boundingBox.max.x - tg.boundingBox.min.x, ts = Math.min(1, avail / tw);
+      const title = shadowy(new THREE.Mesh(tg, mat(RED, 0.35)));
+      title.scale.setScalar(ts);
+      title.position.set(-1.5 + RW + 0.2, 0.06 + 2.0, WALL_Z); scene.add(title);
+
+      // Raised foam-board tags
+      const rows = [['location_based_marketing'], ['100%viewability', 'brandsafety'], ['branding', 'brandlove']];
+      const meas = canvasOf(10, 10).getContext('2d'); meas.font = '600 46px "Inter Tight"';
+      rows.forEach((row, ri) => {
+        let x = -1.5 + RW + 0.2;
+        row.forEach((label) => {
+          const tw = meas.measureText(label).width / 1000 + 0.12, ph = 0.1;
+          const pill = shadowy(new THREE.Mesh(new THREE.ExtrudeGeometry(rrect(tw, ph, ph / 2), { depth: 0.02, bevelEnabled: false, curveSegments: 16 }), mat('#CBCCD0', 0.7)));
+          const y = 0.06 + 1.74 - ri * 0.17;
+          pill.position.set(x + tw / 2, y, WALL_Z); scene.add(pill);
+          const lc = canvasOf(Math.round(tw * 1000), 100), l2 = lc.getContext('2d');
+          l2.font = '600 46px "Inter Tight"'; l2.fillStyle = '#55565B'; l2.textAlign = 'center'; l2.textBaseline = 'middle';
+          l2.fillText(label, lc.width / 2, 52);
+          const lab = new THREE.Mesh(new THREE.PlaneGeometry(tw, ph), new THREE.MeshStandardMaterial({ map: tex(lc), transparent: true, roughness: 0.7 }));
+          lab.position.set(x + tw / 2, y, WALL_Z + 0.021); scene.add(lab);
+          x += tw + 0.05;
+        });
+      });
+
+      // Counter with logo, at the front edge of the booth
+      const TW = 1.1, TD = 0.6, THt = 0.98, tx = 1.5 - TW / 2 - 0.04, tz = 1.5 - TD / 2 - 0.04;
+      const front = new THREE.MeshStandardMaterial({ map: tex(tf), roughness: 0.55, envMapIntensity: 0.6 });
+      const counter = shadowy(new THREE.Mesh(new THREE.BoxGeometry(TW, THt, TD), [tableMat, tableMat, tableMat, tableMat, front, tableMat]));
+      counter.position.set(tx, 0.06 + THt / 2, tz); scene.add(counter);
+      const top = shadowy(new THREE.Mesh(new THREE.BoxGeometry(TW + 0.04, 0.03, TD + 0.04), mat('#F7F7F8', 0.4)));
+      top.position.set(tx, 0.06 + THt + 0.015, tz); scene.add(top);
+
+      /* ---------- Shots ---------- */
+      const cam = new THREE.PerspectiveCamera(30, W / H, 0.1, 100);
+      const shots = [
+        { pos: [2.7, 3.0, 6.6], at: [-0.15, 1.05, -0.4], fov: 30 },
+        { pos: [-3.7, 1.7, 5.3], at: [0.15, 1.2, -0.4], fov: 30 },
+        { pos: [0.5, 1.7, 4.0], at: [-0.25, 1.4, -1.0], fov: 36 },
+      ];
+      const saved = [];
+      for (let i = 0; i < shots.length; i++) {
+        const s = shots[i];
+        cam.fov = s.fov; cam.position.set(...s.pos); cam.lookAt(...s.at); cam.updateProjectionMatrix();
+        renderer.render(scene, cam);
+        log(`Rendering ${i + 1}/${shots.length}…`);
+        const blob = await new Promise((r) => renderer.domElement.toBlob(r, 'image/jpeg', 0.9));
+        const name = `booth-3d-${i + 1}.jpg`;
+        const res = await fetch(`assets/mockups/${name}`, { method: 'PUT', body: blob });
+        saved.push(`${name}: ${res.status}`);
+      }
+      log('Saved — ' + saved.join(', '));
+      window.__booth = saved;
+    }
+    main().catch((e) => { log('Error: ' + e.message); window.__booth = ['error: ' + e.message]; console.error(e); });
+  </script>
+</body>
+</html>

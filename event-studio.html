@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Event Studio</title>
+  <!-- 3D mockups for event assets in "Packaging & Event Assets":
+       - backdrop.jpg → stage backdrop at a signing ceremony (event-3d-*.jpg)
+       - AWING_ACA seminar_banner LCD → vertical LCD totem in a lobby (lcd-3d-*.jpg)
+       Open via serve.ps1 (http://localhost:8080/event-studio.html), wait for "Saved", then run make-mockups.ps1. -->
+  <style>
+    body { margin: 0; background: #1b1b1b; color: #eee; font: 14px/1.5 system-ui, sans-serif; }
+    #log { position: fixed; left: 12px; top: 10px; z-index: 2; background: rgba(0,0,0,.6); padding: 8px 12px; border-radius: 8px; }
+    canvas { display: block; width: 100%; height: auto; max-width: 1600px; margin: 0 auto; }
+  </style>
+  <script type="importmap">
+    { "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    } }
+  </script>
+</head>
+<body>
+  <div id="log">Loading…</div>
+  <script type="module">
+    import * as THREE from 'three';
+    import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+    const log = (t) => { document.getElementById('log').textContent = t; };
+    const DIR = 'Packaging & Event Assets/';
+    const W = 1600, H = 1200;
+    const loadTex = (src) => new Promise((res, rej) => new THREE.TextureLoader().load(encodeURI(src), (t) => { t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; res(t); }, undefined, rej));
+    const shadowy = (m) => { m.castShadow = true; m.receiveShadow = true; return m; };
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+    renderer.setPixelRatio(1);
+    renderer.setSize(W, H, false);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    document.body.appendChild(renderer.domElement);
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    const envTex = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+    const mat = (o) => new THREE.MeshStandardMaterial({ roughness: 0.7, envMapIntensity: 0.5, ...o });
+
+    async function shoot(scene, shots, prefix) {
+      const cam = new THREE.PerspectiveCamera(35, W / H, 0.05, 100);
+      const out = [];
+      for (let i = 0; i < shots.length; i++) {
+        const s = shots[i];
+        cam.fov = s.fov; cam.position.set(...s.pos); cam.lookAt(...s.at); cam.updateProjectionMatrix();
+        renderer.toneMappingExposure = s.exposure || 1;
+        renderer.render(scene, cam);
+        const blob = await new Promise((r) => renderer.domElement.toBlob(r, 'image/jpeg', 0.9));
+        const name = `${prefix}-3d-${i + 1}.jpg`;
+        const res = await fetch(`assets/mockups/${name}`, { method: 'PUT', body: blob });
+        out.push(`${name}: ${res.status}`);
+      }
+      return out;
+    }
+
+    /* ================= Stage backdrop (signing ceremony) ================= */
+    async function stageScene() {
+      const tex = await loadTex(DIR + 'backdrop.jpg');
+      const scene = new THREE.Scene();
+      const BG = new THREE.Color('#121419');
+      scene.background = BG; scene.fog = new THREE.Fog(BG, 12, 26);
+      scene.environment = envTex;
+      scene.add(new THREE.HemisphereLight(0xdfe6ff, 0x1a1a1f, 0.35));
+
+      const floor = new THREE.Mesh(new THREE.PlaneGeometry(40, 40), mat({ color: '#2B2E36', roughness: 0.95 }));
+      floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
+      const wall = new THREE.Mesh(new THREE.PlaneGeometry(40, 10), mat({ color: '#1C1F26' }));
+      wall.position.set(0, 5, -3.2); scene.add(wall);
+
+      // Stage platform
+      const SH = 0.4;
+      const stage = shadowy(new THREE.Mesh(new THREE.BoxGeometry(7.6, SH, 3.2), [mat({ color: '#15171C' }), mat({ color: '#15171C' }), mat({ color: '#3A3D46', roughness: 0.95 }), mat({ color: '#15171C' }), mat({ color: '#101116' }), mat({ color: '#15171C' })]));
+      stage.position.set(0, SH / 2, -1.5); scene.add(stage);
+
+      // Backdrop 6.0 × 3.6 m (matches the artwork ratio)
+      const BW = 6, BH = 3.6, side = mat({ color: '#D9DCE3' });
+      const backdrop = shadowy(new THREE.Mesh(new THREE.BoxGeometry(BW, BH, 0.12), [side, side, side, side, mat({ map: tex, roughness: 0.75, emissive: 0xffffff, emissiveMap: tex, emissiveIntensity: 0.08 }), side]));
+      backdrop.position.set(0, SH + 0.12 + BH / 2, -2.75); scene.add(backdrop);
+      const foot = shadowy(new THREE.Mesh(new THREE.BoxGeometry(BW + 0.1, 0.12, 0.3), mat({ color: '#2A2D35' })));
+      foot.position.set(0, SH + 0.06, -2.75); scene.add(foot);
+
+      // Spotlights washing the backdrop and the signing table
+      const spot = (x, y, z, tx, ty, tz, inten, angle) => {
+        const s = new THREE.SpotLight(0xfff4e6, inten, 0, angle, 0.65, 0);
+        s.position.set(x, y, z); s.target.position.set(tx, ty, tz);
+        s.castShadow = true; s.shadow.mapSize.set(2048, 2048); s.shadow.bias = -0.0004; s.shadow.normalBias = 0.02;
+        scene.add(s, s.target);
+      };
+      spot(-3.2, 6.5, 4.5, -1.6, 2.2, -2.7, 2.2, 0.42);
+      spot(3.2, 6.5, 4.5, 1.6, 2.2, -2.7, 2.2, 0.42);
+      spot(0, 7, 3, 0, 1, -1.2, 1.6, 0.35);
+
+      // Signing table with white cloth, folders, chairs
+      const table = shadowy(new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.74, 0.8), mat({ color: '#F1F1F0', roughness: 0.9 })));
+      table.position.set(0, SH + 0.37, -1.05); scene.add(table);
+      const skirt = shadowy(new THREE.Mesh(new THREE.BoxGeometry(2.42, 0.12, 0.82), mat({ color: '#9A1B24', roughness: 0.6 })));
+      skirt.position.set(0, SH + 0.68, -1.05); scene.add(skirt);
+      [-0.6, 0.6].forEach((x) => {
+        const folder = shadowy(new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.015, 0.24), mat({ color: '#1F2A44', roughness: 0.4 })));
+        folder.position.set(x, SH + 0.755, -1.0); folder.rotation.y = x < 0 ? 0.05 : -0.05; scene.add(folder);
+        const pen = shadowy(new THREE.Mesh(new THREE.CylinderGeometry(0.006, 0.006, 0.15, 12), mat({ color: '#C9A15A', metalness: 0.9, roughness: 0.3 })));
+        pen.rotation.z = Math.PI / 2; pen.position.set(x + 0.22, SH + 0.755, -0.98); scene.add(pen);
+        const seat = shadowy(new THREE.Mesh(new THREE.BoxGeometry(0.52, 0.48, 0.5), mat({ color: '#2B2B2E', roughness: 0.45 })));
+        seat.position.set(x, SH + 0.24, -1.62); scene.add(seat);
+        const back = shadowy(new THREE.Mesh(new THREE.BoxGeometry(0.52, 0.62, 0.08), mat({ color: '#2B2B2E', roughness: 0.45 })));
+        back.position.set(x, SH + 0.79, -1.85); scene.add(back);
+      });
+
+      // Lectern
+      const lectern = shadowy(new THREE.Mesh(new THREE.BoxGeometry(0.62, 1.12, 0.46), mat({ color: '#4A3326', roughness: 0.5 })));
+      lectern.position.set(2.85, SH + 0.56, -1.4); lectern.rotation.y = -0.35; scene.add(lectern);
+      const mic = shadowy(new THREE.Mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.35, 8), mat({ color: '#111' })));
+      mic.position.set(2.8, SH + 1.25, -1.35); mic.rotation.x = 0.5; scene.add(mic);
+
+      // Flower arrangements at the stage front
+      const flowers = (x) => {
+        const g = new THREE.Group();
+        const pot = shadowy(new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.17, 0.42, 24), mat({ color: '#EDEAE4', roughness: 0.4 })));
+        pot.position.y = 0.21; g.add(pot);
+        const rnd = (a, b) => a + Math.random() * (b - a);
+        for (let i = 0; i < 26; i++) {
+          const leaf = shadowy(new THREE.Mesh(new THREE.SphereGeometry(rnd(0.07, 0.12), 12, 10), mat({ color: '#2F5D3A', roughness: 0.8 })));
+          leaf.position.set(rnd(-0.25, 0.25), rnd(0.45, 0.75), rnd(-0.22, 0.22)); g.add(leaf);
+        }
+        for (let i = 0; i < 18; i++) {
+          const bloom = shadowy(new THREE.Mesh(new THREE.SphereGeometry(rnd(0.06, 0.09), 14, 12), mat({ color: i % 3 ? '#C8222E' : '#F3D9DC', roughness: 0.6 })));
+          bloom.position.set(rnd(-0.24, 0.24), rnd(0.62, 0.86), rnd(-0.2, 0.2)); g.add(bloom);
+        }
+        g.position.set(x, SH, -0.25); scene.add(g);
+      };
+      Math.random = (() => { let s = 7; return () => (s = (s * 16807) % 2147483647) / 2147483647; })();
+      flowers(-3.3); flowers(3.3);
+
+      // Audience: rows of covered banquet chairs facing the stage
+      const cover = mat({ color: '#E6E3DE', roughness: 0.9 }), sash = mat({ color: '#9A1B24', roughness: 0.6 });
+      for (let r = 0; r < 3; r++) for (let c = 0; c < 9; c++) {
+        if (c === 4) continue; // centre aisle
+        const x = (c - 4) * 0.62, z = 2.0 + r * 1.0;
+        const seat = shadowy(new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.46, 0.46), cover)); seat.position.set(x, 0.23, z); scene.add(seat);
+        const back = shadowy(new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.55, 0.07), cover)); back.position.set(x, 0.73, z + 0.2); scene.add(back);
+        const band = new THREE.Mesh(new THREE.BoxGeometry(0.47, 0.07, 0.075), sash); band.position.set(x, 0.62, z + 0.2); scene.add(band);
+      }
+      return shoot(scene, [
+        { pos: [0.0, 2.7, 8.6], at: [0, 1.6, -2.0], fov: 40, exposure: 1.05 },
+        { pos: [5.2, 2.4, 5.4], at: [-0.4, 1.6, -1.9], fov: 40, exposure: 1.05 },
+      ], 'event');
+    }
+
+    /* ================= LCD totem (seminar banner) ================= */
+    async function lcdScene() {
+      const tex = await loadTex(DIR + 'AWING_ACA seminar_banner LCD_V1.0.png');
+      tex.generateMipmaps = true;
+      const scene = new THREE.Scene();
+      const BG = new THREE.Color('#E7E3DD');
+      scene.background = BG; scene.fog = new THREE.Fog(BG, 6, 14);
+      scene.environment = envTex;
+      scene.add(new THREE.HemisphereLight(0xffffff, 0xcfc8be, 0.55));
+      const key = new THREE.DirectionalLight(0xfff3e6, 1.6);
+      key.position.set(2.5, 4, 3); key.castShadow = true; key.shadow.mapSize.set(2048, 2048);
+      Object.assign(key.shadow.camera, { left: -3, right: 3, top: 3, bottom: -3, near: 0.5, far: 12 });
+      key.shadow.camera.updateProjectionMatrix(); key.shadow.bias = -0.0003; key.shadow.normalBias = 0.01;
+      scene.add(key);
+
+      const floor = new THREE.Mesh(new THREE.PlaneGeometry(30, 30), mat({ color: '#D8D3CB', roughness: 0.35, envMapIntensity: 0.8 }));
+      floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
+      const wall = new THREE.Mesh(new THREE.PlaneGeometry(30, 8), mat({ color: '#EEEBE6', roughness: 0.9 }));
+      wall.position.set(0, 4, -1.6); wall.receiveShadow = true; scene.add(wall);
+      const skirting = new THREE.Mesh(new THREE.BoxGeometry(30, 0.1, 0.02), mat({ color: '#C9C3BA' }));
+      skirting.position.set(0, 0.05, -1.59); scene.add(skirting);
+
+      // Totem: 55" portrait screen (0.70 × 1.225 m) in a black body on a base plate
+      const totem = new THREE.Group();
+      const body = shadowy(new THREE.Mesh(new THREE.BoxGeometry(0.8, 1.88, 0.07), mat({ color: '#141416', roughness: 0.35, metalness: 0.3 })));
+      body.position.y = 0.03 + 0.94; totem.add(body);
+      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.7, 1.225), new THREE.MeshStandardMaterial({ map: tex, emissive: 0xffffff, emissiveMap: tex, emissiveIntensity: 0.9, roughness: 0.12, metalness: 0, envMapIntensity: 0.6 }));
+      screen.position.set(0, 1.25, 0.0355); totem.add(screen);
+      const base = shadowy(new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.03, 0.5), mat({ color: '#1A1A1C', roughness: 0.3, metalness: 0.4 })));
+      base.position.y = 0.015; totem.add(base);
+      totem.position.set(0, 0, -0.5); totem.rotation.y = -0.18; scene.add(totem);
+
+      // Planter
+      const pot = shadowy(new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.16, 0.5, 28), mat({ color: '#B9A58C', roughness: 0.6 })));
+      pot.position.set(-0.85, 0.25, -0.9); scene.add(pot);
+      for (let i = 0; i < 9; i++) {
+        const leaf = shadowy(new THREE.Mesh(new THREE.ConeGeometry(0.06, 0.9 + (i % 3) * 0.15, 8), mat({ color: '#3E6B45', roughness: 0.8 })));
+        leaf.position.set(-0.85 + Math.sin(i * 0.7) * 0.07, 0.95, -0.9 + Math.cos(i * 0.7) * 0.07);
+        leaf.rotation.set(Math.sin(i) * 0.25, 0, Math.cos(i * 1.3) * 0.25); scene.add(leaf);
+      }
+      return shoot(scene, [
+        { pos: [1.5, 1.4, 3.3], at: [-0.1, 0.98, -0.5], fov: 34, exposure: 1.0 },
+        { pos: [0.05, 1.25, 2.9], at: [0, 1.15, -0.5], fov: 36, exposure: 1.0 },
+      ], 'lcd');
+    }
+
+    (async () => {
+      try {
+        log('Rendering stage…');
+        const a = await stageScene();
+        log('Rendering LCD…');
+        const b = await lcdScene();
+        const all = [...a, ...b];
+        log('Saved — ' + all.join(', '));
+        window.__event = all;
+      } catch (e) { log('Error: ' + e.message); window.__event = ['error: ' + e.message]; console.error(e); }
+    })();
+  </script>
+</body>
+</html>
