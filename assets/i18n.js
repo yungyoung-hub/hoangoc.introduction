@@ -7,9 +7,9 @@ window.I18N_VI = {
   'nav.contact': 'Liên hệ',
 
   'hero.eyebrow': 'Về tôi',
-  'hero.text': 'Với 5 năm kinh nghiệm thực chiến trong ngành thiết kế, tôi đã đồng hành qua đa dạng các dự án từ graphic, motion cho đến các giải pháp digital ads và trải nghiệm tương tác. Luôn chủ động cập nhật các xu hướng thiết kế mới và không ngừng làm mới bản thân để thích ứng linh hoạt với thị trường, tôi mang đến sự chỉn chu, tinh thần trách nhiệm cao trong từng sản phẩm. Với tôi, áp lực là động lực để cầu tiến, và mục tiêu lớn nhất là luôn tạo ra những giá trị thật, mang lại hiệu quả thực tế cho thương hiệu và cộng đồng.',
-  'hero.cta': 'Hợp tác cùng tôi',
-  'hero.view': 'Xem dự án',
+  'hero.text': 'Visual designer với 5 năm kinh nghiệm trong branding, chiến dịch và motion. Tại AWING, tôi biến brief của nhà quảng cáo thành key visual, quảng cáo tương tác và motion cho các thương hiệu như Coca-Cola, Samsung, Grab, Garnier, đồng thời định hình hình ảnh thương hiệu AWING, từ ra mắt sản phẩm đến bao bì và sự kiện. Tôi theo đuổi những ý tưởng đọc được trong một cái nhìn và những hệ thống hình ảnh đứng vững trên mọi điểm chạm.',
+  'hero.cta': 'Xem dự án nổi bật',
+  'hero.view': 'Liên hệ',
   'hero.badge': 'Từ<br>2021',
   'hero.call': 'Gọi điện',
   'hero.scroll': 'Cuộn xuống',
@@ -18,7 +18,9 @@ window.I18N_VI = {
   'exp.lead': 'Bắt đầu với employer branding và ấn phẩm in từ năm 2021. Từ 2022, tôi là Graphic &amp; Motion Designer tại AWING, biến các asset tĩnh của thương hiệu thành quảng cáo chuyển động, sẵn sàng cho từng nền tảng.',
   'exp.s1': 'Asset cho khách hàng quảng cáo trên AWING’s Broadcast Channel',
   'exp.s1a': 'Điều chỉnh banner và video của khách hàng theo đúng tiêu chuẩn, quy chuẩn chạy quảng cáo trên kênh phát sóng của AWING.',
-  'exp.s1b': 'Sáng tạo và thêm hiệu ứng chuyển động (animation) cho banner tĩnh của khách hàng.',
+  'exp.s1b': 'Sáng tạo và thêm hiệu ứng chuyển động (animation) cho banner tĩnh của khách hàng: hơn 30 quảng cáo cho Coca-Cola, Samsung, Grab, CGV, Vinhomes…',
+  'exp.s1c': 'Lên ý tưởng và thiết kế các flow quảng cáo tương tác, gamification (ví dụ Garnier), biến bước đăng nhập Wi-Fi thành trải nghiệm thương hiệu.',
+  'exp.s2d': '<strong>Ra mắt sản phẩm (Product Launches):</strong> xây dựng hệ thống hình ảnh cho sản phẩm mới của AWING (Weather-based Ads, Location-based Channel) trên mạng xã hội, deck và định dạng quảng cáo.',
   'exp.s2': 'Branding cho AWING',
   'exp.s2a': '<strong>Thiết kế ấn phẩm truyền thông đa kênh (Multi-channel Assets):</strong> hình ảnh cho mạng xã hội (Facebook, Instagram, LinkedIn…), Blog.',
   'exp.s2b': '<strong>Hỗ trợ chiến dịch &amp; Sự kiện (Campaign &amp; Event Support):</strong> thiết kế ấn phẩm offline/POSM (standee, backdrop, voucher, brochure, bao bì sản phẩm…).',
@@ -42,9 +44,10 @@ window.I18N_VI = {
   'work.explore': 'Xem dự án',
 
   'contact.title': 'Cùng nhau<br>chuyển động.',
-  'contact.lead': 'Bạn có chiến dịch, dự án làm mới thương hiệu hay thiết kế tĩnh cần thêm chuyển động? Hãy kể cho tôi nghe nhé.',
+  'contact.lead': 'Bạn đang tìm visual designer, hay có chiến dịch cần một ý tưởng mạnh và chuyển động? Tôi rất mong được trò chuyện cùng bạn.',
+  'contact.avail': 'Hà Nội · Sẵn sàng cho vị trí senior toàn thời gian',
   'contact.phone': 'Điện thoại',
-  'contact.cta': 'Bắt đầu dự án',
+  'contact.cta': 'Gửi email',
   'footer.top': 'Lên đầu trang ↑',
 };
 

@@ -7,3 +7,6 @@ desktop.ini
 
 # local build output
 site-online/
+
+# Python cache
+__pycache__/

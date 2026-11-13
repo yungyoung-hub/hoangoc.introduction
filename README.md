@@ -23,6 +23,9 @@ Trang sẽ có địa chỉ dạng `https://yungyoung-hub.github.io/hoangoc.porf
 | `index.html` | Trang chính |
 | `assets/style.css`, `assets/main.js` | Giao diện và tương tác |
 | `assets/i18n.js` | Nội dung tiếng Việt, mô tả từng mục |
+| `assets/content.js` | Dự án nổi bật (case study) và tên/khách hàng của từng tác phẩm |
+| `assets/projects/` | Ảnh riêng cho case study (quà Tết, NTT, OMO). Nội dung và thứ tự dự án nổi bật sửa trong `assets/content.js` (CASE_GROUPS, CASES) |
+| `assets/posters/` | Ảnh poster cho video Motion (tạo bằng ffmpeg, cùng tên với video) |
 | `assets/files.js` | Danh sách file trong các thư mục dự án (tạo tự động) |
 | `assets/mockups/`, `assets/mockups.js` | Ảnh mockup (tạo tự động) |
 | `about me/` | Ảnh chân dung |
@@ -31,6 +34,8 @@ Trang sẽ có địa chỉ dạng `https://yungyoung-hub.github.io/hoangoc.porf
 ## Thêm / sửa dự án / Updating work
 
 1. Thêm hoặc xóa file trong `Graphic/`, `Motion/` hoặc `Packaging & Event Assets/`.
-2. Chạy `powershell -ExecutionPolicy Bypass -File .\build-list.ps1` để cập nhật danh sách.
-3. Với mục Packaging, chạy `powershell -ExecutionPolicy Bypass -File .\make-mockups.ps1` để tạo lại mockup.
-4. Mockup 3D (booth, hộp quà, sân khấu, màn LCD): chạy server, mở `booth-studio.html`, `gift-studio.html` hoặc `event-studio.html`, đợi chữ "Saved", rồi chạy lại bước 3.
+2. Thêm dòng chú thích (khách hàng + tên dự án) cho file mới trong `assets/content.js`. Với video mới, tạo poster: `ffmpeg -ss 2 -i "Motion/<tên>.mp4" -frames:v 1 -vf scale=720:-2 -q:v 4 "assets/posters/<tên>.jpg"`.
+3. Chạy `powershell -ExecutionPolicy Bypass -File .\build-list.ps1` để cập nhật danh sách.
+4. Với mục Packaging, chạy `powershell -ExecutionPolicy Bypass -File .\make-mockups.ps1` để tạo lại mockup.
+5. Mockup flat-lay cho dự án nổi bật (bộ quà Tết Mở, NTT): chạy `python make-project-mockups.py`.
+6. Mockup 3D (booth, hộp quà, sân khấu, màn LCD): chạy server, mở `booth-studio.html`, `gift-studio.html` hoặc `event-studio.html`, đợi chữ "Saved", rồi chạy lại bước 3.
