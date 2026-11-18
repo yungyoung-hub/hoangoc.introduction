@@ -17,6 +17,11 @@
   const ui = () => UI[lang] || UI.en;
   const secText = (name) => (SEC[name] && SEC[name][lang]) || (SEC[name] && SEC[name].en) || { name, desc: '' };
 
+  // Shared nav points at index.html#…; on the home page itself keep those jumps in-page
+  if (document.getElementById('about-me')) {
+    document.querySelectorAll('a[href^="index.html#"]').forEach((l) => l.setAttribute('href', l.getAttribute('href').slice(10)));
+  }
+
   /* ---------- Per-section settings ---------- */
   const META = {
     'Graphic': { cover: 'Graphic/818206114_1712093213641779_1413620957470381591_n.jpg' }, // MMA Smarties 2026 shortlist
@@ -153,7 +158,21 @@
     ? `<video muted loop playsinline preload="none" data-src="${url(src)}" data-poster="${posterOf(src)}" aria-hidden="true"></video>`
     : `<img src="${url(src)}" alt="${alt}" loading="lazy" decoding="async">`;
 
-  data.forEach((c, ci) => {
+  // A horizontal reel of motion pieces that scrolls on its own; items are rendered twice for a seamless loop.
+  // Videos load and play only while they are on screen.
+  const capOf = (src) => CAPS.find((c) => c.re.test(baseName(src)));
+  const reelHTML = (items, cls) => {
+    const set = (dup) => items.map((it) => {
+      const v = `<video muted loop playsinline preload="none" data-reel-src="${url(it.src)}" poster="${posterOf(it.src)}"></video>`;
+      const media = cls === 'is-phones'
+        ? `<span class="rp-phone"><span class="rp-screen"><span class="rp-bar"><span>Free Wi-Fi</span><span>AWING</span></span>${v}<span class="rp-cta">Kết nối Wi-Fi miễn phí</span><span class="rp-ads">Ads by AWING</span></span></span>`
+        : `<span class="reel-media">${v}</span>`;
+      return `<button type="button" class="reel-item ${it.cls || ''}" ${it.attrs}${dup ? ' aria-hidden="true" tabindex="-1"' : ''}>${media}<span class="tile-cap"><span class="tile-client">${it.client || ''}</span><span class="tile-title"></span></span></button>`;
+    }).join('');
+    return `<div class="reel ${cls}" style="--n:${items.length}"><div class="reel-track">${set(false)}${set(true)}</div></div>`;
+  };
+
+  if (listEl && catsEl) data.forEach((c, ci) => {
     const li = document.createElement('li');
     li.innerHTML = `<a href="#${c.id}" data-ci="${ci}"><span class="cat-name"></span><sup class="c">${pad(c.units.length)}</sup></a>`;
     listEl.appendChild(li);
@@ -169,14 +188,26 @@
         <div><h3 class="cat-title" id="${c.id}-t"></h3><p class="cat-desc"></p></div>
         <span class="cat-count"></span>
       </header>
-      <div class="grid-wrap is-collapsed" id="${c.id}-grid">
-        <div class="grid ${/motion/i.test(c.name) ? 'is-motion' : ''}"></div>
+      ${/motion/i.test(c.name) ? '<div class="reel-slot"></div>' : `<div class="grid-wrap is-collapsed" id="${c.id}-grid">
+        <div class="grid"></div>
       </div>
       <div class="cat-more" hidden>
         <button type="button" class="btn btn-outline" aria-expanded="false" aria-controls="${c.id}-grid">
           <span class="lbl"></span>${CHEV}</button>
-      </div>`;
+      </div>`}`;
     const grid = sec.querySelector('.grid');
+    if (!grid) {
+      // Motion: every spot plays inside a phone, as one continuous horizontal chain
+      let st = 0;
+      const items = c.units.map((unit, ui) => {
+        const it = { src: unit.show[0], cls: 'tile', attrs: `data-ci="${ci}" data-ui="${ui}" data-start="${st}"`, client: unit.cap ? unit.cap.client : '' };
+        st += unit.view.length;
+        return it;
+      });
+      sec.querySelector('.reel-slot').outerHTML = reelHTML(items, 'is-phones') + '<p class="reel-hint" data-i18n="reel.hint">Hover to pause, click to watch</p>';
+      catsEl.appendChild(sec);
+      return;
+    }
 
     let start = 0;
     c.units.forEach((unit, ui) => {
@@ -215,6 +246,7 @@
   const COLLAPSED = () => Math.round(Math.min(860, Math.max(560, innerHeight * 0.9)));
   document.querySelectorAll('#categories > .cat').forEach((sec) => {
     const wrap = sec.querySelector('.grid-wrap');
+    if (!wrap) return;
     const more = sec.querySelector('.cat-more');
     const btn = more.querySelector('button');
     const sync = () => {
@@ -225,10 +257,12 @@
       wrap.classList.toggle('is-collapsed', needs);
       wrap.style.maxHeight = needs ? COLLAPSED() + 'px' : '';
     };
+    sync(); // collapse right away so anything below (and #hash jumps) sees the final layout
     new ResizeObserver(sync).observe(wrap.firstElementChild);
     addEventListener('resize', sync);
 
     btn.addEventListener('click', () => {
+      wrap.classList.add('is-ready'); // animate only when someone expands or collapses, not on first layout
       const open = btn.getAttribute('aria-expanded') === 'true';
       if (!open) {
         wrap.style.maxHeight = wrap.scrollHeight + 'px';
@@ -251,6 +285,7 @@
   function updateMoreLabel(sec) {
     const c = data[+sec.dataset.ci];
     const btn = sec.querySelector('.cat-more button');
+    if (!btn) return;
     btn.querySelector('.lbl').textContent = btn.getAttribute('aria-expanded') === 'true' ? ui().collapse : ui().showAll(c.units.length);
   }
 
@@ -260,7 +295,7 @@
   const fTitle = document.getElementById('feature-title');
   const fDesc = document.getElementById('feature-desc');
   const fMedia = document.getElementById('feature-media');
-  const catLinks = [...listEl.querySelectorAll('a')];
+  const catLinks = listEl ? [...listEl.querySelectorAll('a')] : [];
   let featureCi = 0;
 
   function setFeature(ci, force) {
@@ -379,8 +414,8 @@
   /* ---------- Featured projects: grouped, short case summaries ---------- */
   const caseEl = document.getElementById('case-list');
   const CASE_LBL = {
-    en: { role: 'Role', year: 'Year', archive: 'See it in the archive', live: 'Play the live ad', liveOpen: 'Open live preview', press: 'Read the press coverage', projects: 'projects', challenge: 'The challenge', approach: 'My approach', play: 'Play' },
-    vi: { role: 'Vai trò', year: 'Năm', archive: 'Xem trong kho tác phẩm', live: 'Chơi thử quảng cáo thật', liveOpen: 'Mở bản xem trước', press: 'Đọc bài báo', projects: 'dự án', challenge: 'Thử thách', approach: 'Cách tiếp cận', play: 'Chơi' },
+    en: { role: 'Role', year: 'Year', archive: 'See more in Workspace', live: 'Play the live ad', liveOpen: 'Open live preview', press: 'Read the press coverage', projects: 'projects', challenge: 'The challenge', approach: 'My approach', play: 'Play' },
+    vi: { role: 'Vai trò', year: 'Năm', archive: 'Xem thêm trong Workspace', live: 'Chơi thử quảng cáo thật', liveOpen: 'Mở bản xem trước', press: 'Đọc bài báo', projects: 'dự án', challenge: 'Thử thách', approach: 'Cách tiếp cận', play: 'Chơi' },
   };
   const ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>';
   const PLAY_I = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg>';
@@ -398,11 +433,12 @@
     f.style.transform = `scale(${s})`;
   };
   const frameRO = new ResizeObserver((es) => es.forEach((e) => fitFrame(e.target)));
+  const liveIO = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting && e.target._start) e.target._start(); }), { threshold: 0.45 });
 
   const groups = window.CASE_GROUPS || [{ id: 'all', en: '', vi: '' }];
   const cases = [];
   let caseNo = 0;
-  groups.forEach((g) => {
+  if (caseEl) groups.forEach((g) => {
     const list = (window.CASES || []).filter((cs) => (cs.group || 'all') === g.id);
     if (!list.length) return;
     const gEl = document.createElement('section');
@@ -422,31 +458,39 @@
       }
       const all = (cs.img || []).slice();
       if (cs.cover && !all.includes(cs.cover)) all.unshift(cs.cover);
+      (cs.shots || []).forEach((src) => { if (!all.includes(src)) all.push(src); });
       const at = (src) => all.indexOf(src);
 
       let visual;
       if (cs.live) {
-        visual = `<div class="cs-visual is-live">
+        // One artboard: brand-coloured ground, the line, flow screens around a phone that plays the real ad
+        const shots = (cs.shots || []).slice(0, 4);
+        const q = cs.quote || { bg: '#FFC9CE', fg: '#000' };
+        visual = `<div class="cs-visual artboard ab-n${shots.length}" style="--ab-bg:${q.bg};--ab-fg:${q.fg}">
+          <p class="ab-quote q" aria-hidden="true"></p>
+          ${shots.map((src, k) => `<button type="button" class="ab-shot ab-s${k + 1}" data-i="${at(src)}"><img src="${url(src)}" alt="" loading="lazy" decoding="async"></button>`).join('')}
           <div class="cs-phone">
             <div class="phone">
-              <span class="phone-btn b1" aria-hidden="true"></span><span class="phone-btn b2" aria-hidden="true"></span><span class="phone-btn b3" aria-hidden="true"></span>
               <div class="phone-screen">
                 <button type="button" class="live-start">${cs.cover ? `<img src="${url(cs.cover)}" alt="" loading="lazy">` : ''}<span class="live-cta">${PLAY_I}<span class="lbl-live"></span></span></button>
               </div>
             </div>
-            <a class="btn-link live-link" href="${cs.live.url}" target="_blank" rel="noopener"><span class="lbl-liveopen"></span>${ARROW}</a>
           </div>
-          ${cs.quote ? `<div class="cs-quote" style="background:${cs.quote.bg};color:${cs.quote.fg}"><p class="q"></p><p class="q-sub"></p></div>` : ''}
+          <p class="ab-sub q-sub"></p>
+          <a class="ab-link live-link" href="${cs.live.url}" target="_blank" rel="noopener"><span class="lbl-liveopen"></span>${ARROW}</a>
         </div>`;
-      } else if (cs.mosaic) {
-        visual = `<div class="cs-visual cs-mosaic">${all.slice(0, 6).map((src) => `<button type="button" data-i="${at(src)}"><img src="${thumbOf(src)}" alt="" loading="lazy" decoding="async"><span class="tile-play">${PLAY_I}</span></button>`).join('')}</div>`;
+      } else if (cs.reel) {
+        visual = '<div class="cs-visual cs-reel">' + reelHTML(all.map((src) => {
+          const cp = capOf(src);
+          return { src, attrs: `data-i="${at(src)}"`, client: cp ? cp.client : '' };
+        }), 'is-cards') + '</div>';
       } else {
         visual = `<div class="cs-visual"><button type="button" class="cs-cover" data-i="${at(cs.cover)}"><img src="${url(cs.cover)}" alt="" loading="lazy" decoding="async"><span class="case-count">${all.length}</span></button></div>`;
       }
       const shown = all.slice(0, MAX_THUMBS);
 
       const el = document.createElement('article');
-      el.className = 'cs' + (cs.live ? ' has-live' : '');
+      el.className = 'cs' + (cs.live ? ' has-live' : '') + (cs.reel ? ' has-reel' : '');
       el.id = 'case-' + cs.id;
       el.innerHTML = `
         <div class="cs-head reveal">
@@ -463,7 +507,7 @@
           <ul class="case-tags">${cs.tags.map((t) => `<li>${t}</li>`).join('')}</ul>
           ${cs.facts ? `<ul class="cs-facts">${cs.facts.map((f) => `<li><b>${f.n}</b><span></span></li>`).join('')}</ul>` : ''}
           <div class="cs-actions">
-            ${arc ? `<button type="button" class="btn btn-outline cs-archive" data-ci="${arc.ci}" data-start="${arc.start}"><span class="lbl-archive"></span>${ARROW}</button>` : ''}
+            ${arc ? `<a class="btn btn-outline cs-archive" href="workspace.html#${data[arc.ci].id}"><span class="lbl-archive"></span>${ARROW}</a>` : ''}
             ${cs.press ? `<a class="btn-link" href="${cs.press.url}" target="_blank" rel="noopener"><span class="lbl-press"></span> (${cs.press.label})${ARROW}</a>` : ''}
           </div>
         </div>
@@ -489,14 +533,12 @@
             </div>
           </div>
         </div>` : ''}
-        ${shown.length > 1 && !cs.mosaic ? `<div class="cs-strip">${shown.map((src, j) => `<button type="button" data-i="${at(src)}"><img src="${thumbOf(src)}" alt="" loading="lazy" decoding="async">${j === shown.length - 1 && all.length > shown.length ? `<span class="thumb-more">+${all.length - shown.length}</span>` : ''}</button>`).join('')}</div>` : ''}`;
+        ${shown.length > 1 && !cs.mosaic && !cs.live && !cs.reel ? `<div class="cs-strip">${shown.map((src, j) => `<button type="button" data-i="${at(src)}"><img src="${thumbOf(src)}" alt="" loading="lazy" decoding="async">${j === shown.length - 1 && all.length > shown.length ? `<span class="thumb-more">+${all.length - shown.length}</span>` : ''}</button>`).join('')}</div>` : ''}`;
       listEl.appendChild(el);
 
       el.addEventListener('click', (e) => {
         const b = e.target.closest('[data-i]');
         if (b) { openList(all, +b.dataset.i, cs); return; }
-        const a = e.target.closest('.cs-archive');
-        if (a) { open(+a.dataset.ci, +a.dataset.start); return; }
         const gp = e.target.closest('.game-pick');
         if (gp) {
           const box = gp.closest('.cs-games');
@@ -511,18 +553,23 @@
           return;
         }
         const ls = e.target.closest('.live-start');
-        if (ls) {
-          const screen = ls.parentElement;
-          const box = ls.closest('.cs-games');
-          const f = document.createElement('iframe');
-          f.src = box ? cs.games.list[+box.querySelector('.game-pick[aria-selected="true"]').dataset.g].url : cs.live.url;
-          f.title = (cs[lang] || cs.en).title;
-          f.setAttribute('allow', 'autoplay');
-          ls.replaceWith(f);
-          fitFrame(screen);
-          frameRO.observe(screen);
-        }
+        if (ls) startLive(ls);
       });
+      const startLive = (ls) => {
+        if (!ls.isConnected) return;
+        liveIO.unobserve(ls);
+        const screen = ls.parentElement;
+        const box = ls.closest('.cs-games');
+        const f = document.createElement('iframe');
+        f.src = box ? cs.games.list[+box.querySelector('.game-pick[aria-selected="true"]').dataset.g].url : cs.live.url;
+        f.title = (cs[lang] || cs.en).title;
+        f.setAttribute('allow', 'autoplay');
+        ls.replaceWith(f);
+        fitFrame(screen);
+        frameRO.observe(screen);
+      };
+      // Creative ads start playing on their own once scrolled into view
+      el.querySelectorAll('.live-start').forEach((ls) => { ls._start = () => startLive(ls); liveIO.observe(ls); });
       cases.push({ cs, el });
     });
     cases.push({ group: g, el: gEl });
@@ -544,8 +591,8 @@
       el.querySelector('.d-role').textContent = t.role;
       const ly = el.querySelector('.l-year'); if (ly) ly.textContent = L.year;
       el.querySelectorAll('.cs-facts li').forEach((li, j) => { li.querySelector('span').textContent = cs.facts[j][lang] || cs.facts[j].en; });
-      const q = el.querySelector('.cs-quote');
-      if (q) { q.querySelector('.q').textContent = cs.quote[lang] || cs.quote.en; q.querySelector('.q-sub').textContent = cs.quote.sub[lang] || cs.quote.sub.en; }
+      const q = el.querySelector('.cs-quote, .artboard');
+      if (q && cs.quote) { q.querySelector('.q').textContent = cs.quote[lang] || cs.quote.en; q.querySelector('.q-sub').textContent = cs.quote.sub[lang] || cs.quote.sub.en; }
       [['.lbl-archive', 'archive'], ['.lbl-live', 'live'], ['.lbl-liveopen', 'liveOpen'], ['.lbl-press', 'press'], ['.l-challenge', 'challenge'], ['.l-approach', 'approach']].forEach(([sel, key]) => {
         const n = el.querySelector(sel); if (n) n.textContent = L[key];
       });
@@ -595,7 +642,7 @@
       updateMoreLabel(sec);
     });
     catLinks.forEach((a) => { a.querySelector('.cat-name').textContent = secText(data[+a.dataset.ci].name).name; });
-    if (data.length) setFeature(featureCi < 0 ? 0 : featureCi, !fMedia.firstChild || featureCi < 0);
+    if (feature && data.length) setFeature(featureCi < 0 ? 0 : featureCi, !fMedia.firstChild || featureCi < 0);
     renderShowcaseText();
     renderCaseText();
     fitName();
@@ -622,7 +669,7 @@
   document.querySelectorAll('video[data-src]').forEach((v) => vio.observe(v));
 
   if (canHover && !reduceMotion) {
-    document.querySelectorAll('.tile').forEach((t) => {
+    document.querySelectorAll('.tile:not(.reel-item)').forEach((t) => {
       const vids = [...t.querySelectorAll('video')];
       if (!vids.length) return;
       t.addEventListener('mouseenter', () => vids.forEach((v) => v.src && v.play().catch(() => {})));
@@ -678,7 +725,7 @@
   }
   lb.addEventListener('close', () => { stage.innerHTML = ''; document.body.style.overflow = ''; });
 
-  catsEl.addEventListener('click', (e) => {
+  if (catsEl) catsEl.addEventListener('click', (e) => {
     const t = e.target.closest('.tile');
     if (t) open(+t.dataset.ci, +t.dataset.start);
   });
@@ -693,8 +740,9 @@
 
   /* ---------- Fit hero name to width ---------- */
   const h1 = document.querySelector('.hero-name');
-  const inner = h1.querySelector('.name-inner');
+  const inner = h1 && h1.querySelector('.name-inner');
   function fitName() {
+    if (!h1) return;
     h1.style.fontSize = '100px';
     const avail = h1.clientWidth;
     const w = inner.getBoundingClientRect().width;
@@ -845,5 +893,74 @@
   }
 
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  /* ---------- Reels: play what is on screen, open the viewer on click ---------- */
+  const reelIO = new IntersectionObserver((es) => es.forEach((e) => {
+    const v = e.target;
+    if (e.isIntersecting) {
+      if (!v.getAttribute('src')) v.src = v.dataset.reelSrc;
+      v.play().catch(() => {});
+    } else if (v.getAttribute('src')) v.pause();
+  }), { threshold: 0.2 });
+  document.querySelectorAll('video[data-reel-src]').forEach((v) => reelIO.observe(v));
+  document.querySelectorAll('.reel').forEach((r) => {
+    // Pause the drift while someone tabs through it
+    r.addEventListener('focusin', () => r.classList.add('is-paused'));
+    r.addEventListener('focusout', () => r.classList.remove('is-paused'));
+  });
+
+  /* ---------- Email: copy to clipboard instead of opening a mail app ---------- */
+  const EMAIL = 'ngochn271099@gmail.com';
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.setAttribute('role', 'status');
+  toast.setAttribute('aria-live', 'polite');
+  document.body.appendChild(toast);
+  let toastT;
+  const showToast = (msg) => {
+    toast.textContent = msg;
+    toast.classList.add('is-on');
+    clearTimeout(toastT);
+    toastT = setTimeout(() => toast.classList.remove('is-on'), 2600);
+  };
+  const copyText = async (text) => {
+    try { await navigator.clipboard.writeText(text); return true; } catch (e) {
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      let ok = false; try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+      ta.remove();
+      return ok;
+    }
+  };
+  document.addEventListener('click', async (e) => {
+    const b = e.target.closest('[data-copy-email]');
+    if (!b) return;
+    e.preventDefault();
+    const ok = await copyText(EMAIL);
+    showToast(ok
+      ? (lang === 'vi' ? `Đã copy email: ${EMAIL}` : `Email copied: ${EMAIL}`)
+      : (lang === 'vi' ? `Chưa copy được. Email của tôi: ${EMAIL}` : `Couldn’t copy. My email: ${EMAIL}`));
+  });
+
+  // "Hire me": the browser scrolls to the contact card; give it a short highlight so the eye lands on it
+  const contactEl = document.getElementById('contact');
+  document.querySelectorAll('a[href$="#contact"]').forEach((l) => l.addEventListener('click', () => {
+    if (!contactEl) return;
+    contactEl.classList.remove('is-flash');
+    setTimeout(() => contactEl.classList.add('is-flash'), reduceMotion ? 0 : 450);
+  }));
+
+  /* ---------- Content is built by script: honour the #hash once it exists ---------- */
+  if (location.hash.length > 1) {
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (target) {
+      const go = () => target.scrollIntoView({ block: 'start', behavior: 'instant' });
+      setTimeout(go, 250); // after collapsible grids have settled their height
+      addEventListener('load', () => setTimeout(go, 60), { once: true }); // again once images have settled the layout
+    }
+  }
+  if (/workspace\.html$/.test(location.pathname)) document.querySelectorAll('[data-nav="workspace"]').forEach((a) => a.setAttribute('aria-current', 'page'));
 
 })();

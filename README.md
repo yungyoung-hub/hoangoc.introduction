@@ -20,7 +20,8 @@ Trang sẽ có địa chỉ dạng `https://yungyoung-hub.github.io/hoangoc.porf
 
 | Đường dẫn | Nội dung |
 |---|---|
-| `index.html` | Trang chính |
+| `index.html` | Trang chính: hero, About me (kinh nghiệm + liên hệ), Selected work |
+| `workspace.html` | Tab Workspace: toàn bộ kho tác phẩm theo nhóm; Motion chạy thành chuỗi điện thoại |
 | `assets/style.css`, `assets/main.js` | Giao diện và tương tác |
 | `assets/i18n.js` | Nội dung tiếng Việt, mô tả từng mục |
 | `assets/content.js` | Dự án nổi bật (case study) và tên/khách hàng của từng tác phẩm |

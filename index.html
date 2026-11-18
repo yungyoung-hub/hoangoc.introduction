@@ -24,13 +24,12 @@
 
   <!-- ===== NAV ===== -->
   <header class="nav" id="top">
-    <a class="brand" href="#top" aria-label="Hoàng Hoa Ngọc, back to top">[N]</a>
+    <a class="brand" href="index.html#top" aria-label="Hoàng Hoa Ngọc, home">[N]</a>
     <nav aria-label="Primary">
       <ul>
-        <li><a href="#cases" data-i18n="nav.cases">Selected work</a></li>
-        <li><a href="#work" data-i18n="nav.work">Archive</a></li>
-        <li><a href="#experience" data-i18n="nav.exp">Experience</a></li>
-        <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
+        <li><a href="index.html#cases" data-i18n="nav.cases">Selected work</a></li>
+        <li><a href="workspace.html" data-i18n="nav.workspace" data-nav="workspace">Workspace</a></li>
+        <li><a href="index.html#about-me" data-i18n="nav.about">About me</a></li>
       </ul>
     </nav>
     <div class="nav-right">
@@ -38,13 +37,13 @@
         <button type="button" data-lang="en" aria-pressed="true" lang="en">EN</button>
         <button type="button" data-lang="vi" aria-pressed="false" lang="vi">VI</button>
       </div>
-      <a class="nav-cta" href="mailto:ngochn271099@gmail.com" data-i18n="nav.hire">Hire me</a>
+      <a class="nav-cta" href="index.html#contact" data-i18n="nav.hire">Hire me</a>
     </div>
   </header>
 
   <main>
     <!-- ===== HERO: bracket wordmark on a crosshair grid ===== -->
-    <section class="hero" id="about" aria-labelledby="hero-name">
+    <section class="hero" id="hero" aria-labelledby="hero-name">
       <h1 class="hero-name" id="hero-name" aria-label="Hoàng Hoa Ngọc">
         <span class="name-inner" aria-hidden="true"><span class="br">[</span><span class="nm">Hoàng Hoa Ngọc</span><span class="br">]</span></span>
       </h1>
@@ -63,25 +62,110 @@
         </figure>
       </div>
 
-      <a class="hero-tab" href="#intro" data-i18n="hero.tab">About<br>the designer</a>
+      <a class="hero-tab" href="#about-me" data-i18n="hero.tab">About<br>the designer</a>
     </section>
 
-    <!-- ===== ABOUT ===== -->
-    <section class="intro" id="intro" aria-labelledby="intro-label">
-      <p class="side-label" id="intro-label" data-i18n="hero.eyebrow">About</p>
-      <div class="intro-body">
+    <!-- ===== ABOUT ME: intro, highlights, experience and contact ===== -->
+    <section class="about" id="about-me" aria-labelledby="about-title">
+      <header class="sec-head">
+        <h2 class="display" id="about-title"><span data-i18n="about.title">About me</span></h2>
+      </header>
+
+      <div class="intro">
         <p class="hero-text" data-i18n="hero.text">Visual designer with 5 years across brand, campaign and motion. At AWING I turn advertisers’ briefs into key visuals, interactive ads and motion for brands like Coca-Cola, Samsung, Grab and Garnier, and I shape AWING’s own brand, from product launches to packaging and events. I design ideas that read at a glance and systems that hold up across every touchpoint.</p>
-        <div class="hero-actions">
-          <a class="btn btn-ink" href="#cases" data-i18n="hero.cta">See selected work</a>
-          <a class="btn btn-line" href="#contact" data-i18n="hero.view">Get in touch</a>
-        </div>
       </div>
+
+      <!-- CHECK: 25M+ is AWING's network reach (from the AWING brand motion). Change it if your figure differs. -->
       <ul class="stats">
-        <li><b>5+</b><span data-i18n="stats.years">years designing for brands, agencies and adtech</span></li>
-        <li><b>30+</b><span data-i18n="stats.spots">motion ads for major advertisers</span></li>
-        <li><b>25+</b><span data-i18n="stats.brands">brands, from FMCG and banking to real estate</span></li>
-        <li class="stat-award"><b>MMA</b><span data-i18n="stats.award">Campaign shortlisted at MMA Smarties Vietnam 2026</span></li>
+        <li class="stat-hero"><b>5+</b><span data-i18n="stats.years">years in brand, campaign and motion design</span></li>
+        <li><b>100+</b><span data-i18n="stats.ads">ads animated and adapted for major advertisers</span></li>
+        <li><b>25+</b><span data-i18n="stats.brands2">brands, from FMCG and banking to real estate and auto</span></li>
+        <li><b>25M+</b><span data-i18n="stats.reach">users on AWING’s Wi-Fi network, where the ads I design run</span></li>
       </ul>
+
+      <div class="about-grid">
+        <div class="exp" aria-labelledby="exp-title">
+          <h3 class="col-label" id="exp-title" data-i18n="about.exp">Experience</h3>
+
+          <article class="job">
+            <header class="job-head">
+              <p class="job-co">AWING <span class="muted">Technologies and Media</span></p>
+              <p class="job-date"><span>03/2022 – </span><span data-i18n="exp.now">Now</span></p>
+            </header>
+            <h4 class="job-role">Graphic &amp; Motion Designer</h4>
+            <p class="job-sum" data-i18n="x.awing.sum">I own visuals end to end, for advertisers on AWING’s Wi-Fi network and for AWING’s own brand.</p>
+            <div class="scopes">
+              <div class="scope">
+                <p class="scope-label" data-i18n="x.awing.g1">Creative for advertisers</p>
+                <ul class="job-points">
+                  <li data-i18n="x.awing.a1">Concept and design interactive, gamified Wi-Fi login ads for Garnier, OMO and Suntory TEA+: flow, screens and motion that turn a few seconds of waiting into time spent with the brand.</li>
+                  <li data-i18n="x.awing.a2">Animate and adapt 100+ ads for Coca-Cola, Samsung, Grab, Vinhomes, CGV and more, keeping each brand’s system intact while meeting strict channel specs.</li>
+                </ul>
+              </div>
+              <div class="scope">
+                <p class="scope-label" data-i18n="x.awing.g2">AWING brand</p>
+                <ul class="job-points">
+                  <li data-i18n="x.awing.b1">Set the visual direction for product launches (Weather-based Ads, Location-based Channel), from key visual to social series, sales decks and ad formats.</li>
+                  <li data-i18n="x.awing.b2">Take Tết gifting, events and exhibitions from concept to production: the “Mở” gift set with QR mini-games, the NTT e-Asia investment signing and the MMA Innovate booth, all checked in 3D before build.</li>
+                  <li data-i18n="x.awing.b3">Design decks and multi-channel assets for Sales and Marketing, keeping one consistent system across social, blog, POSM and packaging.</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <article class="job">
+            <header class="job-head">
+              <p class="job-co">GHTK <span class="muted">Giao Hàng Tiết Kiệm</span></p>
+              <p class="job-date">08/2021 – 01/2022</p>
+            </header>
+            <h4 class="job-role">Employer Branding &amp; Designer <span class="chip" data-i18n="exp.collab">Collaborator</span></h4>
+            <ul class="job-points">
+              <li data-i18n="x.ghtk.a1">Concepted and designed images, video and content for the GHTK NEXTalents recruitment fanpage.</li>
+              <li data-i18n="x.ghtk.a2">Designed event collateral for Kick-off and Job Fair: brochures, banners, standees, catalogs and backdrops.</li>
+            </ul>
+          </article>
+
+          <div class="exp-grid">
+            <div class="card">
+              <p class="card-label" data-i18n="exp.edu">Education</p>
+              <dl class="edu">
+                <div><dt>Arena Multimedia</dt><dd>2D Graphic Design</dd><dd class="muted">2021 – 2022</dd></div>
+                <div><dt data-i18n="exp.hust">Hanoi University of Science &amp; Technology</dt><dd data-i18n="exp.chem">Chemical Engineering</dd><dd class="muted">2017 – 2021</dd></div>
+              </dl>
+            </div>
+            <div class="card">
+              <p class="card-label" data-i18n="exp.tools">Toolkit</p>
+              <ul class="chips">
+                <li>Photoshop</li><li>Illustrator</li><li>InDesign</li><li>After Effects</li><li>Premiere Pro</li><li>Figma</li><li>Canva</li><li data-i18n="exp.ai">AI tools</li>
+              </ul>
+            </div>
+            <div class="card">
+              <p class="card-label" data-i18n="exp.analog">Analog Skills</p>
+              <ul class="chips">
+                <li data-i18n="sk.research">Research</li>
+                <li data-i18n="sk.type">Typography</li>
+                <li data-i18n="sk.thinking">Design Thinking</li>
+                <li data-i18n="sk.concept">Conceptualization</li>
+                <li data-i18n="sk.visual">Visualization</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <aside class="contact" id="contact" aria-labelledby="contact-title">
+          <div class="contact-card">
+            <h3 class="col-label" data-i18n="about.contact">Contact</h3>
+            <p class="contact-title" id="contact-title"><span aria-hidden="true">[</span><span data-i18n="contact.title">Let’s make things move</span><span aria-hidden="true">]</span></p>
+            <p class="contact-lead" data-i18n="contact.lead">Hiring a visual designer, or have a campaign that needs a strong idea and motion? I’d love to talk.</p>
+            <ul class="contact-lines">
+              <li><span class="muted">Email</span><button type="button" class="copy-line" data-copy-email>ngochn271099@gmail.com</button></li>
+              <li><span class="muted" data-i18n="contact.phone">Phone</span><a href="tel:+84934238188">0934 238 188</a></li>
+              <li><span class="muted" data-i18n="contact.status">Status</span><span data-i18n="contact.avail">Based in Hanoi · Open to full-time senior roles</span></li>
+            </ul>
+            <a class="btn btn-ink" href="mailto:ngochn271099@gmail.com" data-copy-email data-i18n="contact.cta">Email me</a>
+          </div>
+        </aside>
+      </div>
     </section>
 
     <div class="brands">
@@ -98,121 +182,8 @@
         <p class="lead" data-i18n="cases.lead">Creative ads for clients, then AWING brand work. Each one in brief: the challenge, then my approach.</p>
       </header>
       <div class="case-list" id="case-list"></div>
-    </section>
-
-    <!-- ===== ARCHIVE ===== -->
-    <section class="work" id="work" aria-labelledby="work-title">
-      <header class="sec-head">
-        <h2 class="display" id="work-title"><span data-i18n="work.title">Archive</span><sup id="work-count"></sup></h2>
-        <p class="lead" data-i18n="work.lead">Everything, grouped by discipline. Hover to preview, click to open.</p>
-      </header>
-
-      <div class="work-index">
-        <ul class="cat-list" id="cat-list"></ul>
-        <a class="feature" id="feature" href="#cat-motion">
-          <div class="feature-media" id="feature-media"></div>
-          <div class="feature-panel">
-            <span class="feature-no" id="feature-no">01 /</span>
-            <span class="feature-title" id="feature-title">Motion</span>
-            <span class="feature-desc" id="feature-desc"></span>
-            <span class="feature-link" data-i18n="work.explore">Explore projects</span>
-          </div>
-        </a>
-      </div>
-
-      <div id="categories"></div>
-    </section>
-
-    <!-- ===== EXPERIENCE ===== -->
-    <section class="experience" id="experience" aria-labelledby="exp-title">
-      <header class="sec-head">
-        <h2 class="display" id="exp-title"><span data-i18n="exp.title">Experience</span><sup>02</sup></h2>
-      </header>
-
-      <div class="job-tabs" role="tablist" aria-label="Experience">
-        <button type="button" class="job-tab" role="tab" id="tab-awing" aria-controls="job-awing" aria-selected="true">
-          <span class="jt-co">AWING</span><span class="jt-role">Graphic &amp; Motion Designer</span><span class="jt-date"><span>03/2022 – </span><span data-i18n="exp.now">Now</span></span>
-        </button>
-        <button type="button" class="job-tab" role="tab" id="tab-ghtk" aria-controls="job-ghtk" aria-selected="false" tabindex="-1">
-          <span class="jt-co">GHTK</span><span class="jt-role">Employer Branding &amp; Designer</span><span class="jt-date">08/2021 – 01/2022</span>
-        </button>
-      </div>
-      <div class="jobs">
-        <div class="job" role="tabpanel" id="job-awing" aria-labelledby="tab-awing" tabindex="0">
-          <div class="job-main">
-            <h3>Graphic &amp; Motion Designer</h3>
-            <p class="job-co">AWING Technologies and Media</p>
-            <div class="scopes">
-              <div class="scope">
-                <p class="scope-label" data-i18n="exp.s1">Client assets for AWING’s Broadcast Channel</p>
-                <ul class="job-points">
-                  <li data-i18n="exp.s1a">Adapt advertisers’ banners and videos to the ad-delivery standards and specs of AWING’s broadcast channels.</li>
-                  <li data-i18n="exp.s1b">Create and add motion (animation) to clients’ static banners: 30+ spots for brands such as Coca-Cola, Samsung, Grab, CGV and Vinhomes.</li>
-                  <li data-i18n="exp.s1c">Concept and design interactive, gamified ad flows (e.g. Garnier) that turn a Wi-Fi login into a brand experience.</li>
-                </ul>
-              </div>
-              <div class="scope">
-                <p class="scope-label" data-i18n="exp.s2">AWING Branding</p>
-                <ul class="job-points">
-                  <li data-i18n="exp.s2d"><strong>Product Launches:</strong> build the visual system for AWING’s new products (Weather-based Ads, Location-based Channel) across social, decks and ad formats.</li>
-                  <li data-i18n="exp.s2a"><strong>Multi-channel Assets:</strong> design visuals for social media (Facebook, Instagram, LinkedIn…) and the blog.</li>
-                  <li data-i18n="exp.s2b"><strong>Campaign &amp; Event Support:</strong> design offline/POSM materials: standees, backdrops, vouchers, brochures and product packaging.</li>
-                  <li data-i18n="exp.s2c"><strong>Presentation Design:</strong> design presentation slides and decks for the Sales and Marketing teams.</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="job" role="tabpanel" id="job-ghtk" aria-labelledby="tab-ghtk" tabindex="0" hidden>
-          <div class="job-main">
-            <h3>Employer Branding &amp; Designer <span class="chip" data-i18n="exp.collab">Collaborator</span></h3>
-            <p class="job-co">Giao Hàng Tiết Kiệm (GHTK)</p>
-            <ul class="job-points">
-              <li data-i18n="exp.g1">Came up with ideas for and designed images, videos and content on the GHTK NEXTalents fanpage.</li>
-              <li data-i18n="exp.g2">Designed brochures, banners, standees, catalogs and backdrops for offline events such as Kick-off and Job Fair.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="exp-grid">
-        <div class="card">
-          <p class="card-label" data-i18n="exp.edu">Education</p>
-          <dl class="edu">
-            <div><dt>Arena Multimedia</dt><dd>2D Graphic Design</dd><dd class="muted">2021 – 2022</dd></div>
-            <div><dt data-i18n="exp.hust">Hanoi University of Science &amp; Technology</dt><dd data-i18n="exp.chem">Chemical Engineering</dd><dd class="muted">2017 – 2021</dd></div>
-          </dl>
-        </div>
-        <div class="card">
-          <p class="card-label" data-i18n="exp.tools">Toolkit</p>
-          <ul class="chips">
-            <li>Photoshop</li><li>Illustrator</li><li>InDesign</li><li>After Effects</li><li>Premiere Pro</li><li>Figma</li><li>Canva</li><li data-i18n="exp.ai">AI tools</li>
-          </ul>
-        </div>
-        <div class="card">
-          <p class="card-label" data-i18n="exp.analog">Analog Skills</p>
-          <ul class="chips">
-            <li data-i18n="sk.research">Research</li>
-            <li data-i18n="sk.type">Typography</li>
-            <li data-i18n="sk.thinking">Design Thinking</li>
-            <li data-i18n="sk.concept">Conceptualization</li>
-            <li data-i18n="sk.visual">Visualization</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== CONTACT ===== -->
-    <section class="contact" id="contact" aria-labelledby="contact-title">
-      <h2 class="contact-title" id="contact-title"><span class="br" aria-hidden="true">[</span><span data-i18n="contact.title">Let’s make things move</span><span class="br" aria-hidden="true">]</span></h2>
-      <div class="contact-row">
-        <p class="lead" data-i18n="contact.lead">Hiring a visual designer, or have a campaign that needs a strong idea and motion? I’d love to talk.</p>
-        <ul class="contact-lines">
-          <li><span class="muted">Email</span><a href="mailto:ngochn271099@gmail.com">ngochn271099@gmail.com</a></li>
-          <li><span class="muted" data-i18n="contact.phone">Phone</span><a href="tel:+84934238188">0934 238 188</a></li>
-          <li><span class="muted" data-i18n="contact.status">Status</span><span data-i18n="contact.avail">Based in Hanoi · Open to full-time senior roles</span></li>
-        </ul>
-        <a class="btn btn-ink" href="mailto:ngochn271099@gmail.com?subject=Portfolio%20%E2%80%94%20Visual%20Designer" data-i18n="contact.cta">Email me</a>
+      <div class="cases-more">
+        <a class="btn btn-ink" href="workspace.html" data-i18n="work.more">See the full workspace</a>
       </div>
     </section>
   </main>
