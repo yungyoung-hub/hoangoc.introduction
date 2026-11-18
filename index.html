@@ -11,110 +11,130 @@
   <meta property="og:url" content="https://hoangoc-portfolio.netlify.app/">
   <meta property="og:image" content="https://hoangoc-portfolio.netlify.app/assets/mockups/lixi-2025-envelopes.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="theme-color" content="#0F0F10">
-  <meta name="color-scheme" content="dark">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23121212'/%3E%3Ctext x='32' y='43' text-anchor='middle' font-family='Arial' font-weight='800' font-size='30' fill='%23E2F26A'%3EN%3C/text%3E%3C/svg%3E">
+  <meta name="theme-color" content="#FDEFF0">
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23FFC9CE'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Arial' font-weight='900' font-size='30' fill='%23000'%3E[N]%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Mrs+Saint+Delafield&family=Inter+Tight:wght@400;500;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600&display=swap&subset=vietnamese" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,800;0,900;1,800&display=swap&subset=vietnamese" rel="stylesheet">
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-  <a class="skip" href="#work" data-i18n="skip">Skip to work</a>
+  <a class="skip" href="#cases" data-i18n="skip">Skip to work</a>
 
   <!-- ===== NAV ===== -->
   <header class="nav" id="top">
-    <a class="brand" href="#top">Hoa Ngọc<sup>°</sup></a>
+    <a class="brand" href="#top" aria-label="Hoàng Hoa Ngọc, back to top">[N]</a>
     <nav aria-label="Primary">
       <ul>
-        <li><a href="#about" data-i18n="nav.about">About</a></li>
-        <li><a href="#experience" data-i18n="nav.exp">Experience</a></li>
-        <li><a href="#cases" data-i18n="nav.cases">Projects</a></li>
+        <li><a href="#cases" data-i18n="nav.cases">Selected work</a></li>
         <li><a href="#work" data-i18n="nav.work">Archive</a></li>
+        <li><a href="#experience" data-i18n="nav.exp">Experience</a></li>
         <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
       </ul>
     </nav>
     <div class="nav-right">
       <div class="lang" role="group" aria-label="Language / Ngôn ngữ">
-        <span class="lang-thumb" aria-hidden="true"></span>
         <button type="button" data-lang="en" aria-pressed="true" lang="en">EN</button>
         <button type="button" data-lang="vi" aria-pressed="false" lang="vi">VI</button>
       </div>
-      <a class="nav-cta" href="mailto:ngochn271099@gmail.com" aria-label="Email Hoàng Hoa Ngọc">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
-      </a>
+      <a class="nav-cta" href="mailto:ngochn271099@gmail.com" data-i18n="nav.hire">Hire me</a>
     </div>
   </header>
 
   <main>
-    <!-- ===== SEC 1 — ABOUT / HERO ===== -->
+    <!-- ===== HERO: bracket wordmark on a crosshair grid ===== -->
     <section class="hero" id="about" aria-labelledby="hero-name">
       <h1 class="hero-name" id="hero-name" aria-label="Hoàng Hoa Ngọc">
-        <span class="name-inner" aria-hidden="true">
-          <span class="n1">HOÀNG HOA</span><span class="gap"> </span><span class="n2">NGỌC</span>
-        </span>
+        <span class="name-inner" aria-hidden="true"><span class="br">[</span><span class="nm">Hoàng Hoa Ngọc</span><span class="br">]</span></span>
       </h1>
-      <div class="hero-sign"><span class="hero-rule" aria-hidden="true"></span><h2>Visual &amp; Motion Designer</h2></div>
 
       <div class="hero-stage">
-        <div class="hero-intro reveal">
-          <p class="eyebrow" data-i18n="hero.role">Visual Designer · Brand, Campaign &amp; Motion</p>
-          <p class="hero-text" data-i18n="hero.text">Visual designer with 5 years across brand, campaign and motion. At AWING I turn advertisers’ briefs into key visuals, interactive ads and motion for brands like Coca-Cola, Samsung, Grab and Garnier, and I shape AWING’s own brand, from product launches to packaging and events. I design ideas that read at a glance and systems that hold up across every touchpoint.</p>
-          <div class="hero-actions">
-            <a class="btn btn-lime" href="#cases"><span data-i18n="hero.cta">See featured projects</span>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
-            <a class="btn-link" href="#contact"><span data-i18n="hero.view">Get in touch</span>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
-          </div>
-        </div>
-
+        <span class="hl hl-1" aria-hidden="true"></span><span class="hl hl-2" aria-hidden="true"></span>
+        <span class="vl vl-1" aria-hidden="true"></span><span class="vl vl-2" aria-hidden="true"></span>
+        <ul class="marks">
+          <li class="mk mk-tl" data-i18n="mk.role">Visual &amp; motion<br>designer</li>
+          <li class="mk mk-tr" data-i18n="mk.city">Based in<br>Hanoi, Vietnam</li>
+          <li class="mk mk-bl" data-i18n="mk.scope">Brand, campaign<br>&amp; interactive ads</li>
+          <li class="mk mk-br" data-i18n="mk.since">Designing<br>since 2021</li>
+        </ul>
         <figure class="hero-photo">
-          <span class="hero-shape" aria-hidden="true"></span>
           <img src="about%20me/IMG_0979.JPG" alt="Portrait of Hoàng Hoa Ngọc in a black leather jacket, standing in front of a passing red bus" width="2048" height="1369" fetchpriority="high">
-          <span class="hero-badge" data-i18n="hero.badge">Since<br>2021</span>
         </figure>
+      </div>
 
-        <div class="hero-side reveal">
-          <a class="pill" href="mailto:ngochn271099@gmail.com">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>Email</a>
-          <a class="pill" href="tel:+84934238188">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg><span data-i18n="hero.call">Call</span></a>
-          <a class="pill" href="#experience">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg><span data-i18n="nav.exp">Experience</span></a>
-          <a class="scroll-cue" href="#experience"><span data-i18n="hero.scroll">Scroll</span>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16M6 14l6 6 6-6"/></svg></a>
+      <a class="hero-tab" href="#intro" data-i18n="hero.tab">About<br>the designer</a>
+    </section>
+
+    <!-- ===== ABOUT ===== -->
+    <section class="intro" id="intro" aria-labelledby="intro-label">
+      <p class="side-label" id="intro-label" data-i18n="hero.eyebrow">About</p>
+      <div class="intro-body">
+        <p class="hero-text" data-i18n="hero.text">Visual designer with 5 years across brand, campaign and motion. At AWING I turn advertisers’ briefs into key visuals, interactive ads and motion for brands like Coca-Cola, Samsung, Grab and Garnier, and I shape AWING’s own brand, from product launches to packaging and events. I design ideas that read at a glance and systems that hold up across every touchpoint.</p>
+        <div class="hero-actions">
+          <a class="btn btn-ink" href="#cases" data-i18n="hero.cta">See selected work</a>
+          <a class="btn btn-line" href="#contact" data-i18n="hero.view">Get in touch</a>
         </div>
       </div>
-    </section>
-
-    <!-- ===== PROOF: numbers + brands ===== -->
-    <section class="proof" aria-label="Highlights">
       <ul class="stats">
-        <li class="reveal"><b>5<span>+</span></b><span data-i18n="stats.years">years designing for brands, agencies and adtech</span></li>
-        <li class="reveal"><b>30<span>+</span></b><span data-i18n="stats.spots">motion ads for major advertisers</span></li>
-        <li class="reveal"><b>25<span>+</span></b><span data-i18n="stats.brands">brands, from FMCG and banking to real estate</span></li>
-        <li class="reveal stat-award"><b>MMA</b><span data-i18n="stats.award">Campaign shortlisted at MMA Smarties Vietnam 2026</span></li>
+        <li><b>5+</b><span data-i18n="stats.years">years designing for brands, agencies and adtech</span></li>
+        <li><b>30+</b><span data-i18n="stats.spots">motion ads for major advertisers</span></li>
+        <li><b>25+</b><span data-i18n="stats.brands">brands, from FMCG and banking to real estate</span></li>
+        <li class="stat-award"><b>MMA</b><span data-i18n="stats.award">Campaign shortlisted at MMA Smarties Vietnam 2026</span></li>
       </ul>
     </section>
+
     <div class="brands">
-      <p class="brands-label" data-i18n="brands.label">Brands I’ve<br>designed for</p>
-      <div class="marquee" role="img" aria-label="Coca-Cola, Samsung, Grab, Garnier, Vinhomes, CGV, Sacombank, Philips, Sprite, Yamaha, Geely, Vietravel, Vietnam Airlines, Acecook, NAPAS, Omnicom Media Group, NTT e-Asia">
-        <ul class="marquee-track" aria-hidden="true"><li>Coca-Cola</li><li>Samsung</li><li>Grab</li><li>Garnier</li><li>Vinhomes</li><li>CGV</li><li>Sacombank</li><li>Philips</li><li>Sprite</li><li>Yamaha</li><li>Geely</li><li>Vietravel</li><li>Vietnam Airlines</li><li>Acecook</li><li>NAPAS</li><li>Omnicom Media Group</li><li>NTT e-Asia</li><li>Coca-Cola</li><li>Samsung</li><li>Grab</li><li>Garnier</li><li>Vinhomes</li><li>CGV</li><li>Sacombank</li><li>Philips</li><li>Sprite</li><li>Yamaha</li><li>Geely</li><li>Vietravel</li><li>Vietnam Airlines</li><li>Acecook</li><li>NAPAS</li><li>Omnicom Media Group</li><li>NTT e-Asia</li></ul>
+      <p class="sr-only" data-i18n="brands.label">Brands I’ve designed for</p>
+      <div class="marquee" role="img" aria-label="Coca-Cola, Samsung, Grab, Garnier, Suntory TEA+, Vinhomes, CGV, Sacombank, Philips, Sprite, Yamaha, Geely, Vietravel, Vietnam Airlines, Acecook, NAPAS, Omnicom Media Group, NTT e-Asia">
+        <ul class="marquee-track" aria-hidden="true"><li>Coca-Cola</li><li>Samsung</li><li>Grab</li><li>Garnier</li><li>Suntory TEA+</li><li>Vinhomes</li><li>CGV</li><li>Sacombank</li><li>Philips</li><li>Sprite</li><li>Yamaha</li><li>Geely</li><li>Vietravel</li><li>Vietnam Airlines</li><li>Acecook</li><li>NAPAS</li><li>Omnicom Media Group</li><li>NTT e-Asia</li><li>Coca-Cola</li><li>Samsung</li><li>Grab</li><li>Garnier</li><li>Suntory TEA+</li><li>Vinhomes</li><li>CGV</li><li>Sacombank</li><li>Philips</li><li>Sprite</li><li>Yamaha</li><li>Geely</li><li>Vietravel</li><li>Vietnam Airlines</li><li>Acecook</li><li>NAPAS</li><li>Omnicom Media Group</li><li>NTT e-Asia</li></ul>
       </div>
     </div>
 
-    <!-- ===== SEC 2 — EXPERIENCE ===== -->
-    <section class="experience" id="experience" aria-labelledby="exp-title">
-      <div class="exp-head">
-        <h2 class="display" id="exp-title" data-i18n="exp.title">My<br>Experience</h2>
+    <!-- ===== SELECTED WORK ===== -->
+    <section class="cases" id="cases" aria-labelledby="cases-title">
+      <header class="sec-head">
+        <h2 class="display" id="cases-title"><span data-i18n="cases.title">Selected work</span><sup id="cases-count"></sup></h2>
+        <p class="lead" data-i18n="cases.lead">Creative ads for clients, then AWING brand work. Each one in brief: the challenge, then my approach.</p>
+      </header>
+      <div class="case-list" id="case-list"></div>
+    </section>
+
+    <!-- ===== ARCHIVE ===== -->
+    <section class="work" id="work" aria-labelledby="work-title">
+      <header class="sec-head">
+        <h2 class="display" id="work-title"><span data-i18n="work.title">Archive</span><sup id="work-count"></sup></h2>
+        <p class="lead" data-i18n="work.lead">Everything, grouped by discipline. Hover to preview, click to open.</p>
+      </header>
+
+      <div class="work-index">
+        <ul class="cat-list" id="cat-list"></ul>
+        <a class="feature" id="feature" href="#cat-motion">
+          <div class="feature-media" id="feature-media"></div>
+          <div class="feature-panel">
+            <span class="feature-no" id="feature-no">01 /</span>
+            <span class="feature-title" id="feature-title">Motion</span>
+            <span class="feature-desc" id="feature-desc"></span>
+            <span class="feature-link" data-i18n="work.explore">Explore projects</span>
+          </div>
+        </a>
       </div>
 
-      <div class="job-tabs reveal" role="tablist" aria-label="Experience">
+      <div id="categories"></div>
+    </section>
+
+    <!-- ===== EXPERIENCE ===== -->
+    <section class="experience" id="experience" aria-labelledby="exp-title">
+      <header class="sec-head">
+        <h2 class="display" id="exp-title"><span data-i18n="exp.title">Experience</span><sup>02</sup></h2>
+      </header>
+
+      <div class="job-tabs" role="tablist" aria-label="Experience">
         <button type="button" class="job-tab" role="tab" id="tab-awing" aria-controls="job-awing" aria-selected="true">
-          <span class="jt-no">01</span><span class="jt-co">AWING</span><span class="jt-role">Graphic &amp; Motion Designer</span><span class="jt-date"><span>03/2022 — </span><span data-i18n="exp.now">Now</span></span>
+          <span class="jt-co">AWING</span><span class="jt-role">Graphic &amp; Motion Designer</span><span class="jt-date"><span>03/2022 – </span><span data-i18n="exp.now">Now</span></span>
         </button>
         <button type="button" class="job-tab" role="tab" id="tab-ghtk" aria-controls="job-ghtk" aria-selected="false" tabindex="-1">
-          <span class="jt-no">02</span><span class="jt-co">GHTK</span><span class="jt-role">Employer Branding &amp; Designer</span><span class="jt-date">08/2021 — 01/2022</span>
+          <span class="jt-co">GHTK</span><span class="jt-role">Employer Branding &amp; Designer</span><span class="jt-date">08/2021 – 01/2022</span>
         </button>
       </div>
       <div class="jobs">
@@ -124,7 +144,7 @@
             <p class="job-co">AWING Technologies and Media</p>
             <div class="scopes">
               <div class="scope">
-                <p class="scope-label"><span class="scope-dot" aria-hidden="true"></span><span data-i18n="exp.s1">Client assets for AWING’s Broadcast Channel</span></p>
+                <p class="scope-label" data-i18n="exp.s1">Client assets for AWING’s Broadcast Channel</p>
                 <ul class="job-points">
                   <li data-i18n="exp.s1a">Adapt advertisers’ banners and videos to the ad-delivery standards and specs of AWING’s broadcast channels.</li>
                   <li data-i18n="exp.s1b">Create and add motion (animation) to clients’ static banners: 30+ spots for brands such as Coca-Cola, Samsung, Grab, CGV and Vinhomes.</li>
@@ -132,54 +152,46 @@
                 </ul>
               </div>
               <div class="scope">
-                <p class="scope-label"><span class="scope-dot is-red" aria-hidden="true"></span><span data-i18n="exp.s2">AWING Branding</span></p>
+                <p class="scope-label" data-i18n="exp.s2">AWING Branding</p>
                 <ul class="job-points">
                   <li data-i18n="exp.s2d"><strong>Product Launches:</strong> build the visual system for AWING’s new products (Weather-based Ads, Location-based Channel) across social, decks and ad formats.</li>
                   <li data-i18n="exp.s2a"><strong>Multi-channel Assets:</strong> design visuals for social media (Facebook, Instagram, LinkedIn…) and the blog.</li>
                   <li data-i18n="exp.s2b"><strong>Campaign &amp; Event Support:</strong> design offline/POSM materials: standees, backdrops, vouchers, brochures and product packaging.</li>
                   <li data-i18n="exp.s2c"><strong>Presentation Design:</strong> design presentation slides and decks for the Sales and Marketing teams.</li>
                 </ul>
-              </div>            </div>
+              </div>
+            </div>
           </div>
-          <span class="job-date"><span>03/2022 — </span><span data-i18n="exp.now">Now</span></span>
         </div>
         <div class="job" role="tabpanel" id="job-ghtk" aria-labelledby="tab-ghtk" tabindex="0" hidden>
           <div class="job-main">
-            <h3>Employer Branding &amp; Designer <span class="tag" data-i18n="exp.collab">Collaborator</span></h3>
+            <h3>Employer Branding &amp; Designer <span class="chip" data-i18n="exp.collab">Collaborator</span></h3>
             <p class="job-co">Giao Hàng Tiết Kiệm (GHTK)</p>
             <ul class="job-points">
               <li data-i18n="exp.g1">Came up with ideas for and designed images, videos and content on the GHTK NEXTalents fanpage.</li>
               <li data-i18n="exp.g2">Designed brochures, banners, standees, catalogs and backdrops for offline events such as Kick-off and Job Fair.</li>
             </ul>
           </div>
-          <span class="job-date">08/2021 — 01/2022</span>
         </div>
       </div>
 
       <div class="exp-grid">
-        <div class="card card-lime reveal">
-          <p class="eyebrow" data-i18n="exp.edu">Education</p>
+        <div class="card">
+          <p class="card-label" data-i18n="exp.edu">Education</p>
           <dl class="edu">
-            <div><dt>Arena Multimedia</dt><dd>2D Graphic Design</dd><dd class="muted">2021 — 2022</dd></div>
-            <div><dt data-i18n="exp.hust">Hanoi University of Science &amp; Technology</dt><dd data-i18n="exp.chem">Chemical Engineering</dd><dd class="muted">2017 — 2021</dd></div>
+            <div><dt>Arena Multimedia</dt><dd>2D Graphic Design</dd><dd class="muted">2021 – 2022</dd></div>
+            <div><dt data-i18n="exp.hust">Hanoi University of Science &amp; Technology</dt><dd data-i18n="exp.chem">Chemical Engineering</dd><dd class="muted">2017 – 2021</dd></div>
           </dl>
         </div>
-        <div class="card card-ink reveal">
-          <p class="eyebrow" data-i18n="exp.tools">Toolkit</p>
-          <ul class="tools">
-            <li><span class="tool-ic"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#001E36"/><text x="16" y="21" text-anchor="middle" font-family="Inter Tight, Arial, sans-serif" font-weight="700" font-size="13" fill="#31A8FF">Ps</text></svg></span>Photoshop</li>
-            <li><span class="tool-ic"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#330000"/><text x="16" y="21" text-anchor="middle" font-family="Inter Tight, Arial, sans-serif" font-weight="700" font-size="13" fill="#FF9A00">Ai</text></svg></span>Illustrator</li>
-            <li><span class="tool-ic"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#49021F"/><text x="16" y="21" text-anchor="middle" font-family="Inter Tight, Arial, sans-serif" font-weight="700" font-size="13" fill="#FF3366">Id</text></svg></span>InDesign</li>
-            <li><span class="tool-ic"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#00005B"/><text x="16" y="21" text-anchor="middle" font-family="Inter Tight, Arial, sans-serif" font-weight="700" font-size="13" fill="#9999FF">Ae</text></svg></span>After Effects</li>
-            <li><span class="tool-ic"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#00005B"/><text x="16" y="21" text-anchor="middle" font-family="Inter Tight, Arial, sans-serif" font-weight="700" font-size="13" fill="#EA77FF">Pr</text></svg></span>Premiere Pro</li>
-            <li><span class="tool-ic"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#2C2C2C"/><g transform="translate(5 5) scale(.917)"><path fill="#0ACF83" d="M8 24a4 4 0 0 0 4-4v-4H8a4 4 0 0 0 0 8z"/><path fill="#A259FF" d="M4 12a4 4 0 0 1 4-4h4v8H8a4 4 0 0 1-4-4z"/><path fill="#F24E1E" d="M4 4a4 4 0 0 1 4-4h4v8H8a4 4 0 0 1-4-4z"/><path fill="#FF7262" d="M12 0h4a4 4 0 0 1 0 8h-4z"/><path fill="#1ABCFE" d="M20 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"/></g></svg></span>Figma</li>
-            <li><span class="tool-ic"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="cv-g" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#00C4CC"/><stop offset=".5" stop-color="#6A5CF5"/><stop offset="1" stop-color="#7D2AE8"/></linearGradient></defs><rect width="32" height="32" rx="16" fill="url(#cv-g)"/><text x="15.5" y="21.5" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-weight="800" font-size="16" fill="#fff">C</text></svg></span>Canva</li>
-            <li><span class="tool-ic"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="ai-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E2F26A"/><stop offset="1" stop-color="#7FE0C9"/></linearGradient></defs><rect width="32" height="32" rx="7" fill="url(#ai-g)"/><path fill="#1A1F00" d="M14 6l2 6 6 2-6 2-2 6-2-6-6-2 6-2zM23 19l1 2.6 2.6 1-2.6 1L23 26l-1-2.4-2.6-1 2.6-1z"/></svg></span>AI Tools</li>
+        <div class="card">
+          <p class="card-label" data-i18n="exp.tools">Toolkit</p>
+          <ul class="chips">
+            <li>Photoshop</li><li>Illustrator</li><li>InDesign</li><li>After Effects</li><li>Premiere Pro</li><li>Figma</li><li>Canva</li><li data-i18n="exp.ai">AI tools</li>
           </ul>
         </div>
-        <div class="card card-paper reveal">
-          <p class="eyebrow" data-i18n="exp.analog">Analog Skills</p>
-          <ul class="analog">
+        <div class="card">
+          <p class="card-label" data-i18n="exp.analog">Analog Skills</p>
+          <ul class="chips">
             <li data-i18n="sk.research">Research</li>
             <li data-i18n="sk.type">Typography</li>
             <li data-i18n="sk.thinking">Design Thinking</li>
@@ -190,62 +202,25 @@
       </div>
     </section>
 
-    <!-- ===== FEATURED PROJECTS ===== -->
-    <section class="cases" id="cases" aria-labelledby="cases-title">
-      <div class="work-head">
-        <h2 class="display" id="cases-title" data-i18n="cases.title">Featured<br>Projects</h2>
-        <p class="lead" data-i18n="cases.lead">Creative ads for clients, then AWING brand work. Each one in brief: the challenge, then my approach.</p>
-      </div>
-      <div class="case-list" id="case-list"></div>
-    </section>
-
-    <!-- ===== SEC 3 — WORK ===== -->
-    <section class="work" id="work" aria-labelledby="work-title">
-      <div class="work-head">
-        <h2 class="display" id="work-title" data-i18n="work.title">Work<br>Archive</h2>
-        <p class="lead" data-i18n="work.lead">Everything, grouped by discipline. Hover to preview, click to open.</p>
-      </div>
-
-      <div class="work-index">
-        <a class="feature" id="feature" href="#cat-motion">
-          <div class="feature-panel">
-            <span class="feature-no" id="feature-no">01 /</span>
-            <span class="feature-title" id="feature-title">Motion</span>
-            <span class="feature-desc" id="feature-desc"></span>
-            <span class="feature-link"><span data-i18n="work.explore">Explore projects</span>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
-          </div>
-          <div class="feature-media" id="feature-media"></div>
-        </a>
-        <ul class="cat-list" id="cat-list"></ul>
-      </div>
-
-      <div id="categories"></div>
-    </section>
-
     <!-- ===== CONTACT ===== -->
     <section class="contact" id="contact" aria-labelledby="contact-title">
-      <div class="contact-copy reveal">
-        <h2 class="display" id="contact-title" data-i18n="contact.title">Let’s make<br>things move.</h2>
+      <h2 class="contact-title" id="contact-title"><span class="br" aria-hidden="true">[</span><span data-i18n="contact.title">Let’s make things move</span><span class="br" aria-hidden="true">]</span></h2>
+      <div class="contact-row">
         <p class="lead" data-i18n="contact.lead">Hiring a visual designer, or have a campaign that needs a strong idea and motion? I’d love to talk.</p>
-        <p class="avail"><span class="avail-dot" aria-hidden="true"></span><span data-i18n="contact.avail">Based in Hanoi · Open to full-time senior roles</span></p>
         <ul class="contact-lines">
           <li><span class="muted">Email</span><a href="mailto:ngochn271099@gmail.com">ngochn271099@gmail.com</a></li>
           <li><span class="muted" data-i18n="contact.phone">Phone</span><a href="tel:+84934238188">0934 238 188</a></li>
+          <li><span class="muted" data-i18n="contact.status">Status</span><span data-i18n="contact.avail">Based in Hanoi · Open to full-time senior roles</span></li>
         </ul>
-        <a class="btn btn-ink" href="mailto:ngochn271099@gmail.com?subject=Portfolio%20%E2%80%94%20Visual%20Designer"><span data-i18n="contact.cta">Email me</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
-      </div>
-      <div class="contact-blob" aria-hidden="true">
-        <img src="about%20me/IMG_0979.JPG" alt="" loading="lazy" width="2048" height="1369">
+        <a class="btn btn-ink" href="mailto:ngochn271099@gmail.com?subject=Portfolio%20%E2%80%94%20Visual%20Designer" data-i18n="contact.cta">Email me</a>
       </div>
     </section>
   </main>
 
   <footer class="footer">
+    <span class="brand">[N]</span>
     <span>© <span id="year">2026</span> Hoàng Hoa Ngọc</span>
-    <span>Visual &amp; Motion Designer · Hanoi</span>
-    <a href="#top" data-i18n="footer.top">Back to top ↑</a>
+    <a href="#top" data-i18n="footer.top">Back to top</a>
   </footer>
 
   <!-- Lightbox -->

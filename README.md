@@ -25,6 +25,7 @@ Trang sẽ có địa chỉ dạng `https://yungyoung-hub.github.io/hoangoc.porf
 | `assets/i18n.js` | Nội dung tiếng Việt, mô tả từng mục |
 | `assets/content.js` | Dự án nổi bật (case study) và tên/khách hàng của từng tác phẩm |
 | `assets/projects/` | Ảnh riêng cho case study (quà Tết, NTT, OMO). Nội dung và thứ tự dự án nổi bật sửa trong `assets/content.js` (CASE_GROUPS, CASES) |
+| `assets/thumbs/` | Thumbnail màn hình game / quảng cáo tương tác (chụp từ link preview, dùng trong `games.list[].thumb` và `cover`) |
 | `assets/posters/` | Ảnh poster cho video Motion (tạo bằng ffmpeg, cùng tên với video) |
 | `assets/files.js` | Danh sách file trong các thư mục dự án (tạo tự động) |
 | `assets/mockups/`, `assets/mockups.js` | Ảnh mockup (tạo tự động) |

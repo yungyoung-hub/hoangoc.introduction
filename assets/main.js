@@ -155,7 +155,7 @@
 
   data.forEach((c, ci) => {
     const li = document.createElement('li');
-    li.innerHTML = `<a href="#${c.id}" data-ci="${ci}"><span class="n">${pad(ci + 1)} /</span><span class="cat-name"></span><span class="c">${c.units.length}</span></a>`;
+    li.innerHTML = `<a href="#${c.id}" data-ci="${ci}"><span class="cat-name"></span><sup class="c">${pad(c.units.length)}</sup></a>`;
     listEl.appendChild(li);
 
     const sec = document.createElement('section');
@@ -205,6 +205,11 @@
     });
     catsEl.appendChild(sec);
   });
+
+  const workCount = document.getElementById('work-count');
+  if (workCount) workCount.textContent = pad(data.reduce((n, c) => n + c.units.length, 0));
+  const casesCount = document.getElementById('cases-count');
+  if (casesCount) casesCount.textContent = pad((window.CASES || []).length);
 
   /* ---------- Collapsible sections ---------- */
   const COLLAPSED = () => Math.round(Math.min(860, Math.max(560, innerHeight * 0.9)));
@@ -445,7 +450,7 @@
       el.id = 'case-' + cs.id;
       el.innerHTML = `
         <div class="cs-head reveal">
-          <p class="case-no">${pad(caseNo)} / <span class="case-client">${cs.client}</span></p>
+          <p class="case-no"><span class="chip">${cs.client}</span><span class="case-idx">${pad(caseNo)}</span></p>
           <h4 class="case-title"></h4>
           <dl class="cs-story">
             <div class="cs-step"><dt><span class="cs-step-no">01</span><span class="l-challenge"></span></dt><dd class="d-challenge"></dd></div>
@@ -472,14 +477,14 @@
               <li><span class="gf-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1"/></svg></span><span class="gf-t"></span></li>
               <li><span class="gf-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="11" rx="4"/><path d="M8 11v3M6.5 12.5h3M15 11.5h.01M17.5 13.5h.01"/></svg></span><span class="gf-t"></span></li>
             </ol>
-            <ol class="game-list" role="tablist">${cs.games.list.map((g, j) => `<li><button type="button" class="game-pick" role="tab" data-g="${j}" aria-selected="${j === 0}"><span class="game-no">${pad(j + 1)}</span><span class="game-name"></span></button></li>`).join('')}</ol>
+            <ol class="game-list" role="tablist">${cs.games.list.map((g, j) => `<li><button type="button" class="game-pick" role="tab" data-g="${j}" aria-selected="${j === 0}"><span class="game-thumb">${g.thumb ? `<img src="${url(g.thumb)}" alt="" loading="lazy" decoding="async">` : ''}</span><span class="chip">Game ${pad(j + 1)}</span><span class="game-name"></span></button></li>`).join('')}</ol>
             <a class="btn-link live-link game-link" href="${cs.games.list[0].url}" target="_blank" rel="noopener"><span class="lbl-liveopen"></span>${ARROW}</a>
           </div>
           <div class="cs-phone">
             <div class="phone">
               <span class="phone-btn b1" aria-hidden="true"></span><span class="phone-btn b2" aria-hidden="true"></span><span class="phone-btn b3" aria-hidden="true"></span>
               <div class="phone-screen">
-                <button type="button" class="live-start game-start">${cs.cover ? `<img src="${url(cs.cover)}" alt="" loading="lazy">` : ''}<span class="live-cta">${PLAY_I}<span class="game-cta"></span></span></button>
+                <button type="button" class="live-start game-start">${(cs.games.list[0].thumb || cs.cover) ? `<img src="${url(cs.games.list[0].thumb || cs.cover)}" alt="" loading="lazy">` : ''}<span class="live-cta">${PLAY_I}<span class="game-cta"></span></span></button>
               </div>
             </div>
           </div>
@@ -498,6 +503,8 @@
           const g = cs.games.list[+gp.dataset.g];
           box.querySelectorAll('.game-pick').forEach((x) => x.setAttribute('aria-selected', String(x === gp)));
           box.querySelector('.game-link').href = g.url;
+          const poster = box.querySelector('.game-start img');
+          if (poster && g.thumb) poster.src = url(g.thumb); // not playing yet: show this game's screen
           const f = box.querySelector('iframe');
           if (f) f.src = g.url; // already playing: switch game in place
           renderCaseText();
@@ -729,7 +736,7 @@
     document.querySelectorAll('.display, .cs-group-title').forEach((h) => {
       const walker = document.createTreeWalker(h, NodeFilter.SHOW_TEXT);
       const nodes = [];
-      while (walker.nextNode()) if (walker.currentNode.textContent.trim() && !walker.currentNode.parentElement.closest('.w')) nodes.push(walker.currentNode);
+      while (walker.nextNode()) if (walker.currentNode.textContent.trim() && !walker.currentNode.parentElement.closest('.w, sup')) nodes.push(walker.currentNode);
       let i = h.querySelectorAll('.w').length;
       nodes.forEach((node) => {
         const frag = document.createDocumentFragment();
@@ -839,52 +846,4 @@
 
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  /* ---------- Custom cursor (fine pointers only) ---------- */
-  if (matchMedia('(hover: hover) and (pointer: fine)').matches && !reduceMotion) {
-    const curEl = document.createElement('div');
-    curEl.className = 'cursor';
-    curEl.setAttribute('aria-hidden', 'true');
-    curEl.innerHTML = '<div class="cursor-ring"><span class="cursor-label"></span></div><div class="cursor-dot"></div>';
-    document.body.appendChild(curEl);
-    document.documentElement.classList.add('has-cursor');
-    const ring = curEl.querySelector('.cursor-ring');
-    const dot = curEl.querySelector('.cursor-dot');
-    const label = curEl.querySelector('.cursor-label');
-    let mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my, raf = 0;
-
-    const loop = () => {
-      rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18;
-      ring.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
-      raf = Math.abs(mx - rx) + Math.abs(my - ry) > 0.1 ? requestAnimationFrame(loop) : 0;
-    };
-    addEventListener('pointermove', (e) => {
-      mx = e.clientX; my = e.clientY;
-      dot.style.transform = `translate3d(${mx}px, ${my}px, 0)`;
-      curEl.classList.add('is-visible');
-      if (!raf) raf = requestAnimationFrame(loop);
-    }, { passive: true });
-    document.addEventListener('pointerleave', () => curEl.classList.remove('is-visible'));
-    addEventListener('pointerdown', () => curEl.classList.add('is-down'));
-    addEventListener('pointerup', () => curEl.classList.remove('is-down'));
-
-    document.addEventListener('pointerover', (e) => {
-      const tile = e.target.closest('.tile, .cs-cover, .cs-strip button, .cs-mosaic button');
-      const link = e.target.closest('a, button, .pill');
-      curEl.classList.toggle('is-view', !!tile);
-      curEl.classList.toggle('is-link', !tile && !!link);
-      label.textContent = tile ? (tile.querySelector('video') ? ui().play : ui().view) : '';
-    });
-
-    document.querySelectorAll('.btn, .nav-cta, .pill').forEach((el) => {
-      el.addEventListener('pointermove', (e) => {
-        const r = el.getBoundingClientRect();
-        const dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2);
-        el.style.translate = `${dx * 0.18}px ${dy * 0.25}px`;
-      });
-      el.addEventListener('pointerleave', () => { el.style.translate = ''; });
-    });
-
-    // The lightbox sits in the top layer above the custom cursor: use the native one there
-    new MutationObserver(() => curEl.classList.toggle('is-hidden', lb.open)).observe(lb, { attributes: true, attributeFilter: ['open'] });
-  }
 })();
