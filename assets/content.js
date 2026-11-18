@@ -120,6 +120,7 @@ window.CAPTIONS = [
 // Featured projects, in two groups: client creative ads first, then AWING branding.
 // Each has the challenge, my approach and its images (videos play in the viewer). `live` embeds the working ad in a phone frame.
 // CHECK before publishing: role and any numbers must match what you actually did.
+const S26 = 'assets/projects/summit/';
 const G = 'Graphic/', P = 'Packaging & Event Assets/', T = 'assets/projects/tet-gift/', M = 'assets/mockups/', V = 'Motion/';
 window.CASE_GROUPS = [
   { id: 'ads', en: 'Creative Ads', vi: 'Quảng cáo sáng tạo', desc: { en: 'Interactive and motion ads for advertisers on AWING’s Wi-Fi network.', vi: 'Quảng cáo tương tác và chuyển động cho các nhà quảng cáo trên mạng Wi-Fi của AWING.' } },
@@ -153,9 +154,9 @@ window.CASES = [
     cover: 'assets/projects/omo/step3-banner.png',
     tags: ['Interactive ad', 'Personalisation', 'Video'],
     live: { url: 'https://acm-ssl.awingconnect.vn/Preview/Page?loginId=28263&isNetworkCampaign=false&welcomeId=28264&workspaceId=290' },
-    shots: ['assets/projects/omo/step1-banner.png', 'assets/projects/omo/step2-frame.jpg', 'assets/projects/omo/step3-banner.png'],
+    shots: ['assets/projects/omo/step1-grid.jpg', 'assets/projects/omo/step2-frame.jpg', 'assets/projects/omo/step3-banner.png'],
     quote: { bg: '#F9D3E1', fg: '#12256B', en: 'Hết mình là xinh nhất', vi: 'Hết mình là xinh nhất', sub: { en: 'Going all out is the most beautiful.', vi: 'Cùng OMO tôn vinh vẻ đẹp của những cô gái dám hết mình.' } },
-    img: ['assets/projects/omo/step1-banner.png', 'assets/projects/omo/step2-frame.jpg', 'assets/projects/omo/step3-banner.png'],
+    img: ['assets/projects/omo/step1-grid.jpg', 'assets/projects/omo/step1-banner.png', 'assets/projects/omo/step2-frame.jpg', 'assets/projects/omo/step3-banner.png'],
     en: {
       title: 'OMO “Hết mình là xinh nhất”: an ad that answers back',
       challenge: "Many young women hold back in sport because of sweat, flat hair or stains. How do you design an interactive flow fun enough that they stay with it and actually feel OMO’s key message, “Hết mình là xinh nhất”, instead of skipping a one-way banner?",
@@ -174,8 +175,8 @@ window.CASES = [
     cover: 'assets/thumbs/yuzu-tea.jpg',
     tags: ['Interactive ad', 'Sampling', 'Retail: Circle K'],
     live: { url: 'https://acm-ssl.awingconnect.vn/Preview/Page?loginId=29150&isNetworkCampaign=false&welcomeId=29151&workspaceId=290' },
-    shots: ['assets/thumbs/yuzu-step2.jpg', 'assets/thumbs/yuzu-offer.jpg'],
-    img: ['assets/thumbs/yuzu-tea.jpg', 'assets/thumbs/yuzu-step2.jpg'],
+    shots: ['assets/thumbs/yuzu-step2.jpg', 'assets/thumbs/yuzu-voucher.jpg'],
+    img: ['assets/thumbs/yuzu-tea.jpg', 'assets/thumbs/yuzu-step2.jpg', 'assets/thumbs/yuzu-voucher.jpg'],
     quote: { bg: '#FFE45C', fg: '#0B5B2E', en: 'Thêm mọng mát mỗi ngày', vi: 'Thêm mọng mát mỗi ngày', sub: { en: 'One free Trà Chanh-Yuzu at Circle K, claimed in 30 seconds.', vi: 'Miễn phí 01 Trà Chanh-Yuzu tại Circle K, nhận chỉ trong 30 giây.' } },
     // CHECK before publishing: challenge, approach and role are drafted from the live ad. Edit to match what you actually did.
     en: {
@@ -211,6 +212,47 @@ window.CASES = [
     },
   },
   // ---------- Branding ----------
+  // CHECK before publishing: challenge, approach and role are drafted from the files. Edit to match what you actually did.
+  {
+    id: 'summit-2026', group: 'branding', client: 'AWING Summit 2026', year: '2026',
+    cover: S26 + 'mail-thumb.jpg',
+    tags: ['Event campaign', 'Key visual', 'Wi-Fi mini-game', 'Microsite', 'TV & OTT'],
+    // Main visual: the campaign's own pieces at their real proportions
+    bento: [S26 + 'mail-thumb.jpg', S26 + 'avatar.jpg', S26 + 'fb-cover.jpg', S26 + 'network-post.jpg', S26 + 'thank-you.jpg'],
+    links: [{ url: 'https://awing.vn/summit2026/', en: 'Visit the microsite', vi: 'Xem microsite' }],
+    facts: [
+      { n: '10', en: 'years of AWING, told as “10 Years & Beyond: The Next Chapter”', vi: 'năm AWING, kể bằng “10 Years & Beyond: The Next Chapter”' },
+      { n: '7', en: 'touchpoints: social, email, microsite, Wi-Fi game, VTVcab, stage screens, thank-you post', vi: 'điểm chạm: mạng xã hội, email, microsite, game Wi-Fi, VTVcab, màn hình sân khấu, bài cảm ơn' },
+      { n: '6', en: 'AWING product cards to match in the mini-game', vi: 'thẻ sản phẩm AWING để lật cặp trong mini-game' },
+    ],
+    blocks: [
+      {
+        type: 'phones',
+        en: { title: 'Mini-game on AWING’s Wi-Fi', text: 'Guests flip cards to find two matching pairs of AWING products (Network, Location-based Channel, Retail Media, Measurement, Insights, Ads Manager) and win a gift. It runs on AWING’s own ad platform, so the game doubles as a product demo.' },
+        vi: { title: 'Mini-game trên Wi-Fi AWING', text: 'Khách lật thẻ tìm đủ 2 cặp sản phẩm AWING (Network, Location-based Channel, Retail Media, Measurement, Insights, Ads Manager) để nhận quà. Game chạy trên chính nền tảng quảng cáo của AWING, nên vừa là trò chơi vừa là bản demo sản phẩm.' },
+        items: [S26 + 'game-1.jpg', S26 + 'game-2.jpg', S26 + 'game-3.jpg', S26 + 'game-win.jpg', S26 + 'game-lose.jpg'],
+      },
+      {
+        type: 'bento',
+        en: { title: 'On VTVcab and the microsite', text: 'The same key visual ran as pop-ups and banners in the VTVcab app, on screens at the venue, and on the event microsite with a live countdown.' },
+        vi: { title: 'Trên VTVcab và microsite', text: 'Cùng một key visual chạy thành pop-up và banner trên ứng dụng VTVcab, trên màn hình tại sự kiện, và trên microsite sự kiện có đồng hồ đếm ngược.' },
+        items: [S26 + 'vtv-app-mobile.jpg', S26 + 'microsite-desktop.jpg', S26 + 'vtv-app-web.jpg', S26 + 'microsite-mobile.jpg', S26 + 'vtv-1920.jpg', S26 + 'vtv-1160.jpg'],
+      },
+    ],
+    img: [S26 + 'mail-thumb.jpg', S26 + 'avatar.jpg', S26 + 'fb-cover.jpg', S26 + 'link-thumb.jpg', S26 + 'network-post.jpg', S26 + 'thank-you.jpg', S26 + 'vtv-1074.jpg', S26 + 'vtv-stage.jpg', S26 + 'vtv-app-popup.jpg'],
+    en: {
+      title: 'AWING Summit 2026: 10 Years & Beyond',
+      challenge: "For its 10th anniversary AWING hosted an evening of dinner and networking for partners and clients at GEM Center. The campaign had to fill the room, build anticipation on every channel, and show what AWING’s network can do along the way.",
+      approach: "I built one key visual, a red-to-blue light beam through the AWING chevron, and carried it from social avatar and cover, email and link thumbnails to the microsite, VTVcab placements and the stage screens. A card-matching mini-game on AWING’s own Wi-Fi platform turned the invitation into a product demo, and a thank-you post closed the night.",
+      role: 'Key visual system, social & email assets, mini-game UI, TV & venue screens, microsite visuals',
+    },
+    vi: {
+      title: 'AWING Summit 2026: 10 Years & Beyond',
+      challenge: "Kỷ niệm 10 năm, AWING tổ chức một buổi tối gala và networking cho đối tác, khách hàng tại GEM Center. Chiến dịch phải lấp đầy khán phòng, tạo háo hức trên mọi kênh, và cho thấy mạng lưới của AWING làm được gì ngay trong quá trình đó.",
+      approach: "Tôi xây dựng một key visual duy nhất, chùm sáng đỏ chuyển xanh xuyên qua biểu tượng mũi tên AWING, và triển khai từ avatar, cover mạng xã hội, thumbnail email và link đến microsite, quảng cáo trên VTVcab và màn hình sân khấu. Mini-game lật thẻ trên chính nền tảng Wi-Fi của AWING biến lời mời thành bản demo sản phẩm, và bài cảm ơn khép lại sự kiện.",
+      role: 'Hệ thống key visual, asset mạng xã hội & email, UI mini-game, màn hình TV & sự kiện, hình ảnh microsite',
+    },
+  },
   {
     id: 'ntt', group: 'branding', client: 'AWING × NTT e-Asia', year: '2024',
     cover: 'assets/projects/ntt/mockup-cover.jpg',
@@ -256,10 +298,11 @@ window.CASES = [
   },
   {
     id: 'weather', group: 'branding', client: 'AWING Ads',
-    cover: G + '777327862_1680666336784467_8691854386663964621_n.jpg',
+    cover: 'assets/projects/weather/collage.jpg',
+    noStrip: true,
     tags: ['Product launch', 'Social campaign', 'Ad formats'],
     match: { cat: 'Graphic', re: /^774042625_/ },
-    img: [G + '774042625_1676089417242159_8958395339245005822_n.jpg', G + '777327862_1680666336784467_8691854386663964621_n.jpg', G + '777988242_1682323296618771_3435825282868780190_n.jpg', G + '798664154_1698729138311520_2450761588940597726_n.jpg', G + '798182040_1698729041644863_9042572822805864529_n.jpg', G + '798182041_1698729048311529_8008127201095629401_n.jpg'],
+    img: ['assets/projects/weather/collage.jpg', G + '774042625_1676089417242159_8958395339245005822_n.jpg', G + '777327862_1680666336784467_8691854386663964621_n.jpg', G + '777988242_1682323296618771_3435825282868780190_n.jpg', G + '798664154_1698729138311520_2450761588940597726_n.jpg', G + '798182040_1698729041644863_9042572822805864529_n.jpg', G + '798182041_1698729048311529_8008127201095629401_n.jpg'],
     en: {
       title: 'Weather-based Ads: launching a new ad product',
       challenge: "Weather-based Ads was a brand-new product: ads that change with the live weather. Before anyone buys it, they have to understand it at a glance.",

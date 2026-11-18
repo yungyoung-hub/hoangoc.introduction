@@ -721,3 +721,64 @@ html[data-lang="vi"] .case-count::after { content: ' ảnh'; }
 .case-list, .cs-group, .cs-group-list, #categories { grid-template-columns: minmax(0, 1fr); }
 .cs, .cat { min-width: 0; }
 @media (max-width: 980px) { .cs.has-live { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- Round 3: contact at the bottom, bento, blocks ---------- */
+.about-grid { grid-template-columns: minmax(0, 1fr); }
+.exp { max-width: 1100px; }
+
+.contact { position: static; padding: clamp(48px, 7vw, 96px) var(--gut); background: var(--blush); }
+.contact .contact-card {
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); column-gap: clamp(24px, 5vw, 80px); align-items: end;
+  padding: clamp(28px, 4vw, 56px);
+  background-size: 120px 120px;
+}
+.contact .contact-card > .col-label,
+.contact .contact-title { grid-column: 1; }
+.contact .contact-title { font-size: clamp(44px, 7vw, 120px); line-height: .9; }
+.contact .contact-lead, .contact .contact-lines, .contact .contact-card .btn { grid-column: 2; }
+.contact .contact-lead { grid-row: 2; align-self: start; }
+.contact .contact-title { grid-row: 2 / span 3; align-self: start; }
+@media (max-width: 860px) {
+  .contact .contact-card { grid-template-columns: 1fr; }
+  .contact .contact-card > *, .contact .contact-title, .contact .contact-lead { grid-column: 1; grid-row: auto; }
+}
+
+/* Artboard with three screens: the first one stays whole, left of the phone */
+.ab-n3 .ab-s1 { left: 3cqw; top: 30cqw; width: 27cqw; transform: rotate(-5deg); }
+.ab-n3 .ab-s2 { right: 4cqw; top: 26cqw; width: 23cqw; }
+.ab-n3 .ab-s3 { left: auto; right: 7cqw; top: 66cqw; width: 22cqw; transform: rotate(-4deg); z-index: 1; }
+
+/* Bento: pieces at their real proportions, masonry columns */
+.bento { columns: 2; column-gap: 10px; }
+.bento.is-wide { columns: 3; }
+.bento button { display: block; width: 100%; margin: 0 0 10px; break-inside: avoid; overflow: hidden; border-radius: 10px; background: var(--blush); }
+.bento img { width: 100%; height: auto; transition: transform .5s var(--ease); }
+.bento button:hover img { transform: scale(1.03); }
+.cs-visual.bento { background: #071a52; padding: 10px 10px 0; border-radius: var(--r-card); }
+@media (max-width: 760px) { .bento.is-wide { columns: 2; } }
+
+.cs-block {
+  grid-column: 1 / -1; display: grid; gap: 18px;
+  background: #071a52; color: #fff; border-radius: var(--r-card); padding: clamp(18px, 2.6vw, 32px);
+}
+.cs-block .g-text { color: rgba(255, 255, 255, .8); }
+.cs-block .bento button { background: #0d2468; }
+.block-copy { display: grid; gap: 10px; max-width: 70ch; }
+.phone-row { display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 6px; }
+.pr-item { flex: 0 0 clamp(150px, 15vw, 200px); scroll-snap-align: start; }
+.pr-item .rp-phone { background: #000; box-shadow: 0 0 0 1px rgba(255, 255, 255, .15); }
+.pr-item:hover .rp-phone { background: var(--red); }
+.rp-screen.is-still { display: block; aspect-ratio: 9 / 18.5; }
+.rp-screen.is-still img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.cs-link { gap: 8px; }
+/* Game stills keep their full width: centred on a dark screen instead of cropped */
+.rp-screen.is-still { display: flex; align-items: center; background: #0a1440; }
+.rp-screen.is-still img { height: auto; object-fit: contain; }
+@media (min-width: 1100px) { .bento.is-wide { columns: 4; } }
+@media (min-width: 861px) {
+  .contact .contact-lines { grid-row: 3; }
+  .contact .contact-card .btn { grid-row: 4; }
+}
+@media (max-width: 860px) {
+  .contact .contact-card .btn, .contact .contact-card .contact-lines { grid-column: 1; grid-row: auto; }
+}

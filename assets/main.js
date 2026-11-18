@@ -163,7 +163,9 @@
   const capOf = (src) => CAPS.find((c) => c.re.test(baseName(src)));
   const reelHTML = (items, cls) => {
     const set = (dup) => items.map((it) => {
-      const v = `<video muted loop playsinline preload="none" data-reel-src="${url(it.src)}" poster="${posterOf(it.src)}"></video>`;
+      const v = isVideo(it.src)
+        ? `<video muted loop playsinline preload="none" data-reel-src="${url(it.src)}" poster="${posterOf(it.src)}"></video>`
+        : `<img src="${url(it.src)}" alt="" loading="lazy" decoding="async">`;
       const media = cls === 'is-phones'
         ? `<span class="rp-phone"><span class="rp-screen"><span class="rp-bar"><span>Free Wi-Fi</span><span>AWING</span></span>${v}<span class="rp-cta">Kết nối Wi-Fi miễn phí</span><span class="rp-ads">Ads by AWING</span></span></span>`
         : `<span class="reel-media">${v}</span>`;
@@ -458,7 +460,7 @@
       }
       const all = (cs.img || []).slice();
       if (cs.cover && !all.includes(cs.cover)) all.unshift(cs.cover);
-      (cs.shots || []).forEach((src) => { if (!all.includes(src)) all.push(src); });
+      [...(cs.shots || []), ...(cs.bento || []), ...(cs.blocks || []).flatMap((b) => b.items)].forEach((src) => { if (!all.includes(src)) all.push(src); });
       const at = (src) => all.indexOf(src);
 
       let visual;
@@ -479,11 +481,13 @@
           <p class="ab-sub q-sub"></p>
           <a class="ab-link live-link" href="${cs.live.url}" target="_blank" rel="noopener"><span class="lbl-liveopen"></span>${ARROW}</a>
         </div>`;
+      } else if (cs.bento) {
+        visual = `<div class="cs-visual bento">${cs.bento.map((src) => `<button type="button" data-i="${at(src)}"><img src="${url(src)}" alt="" loading="lazy" decoding="async"></button>`).join('')}</div>`;
       } else if (cs.reel) {
         visual = '<div class="cs-visual cs-reel">' + reelHTML(all.map((src) => {
           const cp = capOf(src);
           return { src, attrs: `data-i="${at(src)}"`, client: cp ? cp.client : '' };
-        }), 'is-cards') + '</div>';
+        }), 'is-phones') + '</div>';
       } else {
         visual = `<div class="cs-visual"><button type="button" class="cs-cover" data-i="${at(cs.cover)}"><img src="${url(cs.cover)}" alt="" loading="lazy" decoding="async"><span class="case-count">${all.length}</span></button></div>`;
       }
@@ -508,10 +512,17 @@
           ${cs.facts ? `<ul class="cs-facts">${cs.facts.map((f) => `<li><b>${f.n}</b><span></span></li>`).join('')}</ul>` : ''}
           <div class="cs-actions">
             ${arc ? `<a class="btn btn-outline cs-archive" href="workspace.html#${data[arc.ci].id}"><span class="lbl-archive"></span>${ARROW}</a>` : ''}
+            ${(cs.links || []).map((l, li) => `<a class="btn btn-ink cs-link" data-l="${li}" href="${l.url}" target="_blank" rel="noopener"><span></span>${ARROW}</a>`).join('')}
             ${cs.press ? `<a class="btn-link" href="${cs.press.url}" target="_blank" rel="noopener"><span class="lbl-press"></span> (${cs.press.label})${ARROW}</a>` : ''}
           </div>
         </div>
         ${visual}
+        ${(cs.blocks || []).map((b, bi) => `<div class="cs-block is-${b.type}" data-b="${bi}">
+          <div class="block-copy"><p class="games-eyebrow"><span class="b-title"></span></p><p class="g-text b-text"></p></div>
+          ${b.type === 'phones'
+            ? `<div class="phone-row">${b.items.map((src) => `<button type="button" class="pr-item" data-i="${at(src)}"><span class="rp-phone"><span class="rp-screen is-still"><img src="${url(src)}" alt="" loading="lazy" decoding="async"></span></span></button>`).join('')}</div>`
+            : `<div class="bento is-wide">${b.items.map((src) => `<button type="button" data-i="${at(src)}"><img src="${url(src)}" alt="" loading="lazy" decoding="async"></button>`).join('')}</div>`}
+        </div>`).join('')}
         ${cs.games ? `<div class="cs-games">
           <div class="games-copy">
             <p class="games-eyebrow">${PLAY_I}<span class="g-title"></span></p>
@@ -533,7 +544,7 @@
             </div>
           </div>
         </div>` : ''}
-        ${shown.length > 1 && !cs.mosaic && !cs.live && !cs.reel ? `<div class="cs-strip">${shown.map((src, j) => `<button type="button" data-i="${at(src)}"><img src="${thumbOf(src)}" alt="" loading="lazy" decoding="async">${j === shown.length - 1 && all.length > shown.length ? `<span class="thumb-more">+${all.length - shown.length}</span>` : ''}</button>`).join('')}</div>` : ''}`;
+        ${shown.length > 1 && !cs.mosaic && !cs.live && !cs.reel && !cs.noStrip && !cs.bento ? `<div class="cs-strip">${shown.map((src, j) => `<button type="button" data-i="${at(src)}"><img src="${thumbOf(src)}" alt="" loading="lazy" decoding="async">${j === shown.length - 1 && all.length > shown.length ? `<span class="thumb-more">+${all.length - shown.length}</span>` : ''}</button>`).join('')}</div>` : ''}`;
       listEl.appendChild(el);
 
       el.addEventListener('click', (e) => {
@@ -597,6 +608,13 @@
         const n = el.querySelector(sel); if (n) n.textContent = L[key];
       });
       el.querySelectorAll('[data-i]').forEach((b) => b.setAttribute('aria-label', `${ui().open}: ${t.title}`));
+      el.querySelectorAll('.cs-block').forEach((bl) => {
+        const b = cs.blocks[+bl.dataset.b];
+        const bt = b[lang] || b.en;
+        bl.querySelector('.b-title').textContent = bt.title;
+        bl.querySelector('.b-text').textContent = bt.text;
+      });
+      el.querySelectorAll('.cs-link').forEach((a) => { const l = cs.links[+a.dataset.l]; a.querySelector('span').textContent = l[lang] || l.en; });
       const gb = el.querySelector('.cs-games');
       if (gb) {
         const gt = cs.games[lang] || cs.games.en;
