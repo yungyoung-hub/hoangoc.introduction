@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,800;0,900;1,800&display=swap&subset=vietnamese" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/style.css?v=6">
 </head>
 <body>
   <a class="skip" href="#cases" data-i18n="skip">Skip to work</a>
@@ -87,12 +87,16 @@
         <div class="exp" aria-labelledby="exp-title">
           <h3 class="col-label" id="exp-title" data-i18n="about.exp">Experience</h3>
 
-          <article class="job">
-            <header class="job-head">
-              <p class="job-co">AWING <span class="muted">Technologies and Media</span></p>
-              <p class="job-date"><span>03/2022 – </span><span data-i18n="exp.now">Now</span></p>
-            </header>
-            <h4 class="job-role">Graphic &amp; Motion Designer</h4>
+          <details class="job">
+            <summary class="job-sumrow">
+              <span class="job-head">
+                <span class="job-co">AWING <span class="muted">Technologies and Media</span></span>
+                <span class="job-date"><span>03/2022 – </span><span data-i18n="exp.now">Now</span></span>
+              </span>
+              <span class="job-role">Graphic &amp; Motion Designer</span>
+              <span class="job-toggle" aria-hidden="true"></span>
+            </summary>
+            <div class="job-body">
             <p class="job-sum" data-i18n="x.awing.sum">I own visuals end to end, for advertisers on AWING’s Wi-Fi network and for AWING’s own brand.</p>
             <div class="scopes">
               <div class="scope">
@@ -111,19 +115,25 @@
                 </ul>
               </div>
             </div>
-          </article>
+            </div>
+          </details>
 
-          <article class="job">
-            <header class="job-head">
-              <p class="job-co">GHTK <span class="muted">Giao Hàng Tiết Kiệm</span></p>
-              <p class="job-date">08/2021 – 01/2022</p>
-            </header>
-            <h4 class="job-role">Employer Branding &amp; Designer <span class="chip" data-i18n="exp.collab">Collaborator</span></h4>
+          <details class="job">
+            <summary class="job-sumrow">
+              <span class="job-head">
+                <span class="job-co">GHTK <span class="muted">Giao Hàng Tiết Kiệm</span></span>
+                <span class="job-date">08/2021 – 01/2022</span>
+              </span>
+              <span class="job-role">Employer Branding &amp; Designer <span class="chip" data-i18n="exp.collab">Collaborator</span></span>
+              <span class="job-toggle" aria-hidden="true"></span>
+            </summary>
+            <div class="job-body">
             <ul class="job-points">
               <li data-i18n="x.ghtk.a1">Concepted and designed images, video and content for the GHTK NEXTalents recruitment fanpage.</li>
               <li data-i18n="x.ghtk.a2">Designed event collateral for Kick-off and Job Fair: brochures, banners, standees, catalogs and backdrops.</li>
             </ul>
-          </article>
+          </div>
+          </details>
 
           <div class="exp-grid">
             <div class="card">
@@ -209,10 +219,10 @@
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
   </dialog>
 
-  <script src="assets/files.js"></script>
-  <script src="assets/mockups.js"></script>
-  <script src="assets/i18n.js"></script>
-  <script src="assets/content.js"></script>
-  <script src="assets/main.js"></script>
+  <script src="assets/files.js?v=6"></script>
+  <script src="assets/mockups.js?v=6"></script>
+  <script src="assets/i18n.js?v=6"></script>
+  <script src="assets/content.js?v=6"></script>
+  <script src="assets/main.js?v=6"></script>
 </body>
 </html>

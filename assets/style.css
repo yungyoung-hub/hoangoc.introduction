@@ -782,3 +782,99 @@ html[data-lang="vi"] .case-count::after { content: ' ảnh'; }
 @media (max-width: 860px) {
   .contact .contact-card .btn, .contact .contact-card .contact-lines { grid-column: 1; grid-row: auto; }
 }
+
+/* ---------- Round 4 ---------- */
+/* Live ad artboards: a little taller so the whole phone, buttons included, stays in frame */
+.artboard { aspect-ratio: 1 / 1.1; }
+.artboard .cs-phone { bottom: 4cqw; }
+.artboard .phone-screen { aspect-ratio: 9 / 19.5; }
+/* Numbered claim steps on the phone and each flow screen */
+.ab-step {
+  position: absolute; z-index: 5; left: 50%; translate: -50% 0; top: -2.6cqw;
+  display: inline-flex; align-items: center; gap: 1.2cqw; white-space: nowrap;
+  background: var(--ink); color: #fff; border-radius: 99px; padding: .8cqw 1.8cqw .8cqw .8cqw;
+  font-size: max(10px, 1.7cqw); font-weight: 700; line-height: 1;
+}
+.ab-step b { display: grid; place-items: center; width: 3.4cqw; height: 3.4cqw; min-width: 16px; min-height: 16px; border-radius: 50%; background: #fff; color: var(--ink); font-weight: 900; }
+.ab-shot .ab-step { top: -2cqw; }
+.artboard.has-steps .ab-shot { overflow: visible; }
+.artboard.has-steps .ab-shot img { border-radius: 2.4cqw; }
+.artboard .cs-phone > .ab-step { top: -3.4cqw; }
+
+/* Cover that plays (booth screen) */
+.cs-cover.is-video video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ---------- Summit showcase: key visual, microsite on a desktop, the live game on a phone ---------- */
+.showcase {
+  position: relative; container-type: inline-size; aspect-ratio: 16 / 10; overflow: hidden;
+  border-radius: var(--r-card); background: #06134a;
+  background-image: radial-gradient(circle at 78% 30%, rgba(80, 140, 255, .35), transparent 45%), radial-gradient(circle at 20% 90%, rgba(240, 40, 70, .25), transparent 40%);
+}
+.showcase > button, .sc-desk, .sc-phone { position: absolute; }
+.showcase img { display: block; width: 100%; height: auto; }
+.sc-kv, .sc-piece { overflow: hidden; border-radius: 1cqw; box-shadow: 0 1.4cqw 3cqw rgba(0, 0, 0, .4); transition: transform .4s var(--ease); }
+.sc-kv:hover, .sc-piece:hover { transform: scale(1.03); z-index: 6; }
+.sc-kv { left: 3cqw; top: 4cqw; width: 40cqw; z-index: 2; }
+.sc-p1 { left: 3cqw; top: 29.5cqw; width: 12cqw; z-index: 2; }           /* avatar */
+.sc-p2 { left: 17cqw; top: 29.5cqw; width: 26cqw; z-index: 2; }          /* fb cover */
+.sc-p3 { left: 17cqw; top: 42cqw; width: 15cqw; z-index: 2; }        /* thank-you */
+.sc-p4 { left: 3cqw; top: 44cqw; width: 12cqw; z-index: 2; }           /* VTVcab */
+.sc-desk { left: 46cqw; top: 7cqw; width: 42cqw; z-index: 1; display: grid; justify-items: center; }
+.sc-monitor { width: 100%; background: #111; border-radius: 1.2cqw; padding: 1cqw 1cqw 2.2cqw; box-shadow: 0 2cqw 5cqw rgba(0, 0, 0, .5); }
+.sc-site { aspect-ratio: 16 / 10; overflow: hidden; border-radius: .4cqw; background: #050b2b; }
+.sc-site img { animation: sc-scroll 26s ease-in-out infinite alternate; }
+@keyframes sc-scroll { 0%, 8% { transform: translateY(0); } 92%, 100% { transform: translateY(-85%); } }
+.sc-desk:hover .sc-site img { animation-play-state: paused; }
+.sc-stand { width: 9cqw; height: 4cqw; background: linear-gradient(#2a2a2a, #111); clip-path: polygon(30% 0, 70% 0, 100% 100%, 0 100%); }
+.sc-phone { right: 3cqw; top: 16cqw; width: 17cqw; z-index: 4; }
+.sc-phone .phone { max-width: none; border-radius: 2.6cqw; padding: .7cqw; box-shadow: 0 2cqw 5cqw rgba(0, 0, 0, .55); }
+.sc-phone .phone-screen { border-radius: 2cqw; aspect-ratio: 9 / 19.5; }
+.sc-phone .live-cta { left: 6px; right: 6px; bottom: 8px; }
+.sc-tag {
+  position: absolute; z-index: 3; left: 1cqw; top: 1cqw;
+  background: #fff; color: #000; border-radius: 99px; padding: .5cqw 1.2cqw;
+  font-size: max(9px, 1.2cqw); font-weight: 800; text-transform: uppercase; letter-spacing: .02em; white-space: nowrap;
+}
+.sc-desk > .sc-tag { left: 2cqw; top: 2cqw; }
+.sc-phone > .sc-tag { left: 50%; translate: -50% 0; top: auto; bottom: -3.4cqw; background: var(--red); color: #fff; }
+@container (max-width: 700px) {
+  .sc-kv { left: 4cqw; top: 4cqw; width: 92cqw; }
+  .sc-p1 { left: 4cqw; top: 59cqw; width: 20cqw; }
+  .sc-p2 { left: 26cqw; top: 59cqw; width: 52cqw; }
+  .sc-p3, .sc-p4 { display: none; }
+  .sc-desk { left: 4cqw; top: 84cqw; width: 58cqw; }
+  .sc-phone { right: 4cqw; top: 82cqw; width: 32cqw; }
+  .sc-phone .phone { border-radius: 5cqw; padding: 1.3cqw; }
+  .sc-phone .phone-screen { border-radius: 4cqw; }
+  .sc-tag { font-size: 9px; padding: 3px 7px; }
+  .sc-phone > .sc-tag { bottom: -6cqw; }
+}
+/* the frame itself follows the viewport; the pieces inside follow the frame */
+@media (max-width: 760px) { .showcase { aspect-ratio: 100 / 160; } }
+@media (prefers-reduced-motion: reduce) { .sc-site img { animation: none; } }
+
+/* ---------- Experience: one row per company, details on demand ---------- */
+details.job { padding: 0; }
+.job-sumrow {
+  list-style: none; cursor: pointer; position: relative;
+  display: grid; gap: 10px; padding: clamp(20px, 2.6vw, 30px) clamp(56px, 6vw, 80px) clamp(20px, 2.6vw, 30px) clamp(20px, 2.6vw, 34px);
+}
+.job-sumrow::-webkit-details-marker { display: none; }
+.job-sumrow .job-head > span { display: block; }
+.job-sumrow .job-role { margin-top: 0; }
+.job-toggle {
+  position: absolute; right: clamp(18px, 2.4vw, 30px); top: 50%; translate: 0 -50%;
+  width: 38px; height: 38px; border-radius: 50%; background: var(--ink); transition: background .2s, rotate .3s var(--ease);
+}
+.job-toggle::before, .job-toggle::after { content: ''; position: absolute; left: 50%; top: 50%; width: 14px; height: 2px; background: #fff; translate: -50% -50%; }
+.job-toggle::after { rotate: 90deg; transition: rotate .3s var(--ease); }
+details.job[open] .job-toggle::after { rotate: 0deg; }
+.job-sumrow:hover .job-toggle { background: var(--red); }
+.job-sumrow:focus-visible { outline: 2px solid var(--ink); outline-offset: -4px; border-radius: var(--r-panel); }
+.job-body { padding: 0 clamp(20px, 2.6vw, 34px) clamp(20px, 2.6vw, 34px); }
+.job-body > .job-sum { margin-top: 0; }
+.job-body > .job-points { margin-top: 0; }
+.sc-piece .sc-tag { font-size: max(8px, 1cqw); left: .8cqw; top: .8cqw; }
+.artboard.is-tall { aspect-ratio: 1 / 1.18; }
+.artboard.is-tall .cs-phone { width: 34cqw; }
+@container (max-width: 520px) { .ab-step > span { display: none; } .ab-step { padding: 2px; } }
