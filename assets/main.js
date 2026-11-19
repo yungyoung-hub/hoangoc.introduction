@@ -434,7 +434,7 @@
     if (!f) return;
     const s = screen.clientWidth / AD_W;
     f.style.width = AD_W + 'px';
-    f.style.height = (screen.clientHeight / s) + 'px';
+    f.style.height = ((screen.clientHeight - f.offsetTop) / s) + 'px'; // below the phone's status bar
     f.style.transform = `scale(${s})`;
   };
   const frameRO = new ResizeObserver((es) => es.forEach((e) => fitFrame(e.target)));

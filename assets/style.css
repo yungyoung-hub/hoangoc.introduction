@@ -1094,3 +1094,36 @@ details.job[open] .job-toggle::after { rotate: 0deg; }
   .sr-item[aria-hidden="true"] { display: none; }
 }
 @media (max-width: 600px) { .sr-media { height: 240px; } }
+
+/* ---------- Phone mock-ups: iPhone with Dynamic Island + status bar ----------
+   The status bar sits above the screen content, so a 375×812 ad keeps its real ratio underneath it. */
+.phone-screen { container-type: inline-size; }
+.phone .phone-screen,
+.artboard .phone .phone-screen,
+.sc-phone .phone .phone-screen,
+.gp .phone .phone-screen { aspect-ratio: 375 / 861; }
+.phone-screen > .live-start { inset: 13cqw 0 0 0; }
+.phone-screen > iframe { top: 13cqw; }
+.phone-island { display: none; }
+.phone-screen::before,
+.rp-screen::before {
+  content: '9:41'; position: absolute; z-index: 3; left: 0; right: 0; top: 0;
+  display: flex; align-items: center; box-sizing: border-box;
+  font-family: -apple-system, 'SF Pro Text', 'Inter Tight', 'Helvetica Neue', Arial, sans-serif; font-weight: 600; color: #000; letter-spacing: -.01em; line-height: 1;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 68 12'%3E%3Cg fill='black'%3E%3Crect x='0' y='8' width='3' height='4' rx='.7'/%3E%3Crect x='4.5' y='6' width='3' height='6' rx='.7'/%3E%3Crect x='9' y='3.5' width='3' height='8.5' rx='.7'/%3E%3Crect x='13.5' y='1' width='3' height='11' rx='.7'/%3E%3Cpath d='M30 3.2a10 10 0 0 1 13 0l-1.3 1.4a8 8 0 0 0-10.4 0zM32.6 6a6 6 0 0 1 7.8 0l-1.3 1.4a4 4 0 0 0-5.2 0zM36.5 11.5l-2-2a2.8 2.8 0 0 1 4 0z'/%3E%3Crect x='48' y='1' width='16' height='10' rx='3' fill='none' stroke='black' stroke-opacity='.4'/%3E%3Crect x='50' y='3' width='12' height='6' rx='1.6'/%3E%3Crect x='65' y='4' width='1.6' height='4' rx='.8' fill-opacity='.4'/%3E%3C/g%3E%3C/svg%3E") no-repeat;
+}
+.phone-screen::after,
+.rp-screen::after {
+  content: ''; position: absolute; z-index: 4; left: 50%; translate: -50% 0;
+  background: #000; border-radius: 999px;
+}
+/* sizes for .phone (the screen is its own container) */
+.phone-screen::before { height: 13cqw; padding-left: 10cqw; font-size: 3.9cqw; background-size: 17cqw auto; background-position: right 7cqw center; }
+.phone-screen::after { top: 2.6cqw; width: 31cqw; height: 8.6cqw; }
+/* sizes for the reel phones (the phone frame is the container) */
+.rp-phone { container-type: inline-size; }
+.rp-screen { position: relative; padding-top: 12.4cqw; aspect-ratio: 9 / 20; }
+.rp-screen.is-still { aspect-ratio: 9 / 20; }
+.rp-screen::before { height: 12.4cqw; padding-left: 9.5cqw; font-size: 3.7cqw; background-size: 16cqw auto; background-position: right 6.6cqw center; }
+.rp-screen::after { top: 2.4cqw; width: 29cqw; height: 8.2cqw; }
+.rp-bar { padding-top: 6px; }
