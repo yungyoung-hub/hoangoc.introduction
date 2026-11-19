@@ -96,6 +96,9 @@
   const URLMAP = window.URLMAP || {}; // online build: original path → published path
   const url = (p) => URLMAP[p.normalize('NFC')] || encodeURI(p);
   const pad = (n) => String(n).padStart(2, '0');
+  const escA = (v) => String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+  const bi = (o) => `data-en="${escA(o.en)}" data-vi="${escA(o.vi || o.en)}"`; // text filled per language by fillBi()
+  const fillBi = (root) => (root || document).querySelectorAll('[data-en]').forEach((n) => { n.textContent = (lang === 'vi' && n.dataset.vi) || n.dataset.en; });
   const slug = (s) => 'cat-' + nfc(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
   function groupKey(path) {
@@ -416,8 +419,8 @@
   /* ---------- Featured projects: grouped, short case summaries ---------- */
   const caseEl = document.getElementById('case-list');
   const CASE_LBL = {
-    en: { role: 'Role', year: 'Year', archive: 'See more in Workspace', more: 'See more', live: 'Play the live ad', liveOpen: 'Open live preview', press: 'Read the press coverage', projects: 'projects', challenge: 'The challenge', approach: 'My approach', play: 'Play' },
-    vi: { role: 'Vai trò', year: 'Năm', archive: 'Xem thêm trong Workspace', more: 'Xem thêm', live: 'Chơi thử quảng cáo thật', liveOpen: 'Mở bản xem trước', press: 'Đọc bài báo', projects: 'dự án', challenge: 'Thử thách', approach: 'Cách tiếp cận', play: 'Chơi' },
+    en: { role: 'Role', year: 'Year', archive: 'See all in Library', more: 'See all pieces', live: 'Play the live ad', liveOpen: 'Open live preview', press: 'Read the press coverage', projects: 'projects', challenge: 'The challenge', approach: 'My approach', play: 'Play' },
+    vi: { role: 'Vai trò', year: 'Năm', archive: 'Xem tất cả trong Thư viện', more: 'Xem đủ ấn phẩm', live: 'Chơi thử quảng cáo thật', liveOpen: 'Mở bản xem trước', press: 'Đọc bài báo', projects: 'dự án', challenge: 'Thử thách', approach: 'Cách tiếp cận', play: 'Chơi' },
   };
   const ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>';
   const PLAY_I = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg>';
@@ -460,7 +463,7 @@
       }
       const all = (cs.img || []).slice();
       if (cs.cover && !all.includes(cs.cover)) all.unshift(cs.cover);
-      [...(cs.shots || []), ...(cs.bento || []), ...(cs.showcase ? [cs.showcase.kv, ...cs.showcase.pieces] : []), ...(cs.insets || []).map((x) => x.src), ...(cs.blocks || []).flatMap((b) => b.items)].forEach((src) => { if (!all.includes(src)) all.push(src); });
+      [...(cs.shots || []), ...(cs.board ? [cs.board.kv.src, ...cs.board.pieces.map((x) => x.src)] : []), ...(cs.bento || []), ...(cs.showcase ? [cs.showcase.kv, ...cs.showcase.pieces] : []), ...(cs.insets || []).map((x) => x.src), ...(cs.blocks || []).flatMap((b) => b.items)].forEach((src) => { if (!all.includes(src)) all.push(src); });
       const at = (src) => all.indexOf(src);
 
       const insets = (cs.insets || []).map((x, k) => `<button type="button" class="cs-inset" data-i="${at(x.src)}" data-k="${k}"><img src="${thumbOf(x.src)}" alt="" loading="lazy" decoding="async"><span class="sc-tag"></span></button>`).join('');
@@ -503,6 +506,15 @@
             <span class="sc-tag">AXN mini-game · live</span>
           </div>
         </div>`;
+      } else if (cs.board) {
+        const bd = cs.board;
+        const media = (x) => isVideo(x.src)
+          ? `<video src="${url(x.src)}"${x.poster ? ` poster="${url(x.poster)}"` : ''} muted loop playsinline autoplay preload="metadata"></video>`
+          : `<img src="${url(x.src)}" alt="" loading="lazy" decoding="async">`;
+        visual = `<div class="cs-visual board bd-n${bd.pieces.length}${bd.dark ? ' is-dark' : ''}" style="--bd-bg:${bd.bg};--bd-bg2:${bd.bg2 || bd.bg}">
+          <button type="button" class="bd-kv" data-i="${at(bd.kv.src)}"><span class="bd-media">${media(bd.kv)}</span><span class="sc-tag" ${bi(bd.kv)}></span></button>
+          ${bd.pieces.map((x) => `<button type="button" class="bd-piece" data-i="${at(x.src)}"><span class="bd-media">${media(x)}</span><span class="bd-name" ${bi(x)}></span></button>`).join('')}
+        </div>`;
       } else if (cs.coverVideo) {
         visual = `<div class="cs-visual"><button type="button" class="cs-cover is-video" data-i="${at(cs.coverVideo)}"><video src="${url(cs.coverVideo)}" poster="${url(cs.cover)}" muted loop playsinline autoplay preload="metadata"></video></button>${insets ? `<div class="cs-insets">${insets}</div>` : ''}</div>`;
       } else if (cs.bento) {
@@ -518,11 +530,11 @@
       const shown = all.slice(0, MAX_THUMBS);
       const moreRow = all.length > 1 ? `<div class="cs-morerow">
           <div class="mr-thumbs">${shown.slice(0, 6).map((src) => `<button type="button" data-i="${at(src)}"><img src="${thumbOf(src)}" alt="" loading="lazy" decoding="async"></button>`).join('')}</div>
-          <button type="button" class="mr-btn" data-i="0"><span class="lbl-more"></span> (${all.length})${ARROW}</button>
+          <a class="mr-btn" href="library.html#project-${cs.id}"><span class="lbl-more"></span> (${cs.deliver ? cs.deliver.reduce((n, g) => n + g.items.length, 0) : all.length})${ARROW}</a>
         </div>` : '';
 
       const el = document.createElement('article');
-      el.className = 'cs' + (cs.live ? ' has-live' : '') + (cs.reel || cs.showcase ? ' has-reel' : '');
+      el.className = 'cs' + (cs.live ? ' has-live' : '') + (cs.reel || cs.showcase || cs.board ? ' has-reel' : '');
       el.id = 'case-' + cs.id;
       el.innerHTML = `
         <div class="cs-head reveal">
@@ -540,7 +552,6 @@
           ${cs.post ? `<a class="cs-post" href="${cs.post.url}" target="_blank" rel="noopener"><img src="${url(cs.post.thumb)}" alt="" loading="lazy" decoding="async"><span class="cp-text"><span class="cp-kind"></span><span class="cp-title"></span></span>${ARROW}</a>` : ''}
           ${cs.facts ? `<ul class="cs-facts">${cs.facts.map((f) => `<li><b>${f.n}</b><span></span></li>`).join('')}</ul>` : ''}
           <div class="cs-actions">
-            ${arc ? `<a class="btn btn-outline cs-archive" href="workspace.html#${data[arc.ci].id}"><span class="lbl-archive"></span>${ARROW}</a>` : ''}
             ${(cs.links || []).map((l, li) => `<a class="btn btn-ink cs-link" data-l="${li}" href="${l.url}" target="_blank" rel="noopener"><span></span>${ARROW}</a>`).join('')}
             ${cs.press ? `<a class="btn-link" href="${cs.press.url}" target="_blank" rel="noopener"><span class="lbl-press"></span> (${cs.press.label})${ARROW}</a>` : ''}
           </div>
@@ -552,7 +563,7 @@
             ? `<div class="phone-row">${b.items.map((src) => `<button type="button" class="pr-item" data-i="${at(src)}"><span class="rp-phone"><span class="rp-screen is-still"><img src="${url(src)}" alt="" loading="lazy" decoding="async"></span></span></button>`).join('')}</div>`
             : `<div class="bento is-wide">${b.items.map((src) => `<button type="button" data-i="${at(src)}"><img src="${url(src)}" alt="" loading="lazy" decoding="async"></button>`).join('')}</div>`}
         </div>`).join('')}
-        ${cs.games ? `<div class="cs-games">
+        ${cs.games ? `<div class="cs-games is-row">
           <div class="games-copy">
             <p class="games-eyebrow">${PLAY_I}<span class="g-title"></span></p>
             <p class="g-text"></p>
@@ -561,17 +572,14 @@
               <li><span class="gf-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1"/></svg></span><span class="gf-t"></span></li>
               <li><span class="gf-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="11" rx="4"/><path d="M8 11v3M6.5 12.5h3M15 11.5h.01M17.5 13.5h.01"/></svg></span><span class="gf-t"></span></li>
             </ol>
-            <ol class="game-list" role="tablist">${cs.games.list.map((g, j) => `<li><button type="button" class="game-pick" role="tab" data-g="${j}" aria-selected="${j === 0}"><span class="game-thumb">${g.thumb ? `<img src="${url(g.thumb)}" alt="" loading="lazy" decoding="async">` : ''}</span><span class="chip">Game ${pad(j + 1)}</span><span class="game-name"></span></button></li>`).join('')}</ol>
-            <a class="btn-link live-link game-link" href="${cs.games.list[0].url}" target="_blank" rel="noopener"><span class="lbl-liveopen"></span>${ARROW}</a>
           </div>
-          <div class="cs-phone">
-            <div class="phone">
-              <span class="phone-btn b1" aria-hidden="true"></span><span class="phone-btn b2" aria-hidden="true"></span><span class="phone-btn b3" aria-hidden="true"></span>
-              <div class="phone-screen">
-                <button type="button" class="live-start game-start">${(cs.games.list[0].thumb || cs.cover) ? `<img src="${url(cs.games.list[0].thumb || cs.cover)}" alt="" loading="lazy">` : ''}<span class="live-cta">${PLAY_I}<span class="game-cta"></span></span></button>
-              </div>
-            </div>
-          </div>
+          <ol class="game-phones">${cs.games.list.map((g, j) => `<li class="gp">
+            <div class="cs-phone"><div class="phone"><div class="phone-screen">
+              <button type="button" class="live-start no-auto" data-src="${g.url}">${g.thumb ? `<img src="${url(g.thumb)}" alt="" loading="lazy" decoding="async">` : ''}<span class="live-cta">${PLAY_I}<span class="game-cta"></span></span></button>
+            </div></div></div>
+            <p class="gp-name"><span class="chip">${pad(j + 1)}</span><span class="game-name"></span></p>
+            <a class="btn-link live-link gp-open" href="${g.url}" target="_blank" rel="noopener"><span class="lbl-liveopen"></span>${ARROW}</a>
+          </li>`).join('')}</ol>
         </div>` : ''}
 `;
       listEl.appendChild(el);
@@ -609,7 +617,7 @@
         frameRO.observe(screen);
       };
       // Creative ads start playing on their own once scrolled into view
-      el.querySelectorAll('.live-start').forEach((ls) => { ls._start = () => startLive(ls); liveIO.observe(ls); });
+      el.querySelectorAll('.live-start:not(.no-auto)').forEach((ls) => { ls._start = () => startLive(ls); liveIO.observe(ls); });
       cases.push({ cs, el });
     });
     cases.push({ group: g, el: gEl });
@@ -630,6 +638,61 @@
       }).join('')}</ul>`;
       caseIndex.appendChild(row);
     });
+  }
+
+  /* ---------- Library: every featured project as a full, named list of its pieces ---------- */
+  const libList = document.getElementById('lp-list');
+  const projView = document.getElementById('project-view');
+  const sheetOf = (cs) => {
+    if (cs.deliver) return cs.deliver;
+    const srcs = [cs.cover, ...(cs.img || [])].filter((src, k, arr) => src && arr.indexOf(src) === k);
+    return [{ en: 'All pieces', vi: 'Toàn bộ ấn phẩm', items: srcs.map((src) => { const cp = capOf(src); return { src, en: cp ? cp.en : '', vi: cp ? (cp.vi || cp.en) : '' }; }) }];
+  };
+  if (libList) (window.CASES || []).forEach((cs, k) => {
+    const n = sheetOf(cs).reduce((sum, g) => sum + g.items.length, 0);
+    const li = document.createElement('li');
+    li.innerHTML = `<a href="#project-${cs.id}" data-p="${cs.id}"><span class="lp-media"><img src="${thumbOf(cs.cover || cs.img[0])}" alt="" loading="lazy" decoding="async"></span><span class="lp-text"><span class="lp-top"><span class="lp-no">${pad(k + 1)}</span><span class="lp-client">${cs.client}</span></span><span class="lp-title" ${bi({ en: cs.en.title, vi: (cs.vi || cs.en).title })}></span><span class="lp-count">${pad(n)} <span ${bi({ en: 'pieces', vi: 'ấn phẩm' })}></span></span></span></a>`;
+    libList.appendChild(li);
+  });
+  function renderSheet(id, scroll) {
+    if (!projView) return;
+    const cs = (window.CASES || []).find((c) => c.id === id);
+    if (libList) libList.querySelectorAll('a').forEach((a) => a.classList.toggle('is-active', a.dataset.p === id));
+    if (!cs) { projView.innerHTML = ''; return; }
+    const groups = sheetOf(cs);
+    const items = groups.flatMap((g) => g.items);
+    const tv = cs.vi || cs.en;
+    let k = 0;
+    projView.innerHTML = `<article class="psheet" id="project-${cs.id}">
+      <header class="ps-head">
+        <p class="case-no"><span class="chip">${cs.client}</span>${cs.year ? `<span class="case-idx">${cs.year}</span>` : ''}</p>
+        <h2 class="ps-title" ${bi({ en: cs.en.title, vi: tv.title })}></h2>
+        <p class="ps-role"><b ${bi({ en: 'Role', vi: 'Vai trò' })}></b><span ${bi({ en: cs.en.role, vi: tv.role })}></span></p>
+        <ul class="case-tags">${cs.tags.map((t) => `<li>${t}</li>`).join('')}</ul>
+        <a class="btn btn-outline ps-back" href="index.html#case-${cs.id}"><span ${bi({ en: 'Read the case study', vi: 'Xem phần giới thiệu dự án' })}></span>${ARROW}</a>
+      </header>
+      ${groups.map((g) => `<section class="ps-group">
+        <h3 class="ps-gtitle"><span ${bi(g)}></span><sup>${pad(g.items.length)}</sup></h3>
+        <div class="ps-grid">${g.items.map((x) => {
+          const i = k++;
+          const m = isVideo(x.src)
+            ? `<video src="${url(x.src)}" poster="${x.poster ? url(x.poster) : posterOf(x.src)}" muted playsinline preload="none"></video><span class="tile-play">${PLAY}</span>`
+            : `<img src="${url(x.src)}" alt="" loading="lazy" decoding="async">`;
+          return `<figure class="ps-item"><button type="button" data-k="${i}">${m}</button>${x.en ? `<figcaption ${bi(x)}></figcaption>` : ''}</figure>`;
+        }).join('')}</div>
+      </section>`).join('')}
+    </article>`;
+    projView.querySelector('.psheet').addEventListener('click', (e) => {
+      const b = e.target.closest('[data-k]');
+      if (b) openList(items.map((x) => x.src), +b.dataset.k, cs, items);
+    });
+    fillBi(projView);
+    if (scroll) projView.firstElementChild.scrollIntoView({ block: 'start', behavior: reduceMotion ? 'auto' : 'smooth' });
+  }
+  const hashProject = () => { const m = location.hash.match(/^#project-(.+)$/); return m ? decodeURIComponent(m[1]) : null; };
+  if (projView) {
+    renderSheet(hashProject(), false);
+    addEventListener('hashchange', () => { const id = hashProject(); if (id) renderSheet(id, true); });
   }
 
   function renderCaseText() {
@@ -657,7 +720,7 @@
       const q = el.querySelector('.cs-quote, .artboard');
       if (q && cs.quote) { q.querySelector('.q').textContent = cs.quote[lang] || cs.quote.en; q.querySelector('.q-sub').textContent = cs.quote.sub[lang] || cs.quote.sub.en; }
       [['.lbl-archive', 'archive'], ['.lbl-more', 'more'], ['.lbl-live', 'live'], ['.lbl-liveopen', 'liveOpen'], ['.lbl-press', 'press'], ['.l-challenge', 'challenge'], ['.l-approach', 'approach']].forEach(([sel, key]) => {
-        const n = el.querySelector(sel); if (n) n.textContent = L[key];
+        el.querySelectorAll(sel).forEach((n) => { n.textContent = L[key]; });
       });
       el.querySelectorAll('[data-i]').forEach((b) => b.setAttribute('aria-label', `${ui().open}: ${t.title}`));
       el.querySelectorAll('.cs-block').forEach((bl) => {
@@ -677,12 +740,14 @@
         gb.querySelector('.g-title').textContent = gt.title;
         gb.querySelector('.g-text').textContent = gt.text;
         gb.querySelectorAll('.gf-t').forEach((n, j) => { n.textContent = (gt.flow || [])[j] || ''; });
-        gb.querySelectorAll('.game-pick').forEach((b, j) => { b.querySelector('.game-name').textContent = cs.games.list[j][lang] || cs.games.list[j].en; });
-        const on = +gb.querySelector('.game-pick[aria-selected="true"]').dataset.g;
-        const cta = gb.querySelector('.game-cta');
-        if (cta) cta.textContent = `${L.play}: ${cs.games.list[on][lang] || cs.games.list[on].en}`;
+        gb.querySelectorAll('.gp').forEach((li, j) => {
+          const g = cs.games.list[j];
+          li.querySelector('.game-name').textContent = g[lang] || g.en;
+          li.querySelector('.game-cta').textContent = L.play;
+        });
       }
     });
+    fillBi();
   }
 
   /* ---------- Apply language ---------- */
@@ -783,7 +848,8 @@
     const im = stage.querySelector('img'); if (im) im.alt = `${list.cs.client}: ${t.title}`;
     cap.innerHTML = `<span class="lb-title"><b></b> <span></span></span><span class="lb-no">${pad(i + 1)} / ${pad(list.items.length)}</span>`;
     cap.querySelector('.lb-title b').textContent = list.cs.client;
-    cap.querySelector('.lb-title span').textContent = t.title;
+    const nm = list.names && list.names[i];
+    cap.querySelector('.lb-title span').textContent = nm && nm.en ? `${t.title} · ${(lang === 'vi' && nm.vi) || nm.en}` : t.title;
   }
   function step(d) { if (cur.list) showList(cur.list, cur.i + d); else show(cur.ci, cur.i + d); }
   function open(ci, i) {
@@ -791,9 +857,9 @@
     if (!lb.open) lb.showModal();
     document.body.style.overflow = 'hidden';
   }
-  function openList(all, i, cs) {
+  function openList(all, i, cs, names) {
     const items = all.filter(Boolean);
-    showList({ items, cs }, Math.max(0, items.indexOf(all[i])));
+    showList({ items, cs, names }, Math.max(0, items.indexOf(all[i])));
     if (!lb.open) lb.showModal();
     document.body.style.overflow = 'hidden';
   }
@@ -1035,6 +1101,6 @@
       addEventListener('load', () => setTimeout(go, 60), { once: true }); // again once images have settled the layout
     }
   }
-  if (/workspace\.html$/.test(location.pathname)) document.querySelectorAll('[data-nav="workspace"]').forEach((a) => a.setAttribute('aria-current', 'page'));
+  if (/(library|workspace)\.html$/.test(location.pathname)) document.querySelectorAll('[data-nav="workspace"]').forEach((a) => a.setAttribute('aria-current', 'page'));
 
 })();

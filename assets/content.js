@@ -10,10 +10,10 @@ Object.assign(window.I18N_VI, {
   'stats.brands': 'thương hiệu, từ FMCG, ngân hàng đến bất động sản',
   'stats.award': 'Chiến dịch lọt shortlist MMA Smarties Việt Nam 2026',
   'brands.label': 'Thương hiệu<br>tôi đã thiết kế',
-  'cases.title': 'Dự án chọn lọc',
+  'cases.title': 'Dự án nổi bật',
   'nav.hire': 'Thuê tôi',
   'nav.about': 'Về tôi',
-  'nav.workspace': 'Workspace',
+  'nav.workspace': 'Thư viện',
   'about.title': 'Về tôi',
   'about.contact': 'Liên hệ',
   'about.exp': 'Kinh nghiệm',
@@ -32,7 +32,7 @@ Object.assign(window.I18N_VI, {
   'x.ghtk.a1': 'Lên ý tưởng và thiết kế hình ảnh, video, nội dung cho fanpage tuyển dụng GHTK NEXTalents.',
   'x.ghtk.a2': 'Thiết kế ấn phẩm cho sự kiện Kick-off và Job Fair: brochure, banner, standee, catalog và backdrop.',
   'contact.copy': 'Copy email',
-  'work.more': 'Xem toàn bộ Workspace',
+  'work.more': 'Xem toàn bộ Thư viện',
   'reel.hint': 'Rê chuột để dừng, bấm vào để xem',
   'hero.tab': 'Tóm tắt<br>nhanh',
   'hero.cta': 'Xem dự án chọn lọc',
@@ -65,8 +65,11 @@ Object.assign(window.I18N_VI, {
   'sk.print': 'Sản xuất in ấn &amp; bao bì',
   'contact.lead': 'Bạn đang tìm một senior graphic designer có thể đưa thương hiệu hay chiến dịch từ một ý tưởng đến mọi điểm chạm? Tôi rất mong được trò chuyện cùng bạn.',
   'contact.avail': 'Hà Nội · Sẵn sàng cho vị trí Senior Graphic Designer toàn thời gian',
-  'work.title': 'Kho tác phẩm',
-  'work.lead': 'Toàn bộ tác phẩm theo nhóm. Di chuột để xem trước, bấm để mở.',
+  'work.title': 'Thư viện',
+  'lib.projects': 'Dự án nổi bật',
+  'lib.projectsLead': 'Mỗi dự án với đầy đủ ấn phẩm và tên từng ấn phẩm. Chọn một dự án để xem.',
+  'lib.cats': 'Theo hạng mục',
+  'work.lead': 'Toàn bộ tác phẩm: theo từng dự án, rồi theo hạng mục. Bấm vào ấn phẩm để xem lớn.',
 });
 
 // Caption for each piece, matched against the (lowercase, no extension) name of the piece's first file
@@ -261,7 +264,7 @@ window.CASES = [
       game: 'https://acm-ssl.awingconnect.vn/Preview/Page?loginId=29555&isNetworkCampaign=false&welcomeId=29540&workspaceId=119',
       poster: S26 + 'game-1.jpg',
       pieces: [S26 + 'avatar.jpg', S26 + 'fb-cover.jpg', S26 + 'thank-you.jpg', S26 + 'vtv-1920.jpg', S26 + 'network-post.jpg'],
-      tags: ['Avatar', 'Social & email', 'Thank-you post', 'VTVcab', 'Network post'],
+      tags: ['Avatar', 'Social & email', 'Thank-you post', 'VTVcab', 'Social post'],
     },
     links: [
       { url: 'https://awing.vn/summit2026/', en: 'Visit the microsite', vi: 'Xem microsite' },
@@ -289,10 +292,6 @@ window.CASES = [
   {
     id: 'ntt', group: 'branding', client: 'AWING × NTT e-Asia', year: '2024',
     cover: 'assets/projects/ntt/mockup-cover.jpg',
-    insets: [
-      { src: M + 'event-3d-1.jpg', en: '3D stage', vi: 'Sân khấu 3D' },
-      { src: P + 'backdrop.jpg', en: 'Backdrop', vi: 'Backdrop' },
-    ],
     tags: ['Event identity', 'Bilingual JP–VN', 'Print', '3D preview'],
     match: { cat: 'Packaging & Event Assets', re: /^backdrop$/ },
     facts: [
@@ -319,10 +318,6 @@ window.CASES = [
     cover: 'assets/projects/mma/booth-live.jpg', year: '2024',
     // The booth's giant phone plays the real Wi-Fi login ad
     coverVideo: 'assets/projects/mma/booth-live.mp4',
-    insets: [
-      { src: 'assets/projects/mma/booth-photo.jpg', en: 'On site', vi: 'Thực tế' },
-      { src: M + 'brochure.jpg', en: 'Brochure', vi: 'Brochure' },
-    ],
     tags: ['Tech exhibition & conference', 'Exhibition booth', 'Print', '3D preview'],
     facts: [
       { n: 'Sheraton', en: 'Sheraton Saigon Hotel, Ho Chi Minh City', vi: 'Sheraton Saigon Hotel, TP. Hồ Chí Minh' },
@@ -366,22 +361,7 @@ window.CASES = [
   {
     id: 'tet-gift', group: 'branding', client: 'AWING', year: '2025',
     cover: T + 'mockup-set.jpg',
-    insets: [
-      { src: T + 'mockup-calendar.jpg', en: 'Calendar', vi: 'Lịch' },
-      { src: 'assets/thumbs/game-race.jpg', en: 'Mini-game', vi: 'Mini-game' },
-    ],
     tags: ['Packaging', 'Illustration', 'Print', 'Interactive ad'],
-    // Playable Wi-Fi login ads from the same Tết campaign (loaded only when someone presses play)
-    games: {
-      en: { title: 'Interactive ad games', text: 'The card is the way in: scanning its QR code opens a Year of the Horse mini-game on AWING’s Wi-Fi. Partners don’t just read about the product, they play it. Four games, also run at the Wi-Fi login on AWING’s Indonesia network.', flow: ['Scan the QR on the card', 'AWING Wi-Fi opens', 'Play for a New Year wish'] },
-      vi: { title: 'Game quảng cáo tương tác', text: 'Tấm thiệp là cánh cửa: quét mã QR trên thiệp sẽ mở ra mini-game năm Ngọ trên Wi-Fi của AWING. Đối tác không chỉ đọc về sản phẩm mà được tự tay chơi thử. Bốn game, cũng được chạy ở bước đăng nhập Wi-Fi trên mạng lưới AWING tại Indonesia.', flow: ['Quét QR trên thiệp', 'Mở Wi-Fi AWING', 'Chơi nhận lời chúc năm mới'] },
-      list: [
-        { en: 'Pick a lucky envelope', vi: 'Bốc lì xì', thumb: 'assets/thumbs/game-lixi.jpg', url: 'https://idn-v2.awingconnect.com/Preview/Page?loginId=5265106705614061557&isNetworkCampaign=false&welcomeId=5663604314126222311&domainId=5646091380681943759' },
-        { en: 'Horse race to the finish', vi: 'Đua ngựa về đích', thumb: 'assets/thumbs/game-race.jpg', url: 'https://idn-v2.awingconnect.com/Preview/Page?loginId=5470402143572102442&isNetworkCampaign=false&welcomeId=5064870397801633495&domainId=5646091380681943759' },
-        { en: 'Spring outing', vi: 'Du xuân', thumb: 'assets/thumbs/game-outing.jpg', url: 'https://idn-v2.awingconnect.com/Preview/Page?loginId=5499318800362822238&isNetworkCampaign=false&welcomeId=5179422562419603203&domainId=5646091380681943759' },
-        { en: 'Fill in the word', vi: 'Điền từ', thumb: 'assets/thumbs/game-word.jpg', url: 'https://idn-v2.awingconnect.com/Preview/Page?loginId=5038614085085406563&isNetworkCampaign=false&welcomeId=4784869692034810324&domainId=5646091380681943759' },
-      ],
-    },
     match: { cat: 'Packaging & Event Assets', re: /ny gift_box/ },
     facts: [
       { n: '6', en: 'touchpoints: box, stickers, product cards, calendar, postcards, mug', vi: 'điểm chạm: hộp, sticker, thẻ sản phẩm, lịch, postcard, cốc' },
@@ -423,7 +403,7 @@ window.CASES = [
   },
 ];
 
-// Short names for the project index under "Selected work".
+// Short names for the project index under "Featured projects".
 window.CASE_SHORT = {
   'summit-2026': { en: 'AWING Summit 2026', vi: 'AWING Summit 2026' },
   'tet-gift': { en: 'Tết gift set “Mở”', vi: 'Bộ quà Tết “Mở”' },
@@ -440,3 +420,103 @@ window.CASE_SHORT = {
 // Display order inside each group: strongest system-level work first.
 const CASE_ORDER = ['summit-2026', 'tet-gift', 'ntt', 'lixi-2025', 'mma-booth', 'weather', 'garnier', 'omo', 'yuzu', 'motion'];
 window.CASES.sort((a, b) => (CASE_ORDER.indexOf(a.id) + 1 || 99) - (CASE_ORDER.indexOf(b.id) + 1 || 99));
+
+// ---------- Event boards (featured page) and project sheets (Library) ----------
+// board: one key visual plus up to 8 named pieces, laid out in a grid like the Summit showcase (nothing overlaps).
+// deliver: every piece of the project, grouped and named; shown in full on library.html#project-<id>.
+(() => {
+  const byId = (id) => window.CASES.find((c) => c.id === id);
+  const S = 'assets/projects/summit/', T = 'assets/projects/tet-gift/', M = 'assets/mockups/', P = 'Packaging & Event Assets/', NT = 'assets/projects/ntt/', MA = 'assets/projects/mma/';
+  const LX = (n) => P + `AWING_lì xì thiệp tết 2025_printed version_v1.0-0${n}.png`;
+  const it = (src, en, vi) => ({ src, en, vi: vi || en });
+
+  Object.assign(byId('summit-2026'), {
+    deliver: [
+      { en: 'Key visual & social', vi: 'Key visual & mạng xã hội', items: [it(S + 'mail-thumb.jpg', 'Key visual · email header', 'Key visual · email'), it(S + 'avatar.jpg', 'Avatar'), it(S + 'fb-cover.jpg', 'Facebook cover', 'Ảnh bìa Facebook'), it(S + 'link-thumb.jpg', 'Link thumbnail', 'Thumbnail link')] },
+      { en: 'Social posts', vi: 'Bài đăng mạng xã hội', items: [it(S + 'network-post.jpg', 'Social post', 'Bài đăng'), it(S + 'thank-you.jpg', 'Thank-you post', 'Bài cảm ơn')] },
+      { en: 'Wi-Fi mini-game', vi: 'Mini-game Wi-Fi', items: [it(S + 'game-1.jpg', 'Start screen', 'Màn bắt đầu'), it(S + 'game-2.jpg', 'Card matching', 'Lật thẻ'), it(S + 'game-3.jpg', 'In play', 'Đang chơi'), it(S + 'game-win.jpg', 'Win screen', 'Màn thắng'), it(S + 'game-lose.jpg', 'Try again', 'Màn chơi lại')] },
+      { en: 'Microsite', vi: 'Microsite', items: [it(S + 'microsite-desktop.jpg', 'Desktop'), it(S + 'microsite-mobile.jpg', 'Mobile')] },
+      { en: 'VTVcab & venue screens', vi: 'VTVcab & màn hình sự kiện', items: [it(S + 'vtv-1920.jpg', 'VTVcab banner'), it(S + 'vtv-app-web.jpg', 'VTVcab app · web'), it(S + 'vtv-app-mobile.jpg', 'VTVcab app · mobile'), it(S + 'vtv-app-popup.jpg', 'VTVcab app · pop-up'), it(S + 'vtv-1160.jpg', 'Placement 1160'), it(S + 'vtv-1074.jpg', 'Placement 1074'), it(S + 'vtv-stage.jpg', 'Stage screen', 'Màn hình sân khấu')] },
+    ],
+  });
+
+  Object.assign(byId('tet-gift'), {
+    board: {
+      bg: '#8F141B', bg2: '#C8262E', dark: true,
+      kv: it(T + 'mockup-set.jpg', 'Gift set', 'Bộ quà'),
+      pieces: [
+        it(M + 'gift-box.jpg', 'Gift box', 'Hộp quà'), it(T + 'mockup-calendar.jpg', 'Cards × calendar', 'Thẻ × lịch'),
+        it(T + 'product-card-2.jpg', 'Product card', 'Thẻ sản phẩm'), it(T + 'mockup-postcards.jpg', 'Postcards', 'Postcard'),
+        it(T + 'sticker.jpg', 'Sticker sheet', 'Sticker'), it(T + 'mug-1.jpg', 'Mug', 'Cốc'),
+        it(T + 'box.jpg', 'Box dieline', 'Dieline hộp'), it(T + 'postcard-hn-1.jpg', 'Office postcard', 'Postcard văn phòng'),
+      ],
+    },
+    games: {
+      en: { title: 'Interactive ad games', text: 'The card is the way in: its QR code opens AWING’s Wi-Fi login, then a Year of the Horse mini-game. Partners don’t just read about the product, they play it. Tap a phone to play the live demo.', flow: ['Scan the QR on the card', 'AWING Wi-Fi opens', 'Play for a New Year wish'] },
+      vi: { title: 'Game quảng cáo tương tác', text: 'Tấm thiệp là cánh cửa: mã QR mở màn đăng nhập Wi-Fi của AWING, rồi đến mini-game năm Ngọ. Đối tác không chỉ đọc về sản phẩm mà được tự tay chơi thử. Chạm vào từng điện thoại để chơi bản demo thật.', flow: ['Quét QR trên thiệp', 'Wi-Fi AWING mở ra', 'Chơi để nhận lời chúc năm mới'] },
+      list: [
+        { en: 'Wi-Fi login', vi: 'Đăng nhập Wi-Fi', thumb: 'assets/thumbs/tet26-login.jpg', url: 'https://acm-ssl.awingconnect.vn/Preview/Page?loginId=24559&isNetworkCampaign=false&welcomeId=24558&workspaceId=290' },
+        { en: 'Mã đáo: fill in the word', vi: 'Mã đáo: điền từ', thumb: 'assets/thumbs/tet26-madao.jpg', url: 'https://acm-ssl.awingconnect.vn/Preview/Page?loginId=24355&isNetworkCampaign=false&welcomeId=24558&workspaceId=290' },
+        { en: 'Race the horse home', vi: 'Đưa ngựa về đích', thumb: 'assets/thumbs/tet26-race.jpg', url: 'https://acm-ssl.awingconnect.vn/Preview/Page?loginId=24356&isNetworkCampaign=false&welcomeId=24558&workspaceId=290' },
+        { en: 'Pick a lucky envelope', vi: 'Bốc lì xì', thumb: 'assets/thumbs/tet26-lixi.jpg', url: 'https://acm-ssl.awingconnect.vn/Preview/Page?loginId=24357&isNetworkCampaign=false&welcomeId=24558&workspaceId=290' },
+      ],
+    },
+    deliver: [
+      { en: 'Gift set & box', vi: 'Bộ quà & hộp', items: [it(T + 'mockup-set.jpg', 'Full set', 'Trọn bộ'), it(M + 'gift-box.jpg', 'Gift box', 'Hộp quà'), it(T + 'box.jpg', 'Box dieline', 'Dieline hộp'), it(T + 'box-front.png', 'Box · front', 'Hộp · mặt trước'), it(T + 'box-lid.png', 'Box · lid', 'Hộp · nắp'), it(P + 'AWING_NY Gift_box_v1.0.png', 'Box print file', 'File in hộp')] },
+      { en: 'Product cards & 12-month calendar', vi: 'Thẻ sản phẩm & lịch 12 tháng', items: [it(T + 'mockup-calendar.jpg', 'Cards with calendar', 'Thẻ kèm lịch'), it(T + 'product-card-9.jpg', 'Cover card', 'Thẻ bìa'), it(T + 'product-card-2.jpg', 'Muối Bạc Liêu'), it(T + 'product-card-4.jpg', 'Mỳ Gạo'), it(T + 'product-card-6.jpg', 'Hoa Quả Sấy'), it(T + 'product-card-8.jpg', 'Hồng Trà'), it(T + 'product-card-1.jpg', 'Calendar · Jan–Mar', 'Lịch · tháng 1–3'), it(T + 'product-card-3.jpg', 'Calendar · Apr–Jun', 'Lịch · tháng 4–6'), it(T + 'product-card-5.jpg', 'Calendar · Jul–Sep', 'Lịch · tháng 7–9'), it(T + 'product-card-7.jpg', 'Calendar · Oct–Dec', 'Lịch · tháng 10–12'), it(T + 'product-card-10.jpg', 'Tết message card', 'Thẻ lời chúc Tết')] },
+      { en: 'Postcards · three offices', vi: 'Postcard · ba văn phòng', items: [it(T + 'mockup-postcards.jpg', 'Postcard set', 'Bộ postcard'), it(T + 'postcard-hn-1.jpg', 'Hanoi · front', 'Hà Nội · mặt trước'), it(T + 'postcard-hn-2.jpg', 'Hanoi · back', 'Hà Nội · mặt sau'), it(T + 'postcard-hcm-1.jpg', 'HCMC · front', 'TP.HCM · mặt trước'), it(T + 'postcard-hcm-2.jpg', 'HCMC · back', 'TP.HCM · mặt sau'), it(T + 'postcard-idn-1.jpg', 'Indonesia · front', 'Indonesia · mặt trước'), it(T + 'postcard-idn-2.jpg', 'Indonesia · back', 'Indonesia · mặt sau')] },
+      { en: 'Sticker & mug', vi: 'Sticker & cốc', items: [it(T + 'sticker.jpg', 'Sticker sheet', 'Tấm sticker'), it(P + 'AWING_NY Gift_Sticker_v1.2.png', 'Sticker print file', 'File in sticker'), it(T + 'mug-1.jpg', 'Mug · dark', 'Cốc · nền tối'), it(T + 'mug-2.jpg', 'Mug · skyline', 'Cốc · skyline')] },
+      { en: 'Wi-Fi mini-games', vi: 'Mini-game Wi-Fi', items: [it('assets/thumbs/tet26-login.jpg', 'Wi-Fi login', 'Đăng nhập Wi-Fi'), it('assets/thumbs/tet26-madao.jpg', 'Mã đáo: fill in the word', 'Mã đáo: điền từ'), it('assets/thumbs/tet26-race.jpg', 'Race the horse home', 'Đưa ngựa về đích'), it('assets/thumbs/tet26-lixi.jpg', 'Pick a lucky envelope', 'Bốc lì xì')] },
+    ],
+  });
+
+  Object.assign(byId('ntt'), {
+    board: {
+      bg: '#E3F1FA', bg2: '#BFDDF2',
+      kv: it(NT + 'mockup-cover.jpg', 'Event identity', 'Nhận diện sự kiện'),
+      pieces: [
+        it(M + 'event-3d-1.jpg', '3D stage preview', 'Mô phỏng 3D sân khấu'), it(P + 'backdrop.jpg', 'Stage backdrop', 'Backdrop sân khấu'),
+        it(P + 'thư mời awing ver mới-01.png', 'Invitation', 'Thư mời'), it(NT + 'mockup-stationery.jpg', 'Stationery', 'Ấn phẩm'),
+        it(NT + 'thank-you-card-front.jpg', 'Thank-you card', 'Thiệp cảm ơn'), it(NT + 'thank-you-card-inside.jpg', 'Press letter', 'Thư gửi báo chí'),
+        it(NT + 'event-1.jpg', 'On the day', 'Ngày sự kiện'), it(NT + 'event-2.jpg', 'Signing on stage', 'Ký kết trên sân khấu'),
+      ],
+    },
+    deliver: [
+      { en: 'Event identity', vi: 'Nhận diện sự kiện', items: [it(NT + 'mockup-cover.jpg', 'Identity overview', 'Tổng quan nhận diện'), it(P + 'backdrop.jpg', 'Stage backdrop', 'Backdrop sân khấu')] },
+      { en: '3D stage preview', vi: 'Mô phỏng 3D sân khấu', items: [it(M + 'event-3d-1.jpg', 'Room view', 'Toàn cảnh'), it(M + 'event-3d-2.jpg', 'Stage view', 'Góc sân khấu')] },
+      { en: 'Invitation & stationery', vi: 'Thư mời & ấn phẩm', items: [it(NT + 'mockup-stationery.jpg', 'Stationery set', 'Bộ ấn phẩm'), it(P + 'thư mời awing ver mới-01.png', 'Invitation', 'Thư mời'), it(NT + 'thank-you-card-front.jpg', 'Thank-you card', 'Thiệp cảm ơn'), it(NT + 'thank-you-card-inside.jpg', 'Press thank-you letter', 'Thư cảm ơn báo chí')] },
+      { en: 'On the day', vi: 'Ngày sự kiện', items: [it(NT + 'event-1.jpg', 'Ballroom', 'Hội trường'), it(NT + 'event-2.jpg', 'Signing on stage', 'Ký kết trên sân khấu')] },
+    ],
+  });
+
+  Object.assign(byId('mma-booth'), {
+    board: {
+      bg: '#F1F1F1', bg2: '#FFD9DB',
+      kv: { src: MA + 'booth-live.mp4', poster: MA + 'booth-live.jpg', en: 'Booth · live login screen', vi: 'Booth · màn đăng nhập thật' },
+      pieces: [
+        it(MA + 'booth-photo.jpg', 'On site', 'Thực tế'), it(M + 'booth-3d-1.jpg', '3D preview', 'Mô phỏng 3D'),
+        it(P + 'MMA booth.png', 'Production spec', 'Thông số sản xuất'), it(M + 'brochure.jpg', 'Brochure', 'Brochure'),
+      ],
+    },
+    deliver: [
+      { en: 'Exhibition booth', vi: 'Booth triển lãm', items: [{ src: MA + 'booth-live.mp4', poster: MA + 'booth-live.jpg', en: 'Live login screen', vi: 'Màn đăng nhập thật' }, it(MA + 'booth-photo.jpg', 'On site', 'Thực tế'), it(M + 'booth-3d-1.jpg', '3D preview', 'Mô phỏng 3D'), it(P + 'MMA booth.png', 'Production spec', 'Thông số sản xuất')] },
+      { en: 'Brochure', vi: 'Brochure', items: [it(M + 'brochure.jpg', 'Brochure mock-up', 'Mockup brochure'), it(P + 'brochure.png', 'Spread', 'Trang mở')] },
+    ],
+  });
+
+  Object.assign(byId('lixi-2025'), {
+    board: {
+      bg: '#F4EADB', bg2: '#E8D7BF',
+      kv: it('assets/projects/lixi-2025/mockup-set.jpg', 'Full set', 'Trọn bộ'),
+      pieces: [
+        it(M + 'lixi-2025-envelopes.jpg', 'Five envelopes', 'Năm bao lì xì'), it(M + 'lixi-2025-cards.jpg', 'New Year cards', 'Thiệp năm mới'),
+        it(M + 'lixi-2025-folded.jpg', 'Folded', 'Thành phẩm'), it(M + 'lixi-2025-front-back.jpg', 'Front & back', 'Mặt trước & sau'),
+      ],
+    },
+    deliver: [
+      { en: 'Mock-ups', vi: 'Mockup', items: [it('assets/projects/lixi-2025/mockup-set.jpg', 'Full set', 'Trọn bộ'), it(M + 'lixi-2025-envelopes.jpg', 'Five envelopes', 'Năm bao lì xì'), it(M + 'lixi-2025-cards.jpg', 'New Year cards', 'Thiệp năm mới'), it(M + 'lixi-2025-folded.jpg', 'Folded', 'Thành phẩm'), it(M + 'lixi-2025-front-back.jpg', 'Front & back', 'Mặt trước & sau')] },
+      { en: 'Envelopes · print files', vi: 'Bao lì xì · file in', items: [it(LX(1), 'Bao mua thỏa thích'), it(LX(2), 'Bao đi muôn nơi'), it(LX(3), 'Bao chơi khắp chốn'), it(LX(4), 'Bao ăn bao uống'), it(LX(5), 'Bounce xa thế giới')] },
+      { en: 'New Year cards · print files', vi: 'Thiệp năm mới · file in', items: [it(LX(6), 'Card · green', 'Thiệp · xanh'), it(LX(7), 'Card · red', 'Thiệp · đỏ')] },
+    ],
+  });
+})();

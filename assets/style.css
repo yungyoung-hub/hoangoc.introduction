@@ -948,3 +948,91 @@ details.job[open] .job-toggle::after { rotate: 0deg; }
 /* Summit: network post joins the picture */
 .sc-p5 { left: 33.5cqw; top: 41.5cqw; width: 10.5cqw; z-index: 2; }
 @container (max-width: 700px) { .sc-p5 { display: none; } }
+
+/* ---------- Event boards: key visual + named pieces in a grid (Summit standard, nothing overlaps) ---------- */
+.board {
+  container-type: inline-size;
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-flow: row dense;
+  gap: clamp(10px, 1.4vw, 18px); padding: clamp(12px, 2vw, 28px); border-radius: var(--r-card);
+  background-color: var(--bd-bg);
+  background-image: radial-gradient(circle at 88% 12%, var(--bd-bg2), transparent 55%), radial-gradient(circle at 8% 96%, var(--bd-bg2), transparent 45%);
+}
+.bd-kv { position: relative; grid-column: 1 / span 2; grid-row: 1 / span 2; min-height: 100%; border-radius: 10px; overflow: hidden; box-shadow: 0 10px 28px rgba(0, 0, 0, .22); }
+.bd-kv .bd-media { position: absolute; inset: 0; display: block; }
+.bd-kv img, .bd-kv video { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s var(--ease); }
+.bd-kv:hover img, .bd-kv:hover video { transform: scale(1.03); }
+.bd-kv .sc-tag { left: 10px; top: 10px; font-size: 11px; padding: 5px 11px; }
+.bd-piece { display: grid; gap: 8px; align-content: start; text-align: left; min-width: 0; }
+.bd-piece .bd-media {
+  display: block; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 8px;
+  background: rgba(255, 255, 255, .6); box-shadow: 0 6px 18px rgba(0, 0, 0, .12);
+}
+.board.is-dark .bd-piece .bd-media { background: rgba(255, 255, 255, .1); }
+.bd-piece img, .bd-piece video { width: 100%; height: 100%; object-fit: contain; display: block; transition: transform .5s var(--ease); }
+.bd-piece:hover img { transform: scale(1.05); }
+.bd-name { font-size: 11.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .02em; line-height: 1.2; color: var(--ink); }
+.board.is-dark .bd-name { color: #fff; }
+.bd-kv:focus-visible, .bd-piece:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+@container (max-width: 640px) {
+  .board > .bd-kv { grid-column: 1 / -1; grid-row: auto; min-height: 0; aspect-ratio: 3 / 2; }
+}
+@media (max-width: 700px) {
+  .board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bd-kv { grid-column: 1 / -1; grid-row: auto; min-height: 0; aspect-ratio: 3 / 2; }
+}
+
+/* ---------- Tết games: one phone per live demo, side by side ---------- */
+.cs-games.is-row { grid-template-columns: minmax(0, 1fr); }
+.game-phones { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(12px, 2vw, 28px); align-items: start; }
+.gp { display: grid; gap: 10px; justify-items: center; text-align: center; min-width: 0; }
+.gp .cs-phone { width: 100%; }
+.gp .phone { max-width: 230px; border-radius: 30px; padding: 7px; }
+.gp .phone-screen { border-radius: 24px; aspect-ratio: 375 / 812; }
+.gp .live-cta { left: 8px; right: 8px; bottom: 10px; padding: 10px 6px; font-size: 11px; }
+.gp-name { display: flex; gap: 8px; align-items: center; justify-content: center; flex-wrap: wrap; }
+.gp-name .chip { font-size: 9.5px; }
+.gp-open { font-size: 12px; }
+@media (max-width: 900px) { .game-phones { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* ---------- Library: featured projects, each opens a full sheet of named pieces ---------- */
+.lib-projects { display: grid; gap: 18px; padding: 0 var(--gut) clamp(48px, 7vw, 96px); }
+.lib-head { display: grid; gap: 2px; }
+.lib-cats { padding: 0 var(--gut) 18px; }
+.lp-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
+.lp-list a {
+  display: grid; grid-template-rows: auto 1fr; height: 100%;
+  background: var(--blush); border-radius: var(--r-card); overflow: hidden; text-decoration: none; color: var(--ink);
+  outline: 2px solid transparent; outline-offset: -2px; transition: outline-color .2s;
+}
+.lp-list a:hover { outline-color: var(--grey); }
+.lp-list a.is-active { outline-color: var(--red); }
+.lp-list a:focus-visible { outline-color: var(--ink); }
+.lp-media { display: block; aspect-ratio: 16 / 10; overflow: hidden; background: var(--pink); }
+.lp-media img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease); }
+.lp-list a:hover .lp-media img { transform: scale(1.04); }
+.lp-text { display: grid; gap: 6px; padding: 12px 14px 14px; align-content: start; }
+.lp-top { display: flex; justify-content: space-between; gap: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; color: var(--muted); }
+.lp-no { color: var(--red); }
+.lp-title { font-size: 15px; font-weight: 800; line-height: 1.2; }
+.lp-count { font-size: 12px; font-weight: 600; color: var(--muted); }
+
+.psheet {
+  margin-top: 8px; background: var(--blush); border-radius: var(--r-panel);
+  padding: clamp(18px, 2.6vw, 36px); display: grid; gap: clamp(24px, 3vw, 40px);
+  scroll-margin-top: calc(var(--nav-h) + 12px);
+}
+.ps-head { display: grid; gap: 14px; max-width: 920px; }
+.ps-title { font-size: clamp(26px, 3.2vw, 46px); font-weight: 800; text-transform: uppercase; line-height: 1.02; letter-spacing: -.035em; }
+.ps-role { display: grid; gap: 4px; font-size: 15px; max-width: 70ch; }
+.ps-role b { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; }
+.ps-back { justify-self: start; }
+.ps-group { display: grid; gap: 14px; padding-top: 14px; border-top: 1px solid var(--ink); }
+.ps-gtitle { display: flex; align-items: baseline; gap: 6px; font-size: clamp(18px, 1.8vw, 24px); font-weight: 900; text-transform: uppercase; letter-spacing: -.03em; line-height: 1.05; }
+.ps-gtitle sup { font-size: 12px; font-weight: 700; color: var(--red); letter-spacing: 0; }
+.ps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px 14px; align-items: start; }
+.ps-item { margin: 0; display: grid; gap: 6px; }
+.ps-item button { position: relative; display: block; width: 100%; border-radius: 10px; overflow: hidden; background: var(--paper); }
+.ps-item img, .ps-item video { display: block; width: 100%; height: auto; transition: transform .5s var(--ease); }
+.ps-item button:hover img { transform: scale(1.03); }
+.ps-item button:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+.ps-item figcaption { font-size: 13px; font-weight: 700; line-height: 1.3; }
