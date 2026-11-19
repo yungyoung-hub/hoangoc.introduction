@@ -328,6 +328,33 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
 }
 .cs-group-desc { font-size: 14px; color: var(--muted); max-width: 44ch; }
 .cs-group-count { display: none; }
+
+/* Project index: all featured cases at a glance, one tap to jump */
+.case-index { display: grid; gap: 14px; margin: 0 var(--gut) clamp(40px, 6vw, 72px); }
+.ci-row { display: grid; grid-template-columns: minmax(150px, 220px) 1fr; gap: 10px 24px; align-items: start; padding-top: 12px; border-top: 1px solid var(--ink); }
+.ci-group { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; padding-top: 12px; }
+.ci-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.ci-list a {
+  display: inline-flex; align-items: baseline; gap: 8px; min-height: 44px; padding: 11px 14px;
+  background: var(--paper); border: 1px solid var(--line); border-radius: 999px;
+  font-size: 14px; font-weight: 700; text-decoration: none; color: var(--ink);
+  transition: background-color .2s var(--ease), color .2s var(--ease), border-color .2s var(--ease);
+}
+.ci-list a:hover { background: var(--ink); border-color: var(--ink); color: #fff; }
+.ci-list a:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+.ci-no { font-size: 11px; font-weight: 800; color: var(--red); }
+.ci-list a:hover .ci-no { color: var(--pink); }
+.ci-year { font-size: 11px; font-weight: 600; opacity: .55; }
+@media (max-width: 700px) {
+  .ci-row { grid-template-columns: 1fr; }
+  .ci-group { padding-top: 0; }
+  .ci-list a { font-size: 13px; padding: 10px 12px; }
+}
+.cs[id] { scroll-margin-top: calc(var(--nav-h) + 16px); }
+
+/* Experience: sits after the work, as the proof behind it */
+.experience .sec-head { padding-bottom: 0; }
+.experience .about-grid { padding-top: clamp(24px, 3vw, 40px); }
 .cs-group-list { display: grid; gap: 16px; }
 .cs.has-live { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); align-items: center; }
 

@@ -615,12 +615,35 @@
     cases.push({ group: g, el: gEl });
   });
 
+  // Project index under "Selected work": every case at a glance, one tap to jump.
+  const caseIndex = document.getElementById('case-index');
+  if (caseIndex && caseEl) {
+    let n = 0;
+    groups.forEach((g) => {
+      const list = (window.CASES || []).filter((cs) => (cs.group || 'all') === g.id);
+      if (!list.length) return;
+      const row = document.createElement('div');
+      row.className = 'ci-row';
+      row.innerHTML = `<p class="ci-group" data-group="${g.id}"></p><ul class="ci-list">${list.map((cs) => {
+        n += 1;
+        return `<li><a href="#case-${cs.id}"><span class="ci-no">${pad(n)}</span><span class="ci-name" data-case="${cs.id}">${cs.client}</span>${cs.year ? `<span class="ci-year">${cs.year}</span>` : ''}</a></li>`;
+      }).join('')}</ul>`;
+      caseIndex.appendChild(row);
+    });
+  }
+
   function renderCaseText() {
     const L = CASE_LBL[lang] || CASE_LBL.en;
     cases.forEach(({ cs, group, el }) => {
       if (group) {
         el.querySelector('.cs-group-title').textContent = group[lang] || group.en;
         el.querySelector('.cs-group-desc').textContent = group.desc ? (group.desc[lang] || group.desc.en) : '';
+        const ig = document.querySelector(`.ci-group[data-group="${group.id}"]`);
+        if (ig) ig.textContent = group[lang] || group.en;
+        document.querySelectorAll('.ci-name[data-case]').forEach((nm) => {
+          const sh = (window.CASE_SHORT || {})[nm.dataset.case];
+          if (sh) nm.textContent = sh[lang] || sh.en;
+        });
         return;
       }
       const t = cs[lang] || cs.en;

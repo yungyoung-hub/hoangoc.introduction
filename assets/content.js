@@ -34,12 +34,12 @@ Object.assign(window.I18N_VI, {
   'contact.copy': 'Copy email',
   'work.more': 'Xem toàn bộ Workspace',
   'reel.hint': 'Rê chuột để dừng, bấm vào để xem',
-  'hero.tab': 'Về<br>người thiết kế',
+  'hero.tab': 'Tóm tắt<br>nhanh',
   'hero.cta': 'Xem dự án chọn lọc',
-  'mk.role': 'Visual &amp; motion<br>designer',
-  'mk.city': 'Sống tại<br>Hà Nội, Việt Nam',
-  'mk.scope': 'Thương hiệu, chiến dịch<br>&amp; quảng cáo tương tác',
-  'mk.since': 'Thiết kế<br>từ năm 2021',
+  'mk.role': 'Graphic designer<br>thương hiệu &amp; chiến dịch',
+  'mk.city': 'Hà Nội, Việt Nam<br>sẵn sàng cho vị trí senior',
+  'mk.scope': 'Key visual, bao bì,<br>sự kiện &amp; motion',
+  'mk.since': '5+ năm<br>25+ thương hiệu',
   'exp.title': 'Kinh nghiệm',
   'exp.ai': 'Công cụ AI',
   'contact.title': 'Cùng nhau chuyển động',
@@ -49,7 +49,22 @@ Object.assign(window.I18N_VI, {
   'cases.approach': 'Cách tiếp cận',
   'cases.role': 'Vai trò',
   'cases.view': 'Xem trong kho tác phẩm',
-  'cases.lead': 'Quảng cáo sáng tạo cho khách hàng và các dự án thương hiệu của AWING, mỗi dự án đi từ thử thách đến cách tôi giải quyết.',
+  'cases.lead': 'Hệ thống thương hiệu và chiến dịch trước, sau đó là sáng tạo cho nhà quảng cáo. Mỗi dự án tóm gọn: bài toán, rồi cách tôi giải quyết.',
+  'cases.index': 'Đi tới dự án',
+  'hero.text': 'Graphic designer với hơn 5 năm xây dựng hệ thống hình ảnh cho thương hiệu và chiến dịch. Tại AWING, tôi đưa dự án từ ý tưởng đến thành phẩm: định hướng hình ảnh cho các lần ra mắt sản phẩm, sự kiện và bao bì quà Tết của AWING, đồng thời biến brief của nhà quảng cáo thành key visual, quảng cáo tương tác và motion cho Coca-Cola, Samsung, Grab, Garnier. Một ý tưởng, đi xuyên suốt mọi điểm chạm, từ bài đăng mạng xã hội đến màn hình sân khấu.',
+  'ss.kv': 'Key visual &amp; hệ thống thương hiệu',
+  'ss.campaign': 'Thiết kế chiến dịch',
+  'ss.pack': 'Bao bì &amp; ấn phẩm in',
+  'ss.event': 'Sự kiện &amp; triển lãm',
+  'ss.ads': 'Quảng cáo tương tác',
+  'exp.secLead': 'Năm năm, từ ấn phẩm in và employer branding đến phụ trách trọn vẹn thiết kế thương hiệu và chiến dịch tại AWING.',
+  'exp.analog': 'Kỹ năng cốt lõi',
+  'sk.ad': 'Art direction',
+  'sk.brand': 'Hệ thống thương hiệu &amp; key visual',
+  'sk.concept': 'Phát triển ý tưởng',
+  'sk.print': 'Sản xuất in ấn &amp; bao bì',
+  'contact.lead': 'Bạn đang tìm một senior graphic designer có thể đưa thương hiệu hay chiến dịch từ một ý tưởng đến mọi điểm chạm? Tôi rất mong được trò chuyện cùng bạn.',
+  'contact.avail': 'Hà Nội · Sẵn sàng cho vị trí Senior Graphic Designer toàn thời gian',
   'work.title': 'Kho tác phẩm',
   'work.lead': 'Toàn bộ tác phẩm theo nhóm. Di chuột để xem trước, bấm để mở.',
 });
@@ -117,14 +132,14 @@ window.CAPTIONS = [
   { re: /^brochure$/, client: 'AWING', en: 'Corporate brochure', vi: 'Brochure doanh nghiệp' },
 ];
 
-// Featured projects, in two groups: client creative ads first, then AWING branding.
+// Featured projects, in two groups: brand & campaign systems first (what a senior graphic role is hired for), then client creative.
 // Each has the challenge, my approach and its images (videos play in the viewer). `live` embeds the working ad in a phone frame.
 // CHECK before publishing: role and any numbers must match what you actually did.
 const S26 = 'assets/projects/summit/';
 const G = 'Graphic/', P = 'Packaging & Event Assets/', T = 'assets/projects/tet-gift/', M = 'assets/mockups/', V = 'Motion/';
 window.CASE_GROUPS = [
-  { id: 'ads', en: 'Creative Ads', vi: 'Quảng cáo sáng tạo', desc: { en: 'Interactive and motion ads for advertisers on AWING’s Wi-Fi network.', vi: 'Quảng cáo tương tác và chuyển động cho các nhà quảng cáo trên mạng Wi-Fi của AWING.' } },
-  { id: 'branding', en: 'Branding', vi: 'Thương hiệu', desc: { en: 'AWING’s own brand: Tết gifting, events, exhibitions and product launches.', vi: 'Thương hiệu AWING: quà Tết, sự kiện, triển lãm và ra mắt sản phẩm.' } },
+  { id: 'branding', en: 'Brand & campaign systems', vi: 'Hệ thống thương hiệu & chiến dịch', desc: { en: 'AWING’s own brand, from concept to production: events, Tết packaging, exhibitions and product launches.', vi: 'Thương hiệu AWING, từ ý tưởng đến sản xuất: sự kiện, bao bì quà Tết, triển lãm và ra mắt sản phẩm.' } },
+  { id: 'ads', en: 'Creative for advertisers', vi: 'Sáng tạo cho nhà quảng cáo', desc: { en: 'Interactive and motion ads for advertisers on AWING’s Wi-Fi network.', vi: 'Quảng cáo tương tác và chuyển động cho các nhà quảng cáo trên mạng Wi-Fi của AWING.' } },
 ];
 window.CASES = [
   // ---------- Creative Ads ----------
@@ -407,3 +422,21 @@ window.CASES = [
     },
   },
 ];
+
+// Short names for the project index under "Selected work".
+window.CASE_SHORT = {
+  'summit-2026': { en: 'AWING Summit 2026', vi: 'AWING Summit 2026' },
+  'tet-gift': { en: 'Tết gift set “Mở”', vi: 'Bộ quà Tết “Mở”' },
+  'ntt': { en: 'NTT e-Asia signing', vi: 'Lễ ký kết NTT e-Asia' },
+  'lixi-2025': { en: 'Lì xì envelopes', vi: 'Bộ bao lì xì' },
+  'mma-booth': { en: 'MMA booth & brochure', vi: 'Booth & brochure MMA' },
+  'weather': { en: 'Weather-based Ads launch', vi: 'Ra mắt Weather-based Ads' },
+  'garnier': { en: 'Garnier game ad', vi: 'Quảng cáo game Garnier' },
+  'omo': { en: 'OMO interactive ad', vi: 'Quảng cáo tương tác OMO' },
+  'yuzu': { en: 'Suntory TEA+ sampling', vi: 'Suntory TEA+ sampling' },
+  'motion': { en: '100+ animated ads', vi: '100+ quảng cáo động' },
+};
+
+// Display order inside each group: strongest system-level work first.
+const CASE_ORDER = ['summit-2026', 'tet-gift', 'ntt', 'lixi-2025', 'mma-booth', 'weather', 'garnier', 'omo', 'yuzu', 'motion'];
+window.CASES.sort((a, b) => (CASE_ORDER.indexOf(a.id) + 1 || 99) - (CASE_ORDER.indexOf(b.id) + 1 || 99));
