@@ -878,3 +878,46 @@ details.job[open] .job-toggle::after { rotate: 0deg; }
 .artboard.is-tall { aspect-ratio: 1 / 1.18; }
 .artboard.is-tall .cs-phone { width: 34cqw; }
 @container (max-width: 520px) { .ab-step > span { display: none; } .ab-step { padding: 2px; } }
+
+/* ---------- Round 5 ---------- */
+/* Highlights: the fourth cell lists what I design */
+.stats .stat-skills { align-content: start; gap: 12px; }
+.stats .ss-label { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; color: var(--ink); }
+.ss-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.ss-list span { border: 1px solid var(--ink); border-radius: 99px; padding: 5px 10px; font-size: 13px; font-weight: 700; line-height: 1.2; color: var(--ink); max-width: none; }
+
+/* Every project: main picture, then small images and one "See more" */
+.cs-side { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; min-width: 0; align-content: start; }
+.cs-side > * { min-width: 0; }
+.cs-morerow { display: flex; align-items: center; justify-content: flex-end; gap: 12px; flex-wrap: wrap; }
+.mr-thumbs { display: flex; gap: 6px; }
+.mr-thumbs button { width: 46px; height: 46px; border-radius: 8px; overflow: hidden; background: var(--blush); flex: none; }
+.mr-thumbs img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s var(--ease); }
+.mr-thumbs button:hover img { transform: scale(1.08); }
+.mr-btn {
+  display: inline-flex; align-items: center; gap: 8px; height: 46px; padding: 0 16px; border-radius: 8px;
+  background: var(--ink); color: #fff; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .02em;
+}
+.mr-btn svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; }
+.mr-btn:hover { background: var(--red); }
+@media (max-width: 600px) { .mr-thumbs button:nth-child(n+5) { display: none; } .mr-thumbs button { width: 40px; height: 40px; } .mr-btn { height: 40px; } }
+
+/* Inset pieces on a cover */
+.cs-insets { position: absolute; right: 12px; bottom: 12px; display: grid; gap: 8px; width: 26%; z-index: 2; }
+.cs-inset { position: relative; display: block; border-radius: 8px; overflow: hidden; background: #fff; box-shadow: 0 6px 18px rgba(0, 0, 0, .28); border: 3px solid #fff; transition: transform .3s var(--ease); }
+.cs-inset img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; }
+.cs-inset:hover { transform: scale(1.04); }
+.cs-inset .sc-tag { font-size: 9px; padding: 3px 7px; left: 4px; top: 4px; }
+
+/* Blog post card */
+.cs-post { display: flex; align-items: center; gap: 12px; padding: 8px; border: 1px solid var(--ink); border-radius: 10px; text-decoration: none; color: var(--ink); }
+.cs-post img { width: 96px; aspect-ratio: 950 / 678; object-fit: cover; border-radius: 6px; flex: none; }
+.cp-text { display: grid; gap: 4px; flex: 1; min-width: 0; }
+.cp-kind { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; color: var(--muted); }
+.cp-title { font-size: 15px; font-weight: 700; line-height: 1.3; }
+.cs-post svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; flex: none; margin-right: 6px; }
+.cs-post:hover { background: var(--blush); }
+
+/* Summit: network post joins the picture */
+.sc-p5 { left: 33.5cqw; top: 41.5cqw; width: 10.5cqw; z-index: 2; }
+@container (max-width: 700px) { .sc-p5 { display: none; } }

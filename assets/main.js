@@ -416,8 +416,8 @@
   /* ---------- Featured projects: grouped, short case summaries ---------- */
   const caseEl = document.getElementById('case-list');
   const CASE_LBL = {
-    en: { role: 'Role', year: 'Year', archive: 'See more in Workspace', more: 'See all detail images', live: 'Play the live ad', liveOpen: 'Open live preview', press: 'Read the press coverage', projects: 'projects', challenge: 'The challenge', approach: 'My approach', play: 'Play' },
-    vi: { role: 'Vai trò', year: 'Năm', archive: 'Xem thêm trong Workspace', more: 'Xem thêm ảnh chi tiết', live: 'Chơi thử quảng cáo thật', liveOpen: 'Mở bản xem trước', press: 'Đọc bài báo', projects: 'dự án', challenge: 'Thử thách', approach: 'Cách tiếp cận', play: 'Chơi' },
+    en: { role: 'Role', year: 'Year', archive: 'See more in Workspace', more: 'See more', live: 'Play the live ad', liveOpen: 'Open live preview', press: 'Read the press coverage', projects: 'projects', challenge: 'The challenge', approach: 'My approach', play: 'Play' },
+    vi: { role: 'Vai trò', year: 'Năm', archive: 'Xem thêm trong Workspace', more: 'Xem thêm', live: 'Chơi thử quảng cáo thật', liveOpen: 'Mở bản xem trước', press: 'Đọc bài báo', projects: 'dự án', challenge: 'Thử thách', approach: 'Cách tiếp cận', play: 'Chơi' },
   };
   const ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>';
   const PLAY_I = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg>';
@@ -460,19 +460,23 @@
       }
       const all = (cs.img || []).slice();
       if (cs.cover && !all.includes(cs.cover)) all.unshift(cs.cover);
-      [...(cs.shots || []), ...(cs.bento || []), ...(cs.showcase ? [cs.showcase.kv, ...cs.showcase.pieces] : []), ...(cs.blocks || []).flatMap((b) => b.items)].forEach((src) => { if (!all.includes(src)) all.push(src); });
+      [...(cs.shots || []), ...(cs.bento || []), ...(cs.showcase ? [cs.showcase.kv, ...cs.showcase.pieces] : []), ...(cs.insets || []).map((x) => x.src), ...(cs.blocks || []).flatMap((b) => b.items)].forEach((src) => { if (!all.includes(src)) all.push(src); });
       const at = (src) => all.indexOf(src);
 
+      const insets = (cs.insets || []).map((x, k) => `<button type="button" class="cs-inset" data-i="${at(x.src)}" data-k="${k}"><img src="${thumbOf(x.src)}" alt="" loading="lazy" decoding="async"><span class="sc-tag"></span></button>`).join('');
       let visual;
       if (cs.live) {
         // One artboard: brand-coloured ground, the line, flow screens around a phone that plays the real ad
         const shots = (cs.shots || []).slice(0, 4);
+        const stepNo = []; let sn = 0;
+        (cs.steps || []).forEach((x, k) => { stepNo[k] = x ? ++sn : 0; });
+        const chip = (k) => (cs.steps && cs.steps[k] ? `<span class="ab-step" data-st="${k}"><b>${stepNo[k]}</b><span></span></span>` : '');
         const q = cs.quote || { bg: '#FFC9CE', fg: '#000' };
         visual = `<div class="cs-visual artboard ab-n${shots.length}${cs.steps ? ' has-steps' : ''}${cs.live.h ? ' is-tall' : ''}" style="--ab-bg:${q.bg};--ab-fg:${q.fg}">
           <p class="ab-quote q" aria-hidden="true"></p>
-          ${shots.map((src, k) => `<button type="button" class="ab-shot ab-s${k + 1}" data-i="${at(src)}"><img src="${url(src)}" alt="" loading="lazy" decoding="async">${cs.steps ? `<span class="ab-step" data-st="${k + 1}"><b>${k + 2}</b><span></span></span>` : ''}</button>`).join('')}
+          ${shots.map((src, k) => `<button type="button" class="ab-shot ab-s${k + 1}" data-i="${at(src)}"><img src="${url(src)}" alt="" loading="lazy" decoding="async">${chip(k + 1)}</button>`).join('')}
           <div class="cs-phone">
-            ${cs.steps ? '<span class="ab-step" data-st="0"><b>1</b><span></span></span>' : ''}
+            ${chip(0)}
             <div class="phone">
               <div class="phone-screen"${cs.live.h ? ` style="aspect-ratio:375/${cs.live.h}"` : ''}>
                 <button type="button" class="live-start">${cs.cover ? `<img src="${url(cs.cover)}" alt="" loading="lazy">` : ''}<span class="live-cta">${PLAY_I}<span class="lbl-live"></span></span></button>
@@ -500,7 +504,7 @@
           </div>
         </div>`;
       } else if (cs.coverVideo) {
-        visual = `<div class="cs-visual"><button type="button" class="cs-cover is-video" data-i="${at(cs.coverVideo)}"><video src="${url(cs.coverVideo)}" poster="${url(cs.cover)}" muted loop playsinline autoplay preload="metadata"></video><span class="case-count">${all.length}</span></button></div>`;
+        visual = `<div class="cs-visual"><button type="button" class="cs-cover is-video" data-i="${at(cs.coverVideo)}"><video src="${url(cs.coverVideo)}" poster="${url(cs.cover)}" muted loop playsinline autoplay preload="metadata"></video></button>${insets ? `<div class="cs-insets">${insets}</div>` : ''}</div>`;
       } else if (cs.bento) {
         visual = `<div class="cs-visual bento">${cs.bento.map((src) => `<button type="button" data-i="${at(src)}"><img src="${url(src)}" alt="" loading="lazy" decoding="async"></button>`).join('')}</div>`;
       } else if (cs.reel) {
@@ -509,9 +513,13 @@
           return { src, attrs: `data-i="${at(src)}"`, client: cp ? cp.client : '' };
         }), 'is-phones') + '</div>';
       } else {
-        visual = `<div class="cs-visual"><button type="button" class="cs-cover" data-i="${at(cs.cover)}"><img src="${url(cs.cover)}" alt="" loading="lazy" decoding="async"><span class="case-count">${all.length}</span></button></div>`;
+        visual = `<div class="cs-visual"><button type="button" class="cs-cover" data-i="${at(cs.cover)}"><img src="${url(cs.cover)}" alt="" loading="lazy" decoding="async"></button>${insets ? `<div class="cs-insets">${insets}</div>` : ''}</div>`;
       }
       const shown = all.slice(0, MAX_THUMBS);
+      const moreRow = all.length > 1 ? `<div class="cs-morerow">
+          <div class="mr-thumbs">${shown.slice(0, 6).map((src) => `<button type="button" data-i="${at(src)}"><img src="${thumbOf(src)}" alt="" loading="lazy" decoding="async"></button>`).join('')}</div>
+          <button type="button" class="mr-btn" data-i="0"><span class="lbl-more"></span> (${all.length})${ARROW}</button>
+        </div>` : '';
 
       const el = document.createElement('article');
       el.className = 'cs' + (cs.live ? ' has-live' : '') + (cs.reel || cs.showcase ? ' has-reel' : '');
@@ -529,15 +537,15 @@
             ${cs.year ? `<div><dt class="l-year"></dt><dd>${cs.year}</dd></div>` : ''}
           </dl>
           <ul class="case-tags">${cs.tags.map((t) => `<li>${t}</li>`).join('')}</ul>
+          ${cs.post ? `<a class="cs-post" href="${cs.post.url}" target="_blank" rel="noopener"><img src="${url(cs.post.thumb)}" alt="" loading="lazy" decoding="async"><span class="cp-text"><span class="cp-kind"></span><span class="cp-title"></span></span>${ARROW}</a>` : ''}
           ${cs.facts ? `<ul class="cs-facts">${cs.facts.map((f) => `<li><b>${f.n}</b><span></span></li>`).join('')}</ul>` : ''}
           <div class="cs-actions">
-            ${cs.more && all.length > 1 ? `<button type="button" class="btn btn-ink cs-more" data-i="1"><span class="lbl-more"></span> (${all.length - 1})${ARROW}</button>` : ''}
             ${arc ? `<a class="btn btn-outline cs-archive" href="workspace.html#${data[arc.ci].id}"><span class="lbl-archive"></span>${ARROW}</a>` : ''}
             ${(cs.links || []).map((l, li) => `<a class="btn btn-ink cs-link" data-l="${li}" href="${l.url}" target="_blank" rel="noopener"><span></span>${ARROW}</a>`).join('')}
             ${cs.press ? `<a class="btn-link" href="${cs.press.url}" target="_blank" rel="noopener"><span class="lbl-press"></span> (${cs.press.label})${ARROW}</a>` : ''}
           </div>
         </div>
-        ${visual}
+        <div class="cs-side">${visual}${moreRow}</div>
         ${(cs.blocks || []).map((b, bi) => `<div class="cs-block is-${b.type}" data-b="${bi}">
           <div class="block-copy"><p class="games-eyebrow"><span class="b-title"></span></p><p class="g-text b-text"></p></div>
           ${b.type === 'phones'
@@ -565,7 +573,7 @@
             </div>
           </div>
         </div>` : ''}
-        ${shown.length > 1 && !cs.mosaic && !cs.live && !cs.reel && !cs.noStrip && !cs.bento ? `<div class="cs-strip">${shown.map((src, j) => `<button type="button" data-i="${at(src)}"><img src="${thumbOf(src)}" alt="" loading="lazy" decoding="async">${j === shown.length - 1 && all.length > shown.length ? `<span class="thumb-more">+${all.length - shown.length}</span>` : ''}</button>`).join('')}</div>` : ''}`;
+`;
       listEl.appendChild(el);
 
       el.addEventListener('click', (e) => {
@@ -635,6 +643,9 @@
         bl.querySelector('.b-title').textContent = bt.title;
         bl.querySelector('.b-text').textContent = bt.text;
       });
+      const cp = el.querySelector('.cs-post');
+      if (cp) { const pt = cs.post[lang] || cs.post.en; cp.querySelector('.cp-kind').textContent = pt.kind; cp.querySelector('.cp-title').textContent = pt.title; }
+      el.querySelectorAll('.cs-inset').forEach((b) => { const x = cs.insets[+b.dataset.k]; b.querySelector('.sc-tag').textContent = x[lang] || x.en; });
       el.querySelectorAll('.ab-step').forEach((st) => { const x = cs.steps[+st.dataset.st]; st.querySelector('span').textContent = x[lang] || x.en; });
       el.querySelectorAll('.cs-link').forEach((a) => { const l = cs.links[+a.dataset.l]; a.querySelector('span').textContent = l[lang] || l.en; });
       const gb = el.querySelector('.cs-games');
@@ -873,7 +884,7 @@
     mark('.cs-group-head .cs-group-desc, .cs-group-count', 'fade');
     mark('.cs-head', 'side');
     mark('.cs-visual', 'wipe');
-    mark('.cs-strip button', 'rise', 45);
+    mark('.mr-thumbs button', 'rise', 45);
     mark('.games-copy', 'side');
     mark('.cs-games .cs-phone', 'rise');
     mark('.feature, .cat-list li', 'rise', 40);

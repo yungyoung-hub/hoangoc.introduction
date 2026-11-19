@@ -20,7 +20,7 @@ Object.assign(window.I18N_VI, {
   'stats.years': 'năm làm thiết kế thương hiệu, chiến dịch và motion',
   'stats.ads': 'quảng cáo được tôi làm motion và chuyển đổi cho các nhà quảng cáo lớn',
   'stats.brands2': 'thương hiệu, từ FMCG, ngân hàng đến bất động sản và ô tô',
-  'stats.reach': 'người dùng trên mạng Wi-Fi của AWING, nơi quảng cáo tôi thiết kế được hiển thị',
+  'stats.skills': 'Chuyên môn',
   'x.awing.sum': 'Phụ trách hình ảnh từ ý tưởng đến thành phẩm, cho các nhà quảng cáo trên mạng Wi-Fi của AWING và cho chính thương hiệu AWING.',
   'x.awing.g1': 'Sáng tạo cho nhà quảng cáo',
   'x.awing.a1': 'Lên ý tưởng và thiết kế quảng cáo tương tác, gamification ở bước đăng nhập Wi-Fi cho Garnier, OMO và Suntory TEA+: từ flow, màn hình đến motion, biến vài giây chờ kết nối thành thời gian người dùng ở lại với thương hiệu.',
@@ -134,6 +134,11 @@ window.CASES = [
     tags: ['Interactive ad', 'Gamification', 'UI'],
     live: { url: 'https://acm-ssl.awingconnect.vn/Preview/Page?loginId=27101&workspaceId=119&isNetworkCampaign=false' },
     shots: [G + 'photo_2026-06-25_16-23-12 (2).jpg', G + 'photo_2026-06-25_16-23-12 (3).jpg', G + 'photo_2026-06-25_16-23-12 (4).jpg'],
+    steps: [null,
+      { en: 'Swipe to remove make-up', vi: 'Vuốt để tẩy trang' },
+      { en: 'Tap to wash', vi: 'Chạm để rửa mặt' },
+      { en: 'Get a 40K voucher', vi: 'Nhận voucher 40K' },
+    ],
     quote: { bg: '#DDF0FA', fg: '#0A6B3A', en: 'Sạch thích mêêê', vi: 'Sạch thích mêêê', sub: { en: 'Clean skin in two steps. Every tap fills the meter, from 0% to 100%.', vi: 'Da sạch trong hai bước. Mỗi lần chạm làm đầy thanh sạch, từ 0% đến 100%.' } },
     img: [G + 'photo_2026-06-25_16-23-12.jpg', G + 'photo_2026-06-25_16-23-12 (2).jpg', G + 'photo_2026-06-25_16-23-12 (3).jpg', G + 'photo_2026-06-25_16-23-12 (4).jpg'],
     en: {
@@ -155,6 +160,11 @@ window.CASES = [
     tags: ['Interactive ad', 'Personalisation', 'Video'],
     live: { url: 'https://acm-ssl.awingconnect.vn/Preview/Page?loginId=28263&isNetworkCampaign=false&welcomeId=28264&workspaceId=290' },
     shots: ['assets/projects/omo/step1-grid.jpg', 'assets/projects/omo/step2-frame.jpg', 'assets/projects/omo/step3-banner.png'],
+    steps: [null,
+      { en: 'Pick what holds you back', vi: 'Chọn điều khiến bạn e ngại' },
+      { en: 'Watch the “không sao” reply', vi: 'Xem video “không sao”' },
+      { en: '“Hết mình là xinh nhất”', vi: '“Hết mình là xinh nhất”' },
+    ],
     quote: { bg: '#F9D3E1', fg: '#12256B', en: 'Hết mình là xinh nhất', vi: 'Hết mình là xinh nhất', sub: { en: 'Going all out is the most beautiful.', vi: 'Cùng OMO tôn vinh vẻ đẹp của những cô gái dám hết mình.' } },
     img: ['assets/projects/omo/step1-grid.jpg', 'assets/projects/omo/step1-banner.png', 'assets/projects/omo/step2-frame.jpg', 'assets/projects/omo/step3-banner.png'],
     en: {
@@ -177,7 +187,12 @@ window.CASES = [
     // h: the ad needs a 375×940 screen to show both buttons
     live: { url: 'https://acm-ssl.awingconnect.vn/Preview/Page?loginId=29150&isNetworkCampaign=false&welcomeId=29151&workspaceId=290', h: 940 },
     shots: ['assets/thumbs/yuzu-step2.jpg', 'assets/thumbs/yuzu-voucher.jpg'],
-    img: ['assets/thumbs/yuzu-tea.jpg', 'assets/thumbs/yuzu-step2.jpg', 'assets/thumbs/yuzu-voucher.jpg'],
+    img: ['assets/thumbs/yuzu-tea.jpg', 'assets/thumbs/yuzu-step2.jpg', 'assets/thumbs/yuzu-voucher.jpg', 'assets/thumbs/yuzu-blog.jpg'],
+    post: {
+      url: 'https://awing.vn/vi/media/news/voucher-tea-plus-tra-chanh-yuzu-circle-k', thumb: 'assets/thumbs/yuzu-blog.jpg',
+      en: { kind: 'Blog post · awing.vn', title: 'Get a TEA+ Trà Chanh Yuzu voucher at Circle K' },
+      vi: { kind: 'Bài blog · awing.vn', title: 'Nhận voucher đổi TEA+ Trà Chanh Yuzu tại Circle K' },
+    },
     quote: { bg: '#FFE45C', fg: '#0B5B2E', en: 'Free Trà Chanh-Yuzu', vi: 'Đổi trà miễn phí', sub: { en: 'One free Trà Chanh-Yuzu at Circle K, claimed in 30 seconds.', vi: 'Miễn phí 01 Trà Chanh-Yuzu tại Circle K, nhận chỉ trong 30 giây.' } },
     // One label per screen: the phone, then each flow screen in order
     steps: [
@@ -230,8 +245,8 @@ window.CASES = [
       site: S26 + 'microsite-full.jpg',
       game: 'https://acm-ssl.awingconnect.vn/Preview/Page?loginId=29555&isNetworkCampaign=false&welcomeId=29540&workspaceId=119',
       poster: S26 + 'game-1.jpg',
-      pieces: [S26 + 'avatar.jpg', S26 + 'fb-cover.jpg', S26 + 'thank-you.jpg', S26 + 'vtv-1920.jpg'],
-      tags: ['', 'Social & email', 'Thank-you post', 'VTVcab'],
+      pieces: [S26 + 'avatar.jpg', S26 + 'fb-cover.jpg', S26 + 'thank-you.jpg', S26 + 'vtv-1920.jpg', S26 + 'network-post.jpg'],
+      tags: ['Avatar', 'Social & email', 'Thank-you post', 'VTVcab', 'Network post'],
     },
     links: [
       { url: 'https://awing.vn/summit2026/', en: 'Visit the microsite', vi: 'Xem microsite' },
@@ -242,15 +257,7 @@ window.CASES = [
       { n: 'GEM', en: 'GEM Center, Ho Chi Minh City: Castor Hall', vi: 'GEM Center, TP. Hồ Chí Minh: Castor Hall' },
       { n: 'Press', en: 'event and the 6-solution launch covered by the press', vi: 'báo chí đưa tin về sự kiện và lễ ra mắt 6 giải pháp' },
     ],
-    blocks: [
-      {
-        type: 'bento',
-        en: { title: 'On VTVcab, at the venue and online', text: 'The same key visual ran as pop-ups and banners in the VTVcab app, on screens at the venue, and on the event microsite with a live countdown. The card-matching game on AWING’s Wi-Fi uses the 6 new solutions as its cards.' },
-        vi: { title: 'Trên VTVcab, tại sự kiện và online', text: 'Cùng một key visual chạy thành pop-up và banner trên ứng dụng VTVcab, trên màn hình tại sự kiện, và trên microsite sự kiện có đồng hồ đếm ngược. Mini-game lật thẻ trên Wi-Fi AWING dùng chính 6 giải pháp mới làm thẻ bài.' },
-        items: [S26 + 'vtv-app-mobile.jpg', S26 + 'microsite-desktop.jpg', S26 + 'vtv-app-web.jpg', S26 + 'microsite-mobile.jpg', S26 + 'network-post.jpg', S26 + 'vtv-1160.jpg'],
-      },
-    ],
-    img: [S26 + 'mail-thumb.jpg', S26 + 'avatar.jpg', S26 + 'fb-cover.jpg', S26 + 'link-thumb.jpg', S26 + 'game-1.jpg', S26 + 'game-2.jpg', S26 + 'game-3.jpg', S26 + 'game-win.jpg', S26 + 'game-lose.jpg', S26 + 'network-post.jpg', S26 + 'thank-you.jpg', S26 + 'vtv-1074.jpg', S26 + 'vtv-stage.jpg', S26 + 'vtv-app-popup.jpg'],
+    img: [S26 + 'mail-thumb.jpg', S26 + 'avatar.jpg', S26 + 'fb-cover.jpg', S26 + 'link-thumb.jpg', S26 + 'game-1.jpg', S26 + 'game-2.jpg', S26 + 'game-3.jpg', S26 + 'game-win.jpg', S26 + 'game-lose.jpg', S26 + 'network-post.jpg', S26 + 'thank-you.jpg', S26 + 'microsite-desktop.jpg', S26 + 'microsite-mobile.jpg', S26 + 'vtv-app-mobile.jpg', S26 + 'vtv-app-web.jpg', S26 + 'vtv-app-popup.jpg', S26 + 'vtv-1160.jpg', S26 + 'vtv-1074.jpg', S26 + 'vtv-stage.jpg'],
     en: {
       title: 'AWING Summit 2026: 10 Years & Beyond',
       challenge: "AWING held “AWING 10 Years: The Next Chapter” at GEM Center to close nearly ten years of growth. Close to 800 guests came, including hundreds of partners: brands, retailers and infrastructure companies across many industries. The highlight was the launch of an ecosystem of 6 solutions: 4 commercial solutions and 2 technology platforms.",
@@ -267,7 +274,10 @@ window.CASES = [
   {
     id: 'ntt', group: 'branding', client: 'AWING × NTT e-Asia', year: '2024',
     cover: 'assets/projects/ntt/mockup-cover.jpg',
-    noStrip: true, more: true,
+    insets: [
+      { src: M + 'event-3d-1.jpg', en: '3D stage', vi: 'Sân khấu 3D' },
+      { src: P + 'backdrop.jpg', en: 'Backdrop', vi: 'Backdrop' },
+    ],
     tags: ['Event identity', 'Bilingual JP–VN', 'Print', '3D preview'],
     match: { cat: 'Packaging & Event Assets', re: /^backdrop$/ },
     facts: [
@@ -294,6 +304,10 @@ window.CASES = [
     cover: 'assets/projects/mma/booth-live.jpg', year: '2024',
     // The booth's giant phone plays the real Wi-Fi login ad
     coverVideo: 'assets/projects/mma/booth-live.mp4',
+    insets: [
+      { src: 'assets/projects/mma/booth-photo.jpg', en: 'On site', vi: 'Thực tế' },
+      { src: M + 'brochure.jpg', en: 'Brochure', vi: 'Brochure' },
+    ],
     tags: ['Tech exhibition & conference', 'Exhibition booth', 'Print', '3D preview'],
     facts: [
       { n: 'Sheraton', en: 'Sheraton Saigon Hotel, Ho Chi Minh City', vi: 'Sheraton Saigon Hotel, TP. Hồ Chí Minh' },
@@ -337,6 +351,10 @@ window.CASES = [
   {
     id: 'tet-gift', group: 'branding', client: 'AWING', year: '2025',
     cover: T + 'mockup-set.jpg',
+    insets: [
+      { src: T + 'mockup-calendar.jpg', en: 'Calendar', vi: 'Lịch' },
+      { src: 'assets/thumbs/game-race.jpg', en: 'Mini-game', vi: 'Mini-game' },
+    ],
     tags: ['Packaging', 'Illustration', 'Print', 'Interactive ad'],
     // Playable Wi-Fi login ads from the same Tết campaign (loaded only when someone presses play)
     games: {
