@@ -463,9 +463,16 @@
       }
       const all = (cs.img || []).slice();
       if (cs.cover && !all.includes(cs.cover)) all.unshift(cs.cover);
-      [...(cs.shots || []), ...(cs.board ? [cs.board.kv.src, ...cs.board.pieces.map((x) => x.src)] : []), ...(cs.bento || []), ...(cs.showcase ? [cs.showcase.kv, ...cs.showcase.pieces] : []), ...(cs.insets || []).map((x) => x.src), ...(cs.blocks || []).flatMap((b) => b.items)].forEach((src) => { if (!all.includes(src)) all.push(src); });
+      [...(cs.shots || []), ...(cs.board ? [cs.board.kv.src, ...(cs.board.pieces || []).map((x) => x.src)] : []), ...(cs.bento || []), ...(cs.showcase ? [cs.showcase.kv, ...cs.showcase.pieces] : []), ...(cs.insets || []).map((x) => x.src), ...(cs.blocks || []).flatMap((b) => b.items)].forEach((src) => { if (!all.includes(src)) all.push(src); });
       const at = (src) => all.indexOf(src);
 
+      const gamePhones = () => `<ol class="game-phones">${cs.games.list.map((g, j) => `<li class="gp">
+            <div class="cs-phone"><div class="phone"><div class="phone-screen">
+              <button type="button" class="live-start no-auto" data-src="${g.url}">${g.thumb ? `<img src="${url(g.thumb)}" alt="" loading="lazy" decoding="async">` : ''}<span class="live-cta">${PLAY_I}<span class="game-cta"></span></span></button>
+            </div></div></div>
+            <p class="gp-name"><span class="chip">${pad(j + 1)}</span><span class="game-name"></span></p>
+            <a class="btn-link live-link gp-open" href="${g.url}" target="_blank" rel="noopener"><span class="lbl-liveopen"></span>${ARROW}</a>
+          </li>`).join('')}</ol>`;
       const insets = (cs.insets || []).map((x, k) => `<button type="button" class="cs-inset" data-i="${at(x.src)}" data-k="${k}"><img src="${thumbOf(x.src)}" alt="" loading="lazy" decoding="async"><span class="sc-tag"></span></button>`).join('');
       let visual;
       if (cs.live) {
@@ -511,9 +518,10 @@
         const media = (x) => isVideo(x.src)
           ? `<video src="${url(x.src)}"${x.poster ? ` poster="${url(x.poster)}"` : ''} muted loop playsinline autoplay preload="metadata"></video>`
           : `<img src="${url(x.src)}" alt="" loading="lazy" decoding="async">`;
-        visual = `<div class="cs-visual board bd-n${bd.pieces.length}${bd.dark ? ' is-dark' : ''}" style="--bd-bg:${bd.bg};--bd-bg2:${bd.bg2 || bd.bg}">
+        visual = `<div class="cs-visual board${bd.games ? ' kvg' : ` bd-n${bd.pieces.length}`}${bd.dark ? ' is-dark' : ''}" style="--bd-bg:${bd.bg};--bd-bg2:${bd.bg2 || bd.bg}">
           <button type="button" class="bd-kv" data-i="${at(bd.kv.src)}"><span class="bd-media">${media(bd.kv)}</span><span class="sc-tag" ${bi(bd.kv)}></span></button>
-          ${bd.pieces.map((x) => `<button type="button" class="bd-piece" data-i="${at(x.src)}"><span class="bd-media">${media(x)}</span><span class="bd-name" ${bi(x)}></span></button>`).join('')}
+          ${bd.games ? gamePhones() : ''}
+          ${(bd.pieces || []).map((x) => `<button type="button" class="bd-piece" data-i="${at(x.src)}"><span class="bd-media">${media(x)}</span><span class="bd-name" ${bi(x)}></span></button>`).join('')}
         </div>`;
       } else if (cs.coverVideo) {
         visual = `<div class="cs-visual"><button type="button" class="cs-cover is-video" data-i="${at(cs.coverVideo)}"><video src="${url(cs.coverVideo)}" poster="${url(cs.cover)}" muted loop playsinline autoplay preload="metadata"></video></button>${insets ? `<div class="cs-insets">${insets}</div>` : ''}</div>`;
@@ -563,7 +571,7 @@
             ? `<div class="phone-row">${b.items.map((src) => `<button type="button" class="pr-item" data-i="${at(src)}"><span class="rp-phone"><span class="rp-screen is-still"><img src="${url(src)}" alt="" loading="lazy" decoding="async"></span></span></button>`).join('')}</div>`
             : `<div class="bento is-wide">${b.items.map((src) => `<button type="button" data-i="${at(src)}"><img src="${url(src)}" alt="" loading="lazy" decoding="async"></button>`).join('')}</div>`}
         </div>`).join('')}
-        ${cs.games ? `<div class="cs-games is-row">
+        ${cs.games && !(cs.board && cs.board.games) ? `<div class="cs-games is-row">
           <div class="games-copy">
             <p class="games-eyebrow">${PLAY_I}<span class="g-title"></span></p>
             <p class="g-text"></p>
@@ -573,13 +581,7 @@
               <li><span class="gf-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="11" rx="4"/><path d="M8 11v3M6.5 12.5h3M15 11.5h.01M17.5 13.5h.01"/></svg></span><span class="gf-t"></span></li>
             </ol>
           </div>
-          <ol class="game-phones">${cs.games.list.map((g, j) => `<li class="gp">
-            <div class="cs-phone"><div class="phone"><div class="phone-screen">
-              <button type="button" class="live-start no-auto" data-src="${g.url}">${g.thumb ? `<img src="${url(g.thumb)}" alt="" loading="lazy" decoding="async">` : ''}<span class="live-cta">${PLAY_I}<span class="game-cta"></span></span></button>
-            </div></div></div>
-            <p class="gp-name"><span class="chip">${pad(j + 1)}</span><span class="game-name"></span></p>
-            <a class="btn-link live-link gp-open" href="${g.url}" target="_blank" rel="noopener"><span class="lbl-liveopen"></span>${ARROW}</a>
-          </li>`).join('')}</ol>
+          ${gamePhones()}
         </div>` : ''}
 `;
       listEl.appendChild(el);
@@ -740,12 +742,12 @@
         gb.querySelector('.g-title').textContent = gt.title;
         gb.querySelector('.g-text').textContent = gt.text;
         gb.querySelectorAll('.gf-t').forEach((n, j) => { n.textContent = (gt.flow || [])[j] || ''; });
-        gb.querySelectorAll('.gp').forEach((li, j) => {
-          const g = cs.games.list[j];
-          li.querySelector('.game-name').textContent = g[lang] || g.en;
-          li.querySelector('.game-cta').textContent = L.play;
-        });
       }
+      el.querySelectorAll('.gp').forEach((li, j) => {
+        const g = cs.games.list[j];
+        li.querySelector('.game-name').textContent = g[lang] || g.en;
+        li.querySelector('.game-cta').textContent = L.play;
+      });
     });
     fillBi();
   }

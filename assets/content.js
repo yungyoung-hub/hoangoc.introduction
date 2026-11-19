@@ -340,11 +340,11 @@ window.CASES = [
   },
   {
     id: 'weather', group: 'branding', client: 'AWING Ads',
-    cover: 'assets/projects/weather/collage.jpg',
+    cover: 'assets/projects/weather/stack.jpg',
     noStrip: true,
     tags: ['Product launch', 'Social campaign', 'Ad formats'],
     match: { cat: 'Graphic', re: /^774042625_/ },
-    img: ['assets/projects/weather/collage.jpg', G + '774042625_1676089417242159_8958395339245005822_n.jpg', G + '777327862_1680666336784467_8691854386663964621_n.jpg', G + '777988242_1682323296618771_3435825282868780190_n.jpg', G + '798664154_1698729138311520_2450761588940597726_n.jpg', G + '798182040_1698729041644863_9042572822805864529_n.jpg', G + '798182041_1698729048311529_8008127201095629401_n.jpg'],
+    img: ['assets/projects/weather/stack.jpg', G + '774042625_1676089417242159_8958395339245005822_n.jpg', G + '777327862_1680666336784467_8691854386663964621_n.jpg', G + '777988242_1682323296618771_3435825282868780190_n.jpg', G + '798664154_1698729138311520_2450761588940597726_n.jpg', G + '798182040_1698729041644863_9042572822805864529_n.jpg', G + '798182041_1698729048311529_8008127201095629401_n.jpg'],
     en: {
       title: 'Weather-based Ads: launching a new ad product',
       challenge: "Weather-based Ads was a brand-new product: ads that change with the live weather. Before anyone buys it, they have to understand it at a glance.",
@@ -441,15 +441,10 @@ window.CASES.sort((a, b) => (CASE_ORDER.indexOf(a.id) + 1 || 99) - (CASE_ORDER.i
   });
 
   Object.assign(byId('tet-gift'), {
+    // Featured: the gift set next to the four live game phones; every other piece lives in the Library sheet
     board: {
-      bg: '#8F141B', bg2: '#C8262E', dark: true,
+      bg: '#8F141B', bg2: '#C8262E', dark: true, games: true,
       kv: it(T + 'mockup-set.jpg', 'Gift set', 'Bộ quà'),
-      pieces: [
-        it(M + 'gift-box.jpg', 'Gift box', 'Hộp quà'), it(T + 'mockup-calendar.jpg', 'Cards × calendar', 'Thẻ × lịch'),
-        it(T + 'product-card-2.jpg', 'Product card', 'Thẻ sản phẩm'), it(T + 'mockup-postcards.jpg', 'Postcards', 'Postcard'),
-        it(T + 'sticker.jpg', 'Sticker sheet', 'Sticker'), it(T + 'mug-1.jpg', 'Mug', 'Cốc'),
-        it(T + 'box.jpg', 'Box dieline', 'Dieline hộp'), it(T + 'postcard-hn-1.jpg', 'Office postcard', 'Postcard văn phòng'),
-      ],
     },
     games: {
       en: { title: 'Interactive ad games', text: 'The card is the way in: its QR code opens AWING’s Wi-Fi login, then a Year of the Horse mini-game. Partners don’t just read about the product, they play it. Tap a phone to play the live demo.', flow: ['Scan the QR on the card', 'AWING Wi-Fi opens', 'Play for a New Year wish'] },
@@ -471,16 +466,6 @@ window.CASES.sort((a, b) => (CASE_ORDER.indexOf(a.id) + 1 || 99) - (CASE_ORDER.i
   });
 
   Object.assign(byId('ntt'), {
-    board: {
-      bg: '#E3F1FA', bg2: '#BFDDF2',
-      kv: it(NT + 'mockup-cover.jpg', 'Event identity', 'Nhận diện sự kiện'),
-      pieces: [
-        it(M + 'event-3d-1.jpg', '3D stage preview', 'Mô phỏng 3D sân khấu'), it(P + 'backdrop.jpg', 'Stage backdrop', 'Backdrop sân khấu'),
-        it(P + 'thư mời awing ver mới-01.png', 'Invitation', 'Thư mời'), it(NT + 'mockup-stationery.jpg', 'Stationery', 'Ấn phẩm'),
-        it(NT + 'thank-you-card-front.jpg', 'Thank-you card', 'Thiệp cảm ơn'), it(NT + 'thank-you-card-inside.jpg', 'Press letter', 'Thư gửi báo chí'),
-        it(NT + 'event-1.jpg', 'On the day', 'Ngày sự kiện'), it(NT + 'event-2.jpg', 'Signing on stage', 'Ký kết trên sân khấu'),
-      ],
-    },
     deliver: [
       { en: 'Event identity', vi: 'Nhận diện sự kiện', items: [it(NT + 'mockup-cover.jpg', 'Identity overview', 'Tổng quan nhận diện'), it(P + 'backdrop.jpg', 'Stage backdrop', 'Backdrop sân khấu')] },
       { en: '3D stage preview', vi: 'Mô phỏng 3D sân khấu', items: [it(M + 'event-3d-1.jpg', 'Room view', 'Toàn cảnh'), it(M + 'event-3d-2.jpg', 'Stage view', 'Góc sân khấu')] },
@@ -492,11 +477,8 @@ window.CASES.sort((a, b) => (CASE_ORDER.indexOf(a.id) + 1 || 99) - (CASE_ORDER.i
   Object.assign(byId('mma-booth'), {
     board: {
       bg: '#F1F1F1', bg2: '#FFD9DB',
-      kv: { src: MA + 'booth-live.mp4', poster: MA + 'booth-live.jpg', en: 'Booth · live login screen', vi: 'Booth · màn đăng nhập thật' },
-      pieces: [
-        it(MA + 'booth-photo.jpg', 'On site', 'Thực tế'), it(M + 'booth-3d-1.jpg', '3D preview', 'Mô phỏng 3D'),
-        it(P + 'MMA booth.png', 'Production spec', 'Thông số sản xuất'), it(M + 'brochure.jpg', 'Brochure', 'Brochure'),
-      ],
+      kv: it(M + 'booth-3d-1.jpg', '3D mock-up', 'Mockup 3D'),
+      pieces: [it(MA + 'booth-photo.jpg', 'On site', 'Thực tế'), it(M + 'brochure.jpg', 'Brochure', 'Brochure')],
     },
     deliver: [
       { en: 'Exhibition booth', vi: 'Booth triển lãm', items: [{ src: MA + 'booth-live.mp4', poster: MA + 'booth-live.jpg', en: 'Live login screen', vi: 'Màn đăng nhập thật' }, it(MA + 'booth-photo.jpg', 'On site', 'Thực tế'), it(M + 'booth-3d-1.jpg', '3D preview', 'Mô phỏng 3D'), it(P + 'MMA booth.png', 'Production spec', 'Thông số sản xuất')] },
@@ -505,18 +487,18 @@ window.CASES.sort((a, b) => (CASE_ORDER.indexOf(a.id) + 1 || 99) - (CASE_ORDER.i
   });
 
   Object.assign(byId('lixi-2025'), {
-    board: {
-      bg: '#F4EADB', bg2: '#E8D7BF',
-      kv: it('assets/projects/lixi-2025/mockup-set.jpg', 'Full set', 'Trọn bộ'),
-      pieces: [
-        it(M + 'lixi-2025-envelopes.jpg', 'Five envelopes', 'Năm bao lì xì'), it(M + 'lixi-2025-cards.jpg', 'New Year cards', 'Thiệp năm mới'),
-        it(M + 'lixi-2025-folded.jpg', 'Folded', 'Thành phẩm'), it(M + 'lixi-2025-front-back.jpg', 'Front & back', 'Mặt trước & sau'),
-      ],
-    },
     deliver: [
       { en: 'Mock-ups', vi: 'Mockup', items: [it('assets/projects/lixi-2025/mockup-set.jpg', 'Full set', 'Trọn bộ'), it(M + 'lixi-2025-envelopes.jpg', 'Five envelopes', 'Năm bao lì xì'), it(M + 'lixi-2025-cards.jpg', 'New Year cards', 'Thiệp năm mới'), it(M + 'lixi-2025-folded.jpg', 'Folded', 'Thành phẩm'), it(M + 'lixi-2025-front-back.jpg', 'Front & back', 'Mặt trước & sau')] },
       { en: 'Envelopes · print files', vi: 'Bao lì xì · file in', items: [it(LX(1), 'Bao mua thỏa thích'), it(LX(2), 'Bao đi muôn nơi'), it(LX(3), 'Bao chơi khắp chốn'), it(LX(4), 'Bao ăn bao uống'), it(LX(5), 'Bounce xa thế giới')] },
       { en: 'New Year cards · print files', vi: 'Thiệp năm mới · file in', items: [it(LX(6), 'Card · green', 'Thiệp · xanh'), it(LX(7), 'Card · red', 'Thiệp · đỏ')] },
+    ],
+  });
+  const WG = 'Graphic/';
+  Object.assign(byId('weather'), {
+    deliver: [
+      { en: 'Launch series', vi: 'Chuỗi ra mắt', items: [it('assets/projects/weather/stack.jpg', 'The series', 'Cả chuỗi bài'), it(WG + '774042625_1676089417242159_8958395339245005822_n.jpg', 'Teaser: launching soon', 'Teaser: sắp ra mắt'), it(WG + '777327862_1680666336784467_8691854386663964621_n.jpg', 'Reveal: Real-time Weather Ads', 'Reveal: Real-time Weather Ads')] },
+      { en: 'Use cases', vi: 'Use case', items: [it(WG + '777988242_1682323296618771_3435825282868780190_n.jpg', 'Beverage', 'Đồ uống'), it(WG + '798664154_1698729138311520_2450761588940597726_n.jpg', 'Cosmetics', 'Mỹ phẩm')] },
+      { en: 'Ad formats', vi: 'Định dạng quảng cáo', items: [it(WG + '798182040_1698729041644863_9042572822805864529_n.jpg', 'Format 1: Creative switching', 'Định dạng 1: Đổi creative'), it(WG + '798182041_1698729048311529_8008127201095629401_n.jpg', 'Format 2: Dynamic ads', 'Định dạng 2: Dynamic ads')] },
     ],
   });
 })();
