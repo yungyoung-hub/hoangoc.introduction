@@ -203,7 +203,7 @@ window.CASES = [
     cover: 'assets/thumbs/yuzu-tea.jpg',
     tags: ['Interactive ad', 'Sampling', 'Retail: Circle K'],
     // h: the ad needs a 375×940 screen to show both buttons
-    live: { url: 'https://acm-ssl.awingconnect.vn/Preview/Page?loginId=29150&isNetworkCampaign=false&welcomeId=29151&workspaceId=290', h: 940 },
+    live: { url: 'https://acm-ssl.awingconnect.vn/Preview/Page?loginId=29150&isNetworkCampaign=false&welcomeId=29151&workspaceId=290' },
     shots: ['assets/thumbs/yuzu-step2.jpg', 'assets/thumbs/yuzu-voucher.jpg'],
     img: ['assets/thumbs/yuzu-tea.jpg', 'assets/thumbs/yuzu-step2.jpg', 'assets/thumbs/yuzu-voucher.jpg', 'assets/thumbs/yuzu-blog.jpg'],
     post: {
