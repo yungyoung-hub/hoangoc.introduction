@@ -49,7 +49,7 @@ Object.assign(window.I18N_VI, {
   'cases.approach': 'Cách tiếp cận',
   'cases.role': 'Vai trò',
   'cases.view': 'Xem trong kho tác phẩm',
-  'cases.lead': 'Hệ thống thương hiệu và chiến dịch trước, sau đó là sáng tạo cho nhà quảng cáo. Mỗi dự án tóm gọn: bài toán, rồi cách tôi giải quyết.',
+  'cases.lead': 'Quảng cáo game sáng tạo cho nhà quảng cáo trước, sau đó là hệ thống thương hiệu và chiến dịch. Mỗi dự án tóm gọn: bài toán, rồi cách tôi giải quyết.',
   'cases.index': 'Đi tới dự án',
   'hero.text': 'Graphic designer với hơn 5 năm xây dựng hệ thống hình ảnh cho thương hiệu và chiến dịch. Tại AWING, tôi đưa dự án từ ý tưởng đến thành phẩm: định hướng hình ảnh cho các lần ra mắt sản phẩm, sự kiện và bao bì quà Tết của AWING, đồng thời biến brief của nhà quảng cáo thành key visual, quảng cáo tương tác và motion cho Coca-Cola, Samsung, Grab, Garnier. Một ý tưởng, đi xuyên suốt mọi điểm chạm, từ bài đăng mạng xã hội đến màn hình sân khấu.',
   'ss.kv': 'Key visual &amp; hệ thống thương hiệu',
@@ -141,8 +141,8 @@ window.CAPTIONS = [
 const S26 = 'assets/projects/summit/';
 const G = 'Graphic/', P = 'Packaging & Event Assets/', T = 'assets/projects/tet-gift/', M = 'assets/mockups/', V = 'Motion/';
 window.CASE_GROUPS = [
-  { id: 'branding', en: 'Brand & campaign systems', vi: 'Hệ thống thương hiệu & chiến dịch', desc: { en: 'AWING’s own brand, from concept to production: events, Tết packaging, exhibitions and product launches.', vi: 'Thương hiệu AWING, từ ý tưởng đến sản xuất: sự kiện, bao bì quà Tết, triển lãm và ra mắt sản phẩm.' } },
   { id: 'ads', en: 'Creative for advertisers', vi: 'Sáng tạo cho nhà quảng cáo', desc: { en: 'Interactive and motion ads for advertisers on AWING’s Wi-Fi network.', vi: 'Quảng cáo tương tác và chuyển động cho các nhà quảng cáo trên mạng Wi-Fi của AWING.' } },
+  { id: 'branding', en: 'Brand & campaign systems', vi: 'Hệ thống thương hiệu & chiến dịch', desc: { en: 'AWING’s own brand, from concept to production: events, Tết packaging, exhibitions and product launches.', vi: 'Thương hiệu AWING, từ ý tưởng đến sản xuất: sự kiện, bao bì quà Tết, triển lãm và ra mắt sản phẩm.' } },
 ];
 window.CASES = [
   // ---------- Creative Ads ----------
@@ -417,8 +417,8 @@ window.CASE_SHORT = {
   'motion': { en: '100+ animated ads', vi: '100+ quảng cáo động' },
 };
 
-// Display order inside each group: strongest system-level work first.
-const CASE_ORDER = ['summit-2026', 'tet-gift', 'ntt', 'lixi-2025', 'mma-booth', 'weather', 'garnier', 'omo', 'yuzu', 'motion'];
+// Display order: creative game ads first, then brand & campaign systems (strongest system-level work first).
+const CASE_ORDER = ['garnier', 'omo', 'yuzu', 'motion', 'summit-2026', 'tet-gift', 'ntt', 'lixi-2025', 'mma-booth', 'weather'];
 window.CASES.sort((a, b) => (CASE_ORDER.indexOf(a.id) + 1 || 99) - (CASE_ORDER.indexOf(b.id) + 1 || 99));
 
 // ---------- Event boards (featured page) and project sheets (Library) ----------
@@ -450,7 +450,7 @@ window.CASES.sort((a, b) => (CASE_ORDER.indexOf(a.id) + 1 || 99) - (CASE_ORDER.i
       en: { title: 'Interactive ad games', text: 'The card is the way in: its QR code opens AWING’s Wi-Fi login, then a Year of the Horse mini-game. Partners don’t just read about the product, they play it. Tap a phone to play the live demo.', flow: ['Scan the QR on the card', 'AWING Wi-Fi opens', 'Play for a New Year wish'] },
       vi: { title: 'Game quảng cáo tương tác', text: 'Tấm thiệp là cánh cửa: mã QR mở màn đăng nhập Wi-Fi của AWING, rồi đến mini-game năm Ngọ. Đối tác không chỉ đọc về sản phẩm mà được tự tay chơi thử. Chạm vào từng điện thoại để chơi bản demo thật.', flow: ['Quét QR trên thiệp', 'Wi-Fi AWING mở ra', 'Chơi để nhận lời chúc năm mới'] },
       list: [
-        { en: 'Wi-Fi login', vi: 'Đăng nhập Wi-Fi', thumb: 'assets/thumbs/tet26-login.jpg', url: 'https://acm-ssl.awingconnect.vn/Preview/Page?loginId=24559&isNetworkCampaign=false&welcomeId=24558&workspaceId=290' },
+        { en: 'Spring outing', vi: 'Du xuân', thumb: 'assets/thumbs/tet26-duxuan.jpg', url: 'https://acm-ssl.awingconnect.vn/Preview/Page?loginId=24559&isNetworkCampaign=false&welcomeId=24558&workspaceId=290' },
         { en: 'Mã đáo: fill in the word', vi: 'Mã đáo: điền từ', thumb: 'assets/thumbs/tet26-madao.jpg', url: 'https://acm-ssl.awingconnect.vn/Preview/Page?loginId=24355&isNetworkCampaign=false&welcomeId=24558&workspaceId=290' },
         { en: 'Race the horse home', vi: 'Đưa ngựa về đích', thumb: 'assets/thumbs/tet26-race.jpg', url: 'https://acm-ssl.awingconnect.vn/Preview/Page?loginId=24356&isNetworkCampaign=false&welcomeId=24558&workspaceId=290' },
         { en: 'Pick a lucky envelope', vi: 'Bốc lì xì', thumb: 'assets/thumbs/tet26-lixi.jpg', url: 'https://acm-ssl.awingconnect.vn/Preview/Page?loginId=24357&isNetworkCampaign=false&welcomeId=24558&workspaceId=290' },
@@ -461,7 +461,7 @@ window.CASES.sort((a, b) => (CASE_ORDER.indexOf(a.id) + 1 || 99) - (CASE_ORDER.i
       { en: 'Product cards & 12-month calendar', vi: 'Thẻ sản phẩm & lịch 12 tháng', items: [it(T + 'mockup-calendar.jpg', 'Cards with calendar', 'Thẻ kèm lịch'), it(T + 'product-card-9.jpg', 'Cover card', 'Thẻ bìa'), it(T + 'product-card-2.jpg', 'Muối Bạc Liêu'), it(T + 'product-card-4.jpg', 'Mỳ Gạo'), it(T + 'product-card-6.jpg', 'Hoa Quả Sấy'), it(T + 'product-card-8.jpg', 'Hồng Trà'), it(T + 'product-card-1.jpg', 'Calendar · Jan–Mar', 'Lịch · tháng 1–3'), it(T + 'product-card-3.jpg', 'Calendar · Apr–Jun', 'Lịch · tháng 4–6'), it(T + 'product-card-5.jpg', 'Calendar · Jul–Sep', 'Lịch · tháng 7–9'), it(T + 'product-card-7.jpg', 'Calendar · Oct–Dec', 'Lịch · tháng 10–12'), it(T + 'product-card-10.jpg', 'Tết message card', 'Thẻ lời chúc Tết')] },
       { en: 'Postcards · three offices', vi: 'Postcard · ba văn phòng', items: [it(T + 'mockup-postcards.jpg', 'Postcard set', 'Bộ postcard'), it(T + 'postcard-hn-1.jpg', 'Hanoi · front', 'Hà Nội · mặt trước'), it(T + 'postcard-hn-2.jpg', 'Hanoi · back', 'Hà Nội · mặt sau'), it(T + 'postcard-hcm-1.jpg', 'HCMC · front', 'TP.HCM · mặt trước'), it(T + 'postcard-hcm-2.jpg', 'HCMC · back', 'TP.HCM · mặt sau'), it(T + 'postcard-idn-1.jpg', 'Indonesia · front', 'Indonesia · mặt trước'), it(T + 'postcard-idn-2.jpg', 'Indonesia · back', 'Indonesia · mặt sau')] },
       { en: 'Sticker & mug', vi: 'Sticker & cốc', items: [it(T + 'sticker.jpg', 'Sticker sheet', 'Tấm sticker'), it(P + 'AWING_NY Gift_Sticker_v1.2.png', 'Sticker print file', 'File in sticker'), it(T + 'mug-1.jpg', 'Mug · dark', 'Cốc · nền tối'), it(T + 'mug-2.jpg', 'Mug · skyline', 'Cốc · skyline')] },
-      { en: 'Wi-Fi mini-games', vi: 'Mini-game Wi-Fi', items: [it('assets/thumbs/tet26-login.jpg', 'Wi-Fi login', 'Đăng nhập Wi-Fi'), it('assets/thumbs/tet26-madao.jpg', 'Mã đáo: fill in the word', 'Mã đáo: điền từ'), it('assets/thumbs/tet26-race.jpg', 'Race the horse home', 'Đưa ngựa về đích'), it('assets/thumbs/tet26-lixi.jpg', 'Pick a lucky envelope', 'Bốc lì xì')] },
+      { en: 'Wi-Fi mini-games', vi: 'Mini-game Wi-Fi', items: [it('assets/thumbs/tet26-duxuan.jpg', 'Spring outing: take off with AWING', 'Du xuân: cất cánh cùng AWING'), it('assets/thumbs/tet26-madao.jpg', 'Mã đáo: fill in the word', 'Mã đáo: điền từ'), it('assets/thumbs/tet26-race.jpg', 'Race the horse home', 'Đưa ngựa về đích'), it('assets/thumbs/tet26-lixi.jpg', 'Pick a lucky envelope', 'Bốc lì xì')] },
     ],
   });
 
@@ -476,9 +476,9 @@ window.CASES.sort((a, b) => (CASE_ORDER.indexOf(a.id) + 1 || 99) - (CASE_ORDER.i
 
   Object.assign(byId('mma-booth'), {
     board: {
-      bg: '#F1F1F1', bg2: '#FFD9DB',
-      kv: it(M + 'booth-3d-1.jpg', '3D mock-up', 'Mockup 3D'),
-      pieces: [it(MA + 'booth-photo.jpg', 'On site', 'Thực tế'), it(M + 'brochure.jpg', 'Brochure', 'Brochure')],
+      corner: true,
+      kv: { src: MA + 'booth-live.mp4', poster: MA + 'booth-live.jpg', en: 'Live booth', vi: 'Booth thực tế' },
+      pieces: [it(M + 'brochure.jpg', 'Brochure', 'Brochure'), it(MA + 'booth-photo.jpg', 'On site', 'Thực tế')],
     },
     deliver: [
       { en: 'Exhibition booth', vi: 'Booth triển lãm', items: [{ src: MA + 'booth-live.mp4', poster: MA + 'booth-live.jpg', en: 'Live login screen', vi: 'Màn đăng nhập thật' }, it(MA + 'booth-photo.jpg', 'On site', 'Thực tế'), it(M + 'booth-3d-1.jpg', '3D preview', 'Mô phỏng 3D'), it(P + 'MMA booth.png', 'Production spec', 'Thông số sản xuất')] },
@@ -495,6 +495,17 @@ window.CASES.sort((a, b) => (CASE_ORDER.indexOf(a.id) + 1 || 99) - (CASE_ORDER.i
   });
   const WG = 'Graphic/';
   Object.assign(byId('weather'), {
+    series: {
+      en: 'Launch series · 6 posts', vi: 'Chuỗi ra mắt · 6 bài',
+      items: [
+        it(WG + '774042625_1676089417242159_8958395339245005822_n.jpg', 'Teaser', 'Teaser'),
+        it(WG + '777327862_1680666336784467_8691854386663964621_n.jpg', 'Reveal', 'Reveal'),
+        it(WG + '777988242_1682323296618771_3435825282868780190_n.jpg', 'Beverage', 'Đồ uống'),
+        it(WG + '798664154_1698729138311520_2450761588940597726_n.jpg', 'Cosmetics', 'Mỹ phẩm'),
+        it(WG + '798182040_1698729041644863_9042572822805864529_n.jpg', 'Format 1', 'Định dạng 1'),
+        it(WG + '798182041_1698729048311529_8008127201095629401_n.jpg', 'Format 2', 'Định dạng 2'),
+      ],
+    },
     deliver: [
       { en: 'Launch series', vi: 'Chuỗi ra mắt', items: [it('assets/projects/weather/stack.jpg', 'The series', 'Cả chuỗi bài'), it(WG + '774042625_1676089417242159_8958395339245005822_n.jpg', 'Teaser: launching soon', 'Teaser: sắp ra mắt'), it(WG + '777327862_1680666336784467_8691854386663964621_n.jpg', 'Reveal: Real-time Weather Ads', 'Reveal: Real-time Weather Ads')] },
       { en: 'Use cases', vi: 'Use case', items: [it(WG + '777988242_1682323296618771_3435825282868780190_n.jpg', 'Beverage', 'Đồ uống'), it(WG + '798664154_1698729138311520_2450761588940597726_n.jpg', 'Cosmetics', 'Mỹ phẩm')] },

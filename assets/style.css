@@ -1057,3 +1057,40 @@ details.job[open] .job-toggle::after { rotate: 0deg; }
   .kvg .game-phones { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 @media (max-width: 600px) { .kvg .game-phones { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* MMA: the live booth fills the frame; brochure and on-site photo sit in its corner */
+.board.is-corner { display: block; position: relative; padding: 0; background: none; container-type: inline-size; }
+.is-corner > .bd-kv { display: block; width: 100%; aspect-ratio: 4 / 3; grid-column: auto; grid-row: auto; min-height: 0; box-shadow: none; }
+.bd-corner { position: absolute; right: 12px; bottom: 12px; width: 26%; display: grid; gap: 8px; z-index: 2; }
+.bd-corner .bd-piece { position: relative; display: block; }
+.bd-corner .bd-media { aspect-ratio: 4 / 3; border: 3px solid #fff; border-radius: 8px; background: #fff; box-shadow: 0 6px 18px rgba(0, 0, 0, .28); }
+.bd-corner .bd-media img { object-fit: cover; }
+.bd-corner .bd-name { position: absolute; left: 7px; top: 7px; background: #fff; color: #000; border-radius: 99px; padding: 3px 8px; font-size: 9.5px; }
+.bd-corner .bd-piece:hover .bd-media { transform: scale(1.04); transition: transform .3s var(--ease); }
+@container (max-width: 480px) { .bd-corner { width: 34%; gap: 6px; right: 8px; bottom: 8px; } }
+
+/* Weather: the launch series as a moving forecast strip, every post fully visible */
+.series {
+  position: relative; overflow: hidden; border-radius: var(--r-card);
+  padding: 56px 0 28px;
+  background: linear-gradient(180deg, #CFE6FA 0%, #7DB6EC 100%);
+}
+.series::after { /* forecast timeline under the posts */
+  content: ''; position: absolute; left: 0; right: 0; bottom: 47px; border-top: 2px dashed rgba(255, 255, 255, .75); pointer-events: none;
+}
+.sr-tag { left: 16px; top: 16px; font-size: 11px; padding: 5px 11px; }
+.sr-track { display: flex; gap: 18px; width: max-content; padding-left: 18px; animation: sr-move calc(var(--n) * 5s) linear infinite; }
+.series:hover .sr-track, .series:focus-within .sr-track { animation-play-state: paused; }
+@keyframes sr-move { to { transform: translateX(calc(-50% - 9px)); } }
+.sr-item { display: grid; gap: 14px; justify-items: center; flex: none; }
+.sr-media { display: block; height: clamp(260px, 30vw, 400px); border-radius: 12px; overflow: hidden; box-shadow: 0 14px 30px rgba(10, 45, 100, .3); transition: transform .4s var(--ease); }
+.sr-media img { height: 100%; width: auto; display: block; }
+.sr-item:hover .sr-media { transform: translateY(-6px); }
+.sr-step { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 6px; background: #fff; border-radius: 99px; padding: 4px 12px 4px 4px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .02em; }
+.sr-step b { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: #0A4DA2; color: #fff; font-size: 10.5px; }
+@media (prefers-reduced-motion: reduce) {
+  .sr-track { animation: none; }
+  .series { overflow-x: auto; }
+  .sr-item[aria-hidden="true"] { display: none; }
+}
+@media (max-width: 600px) { .sr-media { height: 240px; } }

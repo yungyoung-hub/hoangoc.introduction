@@ -463,7 +463,7 @@
       }
       const all = (cs.img || []).slice();
       if (cs.cover && !all.includes(cs.cover)) all.unshift(cs.cover);
-      [...(cs.shots || []), ...(cs.board ? [cs.board.kv.src, ...(cs.board.pieces || []).map((x) => x.src)] : []), ...(cs.bento || []), ...(cs.showcase ? [cs.showcase.kv, ...cs.showcase.pieces] : []), ...(cs.insets || []).map((x) => x.src), ...(cs.blocks || []).flatMap((b) => b.items)].forEach((src) => { if (!all.includes(src)) all.push(src); });
+      [...(cs.shots || []), ...(cs.board ? [cs.board.kv.src, ...(cs.board.pieces || []).map((x) => x.src)] : []), ...(cs.series ? cs.series.items.map((x) => x.src) : []), ...(cs.bento || []), ...(cs.showcase ? [cs.showcase.kv, ...cs.showcase.pieces] : []), ...(cs.insets || []).map((x) => x.src), ...(cs.blocks || []).flatMap((b) => b.items)].forEach((src) => { if (!all.includes(src)) all.push(src); });
       const at = (src) => all.indexOf(src);
 
       const gamePhones = () => `<ol class="game-phones">${cs.games.list.map((g, j) => `<li class="gp">
@@ -518,10 +518,18 @@
         const media = (x) => isVideo(x.src)
           ? `<video src="${url(x.src)}"${x.poster ? ` poster="${url(x.poster)}"` : ''} muted loop playsinline autoplay preload="metadata"></video>`
           : `<img src="${url(x.src)}" alt="" loading="lazy" decoding="async">`;
-        visual = `<div class="cs-visual board${bd.games ? ' kvg' : ` bd-n${bd.pieces.length}`}${bd.dark ? ' is-dark' : ''}" style="--bd-bg:${bd.bg};--bd-bg2:${bd.bg2 || bd.bg}">
+        const pieceHTML = (bd.pieces || []).map((x) => `<button type="button" class="bd-piece" data-i="${at(x.src)}"><span class="bd-media">${media(x)}</span><span class="bd-name" ${bi(x)}></span></button>`).join('');
+        visual = `<div class="cs-visual board${bd.corner ? ' is-corner' : bd.games ? ' kvg' : ` bd-n${bd.pieces.length}`}${bd.dark ? ' is-dark' : ''}" style="--bd-bg:${bd.bg || '#fff'};--bd-bg2:${bd.bg2 || bd.bg || '#fff'}">
           <button type="button" class="bd-kv" data-i="${at(bd.kv.src)}"><span class="bd-media">${media(bd.kv)}</span><span class="sc-tag" ${bi(bd.kv)}></span></button>
           ${bd.games ? gamePhones() : ''}
-          ${(bd.pieces || []).map((x) => `<button type="button" class="bd-piece" data-i="${at(x.src)}"><span class="bd-media">${media(x)}</span><span class="bd-name" ${bi(x)}></span></button>`).join('')}
+          ${bd.corner ? `<div class="bd-corner">${pieceHTML}</div>` : pieceHTML}
+        </div>`;
+      } else if (cs.series) {
+        const sr = cs.series;
+        const card = (x, k, dup) => `<button type="button" class="sr-item" data-i="${at(x.src)}"${dup ? ' aria-hidden="true" tabindex="-1"' : ''}><span class="sr-media"><img src="${url(x.src)}" alt="" loading="lazy" decoding="async"></span><span class="sr-step"><b>${pad(k + 1)}</b><span ${bi(x)}></span></span></button>`;
+        visual = `<div class="cs-visual series" style="--n:${sr.items.length}">
+          <span class="sc-tag sr-tag" ${bi(sr)}></span>
+          <div class="sr-track">${sr.items.map((x, k) => card(x, k, false)).join('')}${sr.items.map((x, k) => card(x, k, true)).join('')}</div>
         </div>`;
       } else if (cs.coverVideo) {
         visual = `<div class="cs-visual"><button type="button" class="cs-cover is-video" data-i="${at(cs.coverVideo)}"><video src="${url(cs.coverVideo)}" poster="${url(cs.cover)}" muted loop playsinline autoplay preload="metadata"></video></button>${insets ? `<div class="cs-insets">${insets}</div>` : ''}</div>`;
@@ -542,7 +550,7 @@
         </div>` : '';
 
       const el = document.createElement('article');
-      el.className = 'cs' + (cs.live ? ' has-live' : '') + (cs.reel || cs.showcase || cs.board ? ' has-reel' : '');
+      el.className = 'cs' + (cs.live ? ' has-live' : '') + (cs.reel || cs.showcase || cs.series || (cs.board && !cs.board.corner) ? ' has-reel' : '');
       el.id = 'case-' + cs.id;
       el.innerHTML = `
         <div class="cs-head reveal">
