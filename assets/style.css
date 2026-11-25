@@ -1349,3 +1349,88 @@ body { background: var(--blush); }
 }
 
 .job-sumrow { padding-right: clamp(76px, 8vw, 104px); }
+
+
+/* =========================================================
+   HYBRID — keep the v2 structure (condensed headings, mono labels, outlined blocks)
+   but bring back the personal palette taken from the portrait:
+   blush page, rose blocks, rug red as the one accent. No hard black shadows.
+   ========================================================= */
+:root {
+  --blush: #FDEFF0;    /* page */
+  --pink: #FFC9CE;     /* rose blocks */
+  --yellow: #FFE0E3;   /* (was yellow) pale rose hover fill */
+  --lilac: #FFFFFF;    /* (was lilac) plain paper */
+  --red: #A8010B;      /* rug red: the one accent */
+  --line: #F2C1C6;
+  --grey: #C4B4B6;
+  --muted: #6E6466;
+  --r-panel: 20px;
+  --r-card: 12px;
+  --r-chip: 6px;
+  --bd: 1px solid #EBB3B9;
+  --bd-strong: 1px solid var(--red);
+  --lift: translateY(-3px);
+  --shadow: 0 14px 28px -16px rgba(168, 1, 11, .45);
+}
+::selection { background: var(--red); color: #fff; }
+:focus-visible { outline-color: var(--red); }
+
+/* Buttons: black block, rug red on hover */
+.btn-ink:hover, .mr-btn:hover { background: var(--red); color: #fff; border-color: var(--red); }
+.btn-ink, .mr-btn { border-color: var(--ink); }
+.btn-outline, .btn-line { border: var(--bd-strong); color: var(--red); }
+.btn-outline:hover, .btn-line:hover { background: var(--red); color: #fff; }
+.btn-link:hover { background: transparent; color: var(--red); }
+
+/* Nav */
+.nav ul a[aria-current="page"] { background: var(--red); }
+.nav-cv:hover { background: var(--pink); }
+.nav-cta:hover { background: var(--red); color: #fff; }
+
+/* Hero */
+.hero-photo { border: 0; box-shadow: none; background: var(--pink); }
+.hero-tab { border: 0; }
+.hero-tab:hover { background: var(--red); color: #fff; }
+
+/* Stats: the hero cell in rug red */
+.stats .stat-hero { background: var(--red); color: #fff; }
+.stats .stat-hero span { color: #fff; }
+.stats .stat-skills { background: var(--pink); }
+
+/* Index + group labels */
+.ci-list a:hover { background: var(--pink); }
+.cs-group-title { background: var(--pink); box-shadow: none; border: 0; }
+.cs-group[data-group="branding"] .cs-group-title { background: var(--red); color: #fff; }
+
+/* Case facts: red / rose / paper */
+.cs-facts li:nth-child(1) { background: var(--red); border-color: var(--red); }
+.cs-facts li:nth-child(1), .cs-facts li:nth-child(1) span, .cs-facts li:nth-child(1) b { color: #fff; }
+.cs-facts li:nth-child(2) { background: var(--pink); }
+.cs-facts li:nth-child(3) { background: var(--paper); }
+.cs-post:hover { background: var(--pink); }
+.bd-corner .bd-media, .sr-media { box-shadow: 0 18px 34px -18px rgba(0, 0, 0, .45); }
+.sr-step b, .gf-ic { background: var(--red); }
+
+/* Experience */
+.job-toggle { background: var(--red); }
+.job-sumrow:hover .job-toggle { background: var(--ink); }
+.job-sumrow:hover .job-toggle::before, .job-sumrow:hover .job-toggle::after { background: #fff; }
+.scope-label { color: var(--red); border-bottom: var(--bd); }
+.sow li::before {
+  border: 0;
+  background: var(--red) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 10.4l3 3 6-6.4' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 16px no-repeat;
+}
+.exp-grid .card:nth-child(1) { background: var(--pink); }
+.exp-grid .card:nth-child(2) { background: var(--paper); }
+
+/* Contact */
+.contact-card, .contact .contact-card { box-shadow: none; border: 0; }
+.contact-lines, .contact-lines li { border-color: rgba(168, 1, 11, .3); }
+.footer a:hover { background: transparent; color: var(--red); }
+
+/* Library */
+.lp-list a.is-active { background: var(--pink); border-color: var(--red); }
+.grid-wrap.is-collapsed::after { background: linear-gradient(rgba(253, 239, 240, 0), var(--blush)); }
+.lb-btn:hover { background: var(--red); color: #fff; }
+.reel-item:hover .rp-phone, .pr-item:hover .rp-phone { background: var(--red); }
